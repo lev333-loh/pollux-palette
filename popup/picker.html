@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Monet — Wallpaper Extractor</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body {
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #141214;
+      padding: 20px;
+    }
+    .picker-container {
+      width: 440px;
+      max-width: 90vw;
+      background: #1F1B1E;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+    .drop-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: #F8DCED;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .drop-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .preview-box {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .preview-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .apply-btn {
+      background: #F8DCED;
+      color: #340B29;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .apply-btn:hover {
+      background: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .status-msg {
+      font-size: 13px;
+      text-align: center;
+      color: #7BDCA2;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="picker-container">
+    <div class="header">
+      <img src="../icons/icon-48.png" alt="Logo" class="logo">
+      <div class="title-group">
+        <h1 class="title">Wallpaper Monet Extractor</h1>
+        <span class="subtitle">Extract Material You colors from any image</span>
+      </div>
+    </div>
+
+    <label class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      <div class="drop-icon">🖼️</div>
+      <div style="font-weight: 600; font-size: 14px; color: #EDE0E4;">Click to browse or drag & drop wallpaper</div>
+      <div style="font-size: 12px; color: #B2A3A9; margin-top: 4px;">PNG, JPG, WebP supported</div>
+    </label>
+
+    <div class="preview-box" id="previewBox">
+      <img id="imagePreview" class="preview-img" alt="Wallpaper Preview">
+      <div class="active-preview" style="background: rgba(255, 255, 255, 0.08);">
+        <div class="color-dot" id="extractedDot"></div>
+        <div class="preview-text">
+          <span class="preview-label">Extracted Seed Color</span>
+          <span class="preview-hex" id="extractedHex">#814F70</span>
+        </div>
+      </div>
+      <button class="apply-btn" id="applyBtn">Apply to Gemini Web</button>
+      <div class="status-msg" id="statusMsg" style="display: none;">✓ Applied to Gemini! You can close this tab.</div>
+    </div>
+  </div>
+
+  <script src="../material-color.js"></script>
+  <script src="picker.js"></script>
+</body>
+</html>

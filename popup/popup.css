@@ -1,0 +1,275 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  width: 320px;
+  background-color: #1E1A1D;
+  color: #EDE0E4;
+  padding: 14px;
+  user-select: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #F8DCED;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #B2A3A9;
+}
+
+.active-preview {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 8px 12px;
+  border-radius: 16px;
+  gap: 10px;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: #814F70;
+  flex-shrink: 0;
+}
+
+.preview-text {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.preview-label {
+  font-size: 10px;
+  color: #B2A3A9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-hex {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.custom-btn {
+  position: relative;
+  overflow: hidden;
+  background: #332B30;
+  color: #F8DCED;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.15s ease;
+}
+
+.custom-btn:hover {
+  background: #443A40;
+}
+
+.custom-btn input[type="color"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pywalfox-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(230, 81, 0, 0.15), rgba(129, 79, 112, 0.15));
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  padding: 10px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.4, 1);
+  color: #EDE0E4;
+}
+
+.pywalfox-btn:hover {
+  background: linear-gradient(135deg, rgba(230, 81, 0, 0.25), rgba(129, 79, 112, 0.25));
+  border-color: #FFA726;
+  transform: translateY(-1px);
+}
+
+.pywalfox-btn.active {
+  background: linear-gradient(135deg, rgba(230, 81, 0, 0.4), rgba(129, 79, 112, 0.4));
+  border-color: #FFB74D;
+  box-shadow: 0 0 12px rgba(255, 152, 0, 0.2);
+}
+
+.pywal-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.pywal-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.pywal-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFE082;
+}
+
+.pywal-sub {
+  font-size: 10px;
+  color: #B2A3A9;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #B2A3A9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.scheme-container {
+  width: 100%;
+}
+
+.scheme-dropdown {
+  width: 100%;
+  padding: 9px 12px;
+  background: #2E282C;
+  color: #EDE0E4;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23EDE0E4'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.scheme-dropdown:hover,
+.scheme-dropdown:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: #383136;
+}
+
+.scheme-dropdown option {
+  background: #231E21;
+  color: #EDE0E4;
+  padding: 6px;
+}
+
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.preset-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 10px;
+  border-radius: 12px;
+  color: #EDE0E4;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+.preset-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.preset-chip.active {
+  background: #4A3343;
+  border-color: #F8DCED;
+  color: #FFFFFF;
+}
+
+.chip-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.action-row {
+  display: flex;
+  margin-top: 4px;
+}
+
+.wallpaper-btn {
+  width: 100%;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  color: #F8DCED;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wallpaper-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #F8DCED;
+}
+
+.footer {
+  text-align: center;
+  font-size: 10px;
+  color: #8C7F85;
+  padding-top: 4px;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Monet</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card" id="popupCard">
+    <div class="header">
+      <img src="../icons/icon-48.png" alt="Logo" class="logo">
+      <div class="title-group">
+        <h1 class="title">Gemini Monet</h1>
+        <span class="subtitle">Material You Theming</span>
+      </div>
+    </div>
+
+    <div class="active-preview">
+      <div class="color-dot" id="activeColorDot"></div>
+      <div class="preview-text">
+        <span class="preview-label">Active Seed</span>
+        <span class="preview-hex" id="activeHex">#814F70</span>
+      </div>
+      <label class="custom-btn" title="Pick custom HEX color">
+        <input type="color" id="colorPicker" value="#814F70">
+        <span>Custom</span>
+      </label>
+    </div>
+
+    <!-- Pywalfox / System Sync Button -->
+    <button class="pywalfox-btn" id="pywalfoxBtn" title="Sync with Pywalfox / Firefox active theme">
+      <span class="pywal-icon">🦊</span>
+      <div class="pywal-text">
+        <span class="pywal-title">Sync with Pywalfox</span>
+        <span class="pywal-sub">Auto-sync with Linux desktop theme</span>
+      </div>
+    </button>
+
+    <div class="section-title">Схема палітри (M3 Style)</div>
+    <div class="scheme-container">
+      <select id="schemeSelect" class="scheme-dropdown" title="Вибір стилю генерації Material 3">
+        <option value="tonal_spot">🎯 M3: Тональна точка (Tonal Spot)</option>
+        <option value="rainbow">🌈 M3: Веселка (Rainbow)</option>
+        <option value="vibrant">⚡ M3: Яскравий (Vibrant)</option>
+        <option value="expressive">🎨 M3: Виразний (Expressive)</option>
+        <option value="neutral">⚪ M3: Нейтральний (Neutral)</option>
+        <option value="fidelity">🎯 M3: Точний (Fidelity)</option>
+      </select>
+    </div>
+
+    <div class="section-title">Presets</div>
+    <div class="presets-grid" id="presetsGrid">
+      <button class="preset-chip" data-color="#814F70" data-name="sakura">
+        <span class="chip-dot" style="background: #814F70;"></span>Sakura
+      </button>
+      <button class="preset-chip" data-color="#6750A4" data-name="lavender">
+        <span class="chip-dot" style="background: #6750A4;"></span>Lavender
+      </button>
+      <button class="preset-chip" data-color="#2E6C4C" data-name="emerald">
+        <span class="chip-dot" style="background: #2E6C4C;"></span>Emerald
+      </button>
+      <button class="preset-chip" data-color="#006495" data-name="ocean">
+        <span class="chip-dot" style="background: #006495;"></span>Ocean
+      </button>
+      <button class="preset-chip" data-color="#8C5000" data-name="amber">
+        <span class="chip-dot" style="background: #8C5000;"></span>Amber
+      </button>
+      <button class="preset-chip" data-color="#984061" data-name="berry">
+        <span class="chip-dot" style="background: #984061;"></span>Berry
+      </button>
+      <button class="preset-chip" data-color="#5E81AC" data-name="nord">
+        <span class="chip-dot" style="background: #5E81AC;"></span>Nord
+      </button>
+      <button class="preset-chip" data-color="#3B5998" data-name="slate">
+        <span class="chip-dot" style="background: #3B5998;"></span>Slate
+      </button>
+    </div>
+
+    <div class="action-row">
+      <button class="wallpaper-btn" id="openPickerBtn" title="Open wallpaper extractor or drop image here">
+        <span>🖼️ Pick from Wallpaper (or drop here)</span>
+      </button>
+    </div>
+
+    <div class="footer">
+      <span>Drag & drop image or Ctrl+V to extract</span>
+    </div>
+  </div>
+
+  <script src="../material-color.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

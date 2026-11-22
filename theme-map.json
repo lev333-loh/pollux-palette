@@ -1,0 +1,125 @@
+{
+  "_comment": "Real extracted CSS variables mapping Material 3 roles to Gemini & Lumi tokens",
+  "map": {
+    "surface": [
+      "--gem-sys-color--surface",
+      "--bard-color-synthetic--chat-window-surface",
+      "--bard-color-remy-surface",
+      "--lumi-sys-color--surface",
+      "--lumi-sys-color--surface-background",
+      "--mat-sys-surface",
+      "--mat-sys-background"
+    ],
+    "surfaceBright": [
+      "--gem-sys-color--surface-bright",
+      "--lumi-sys-color--surface-bright"
+    ],
+    "surfaceDim": [
+      "--gem-sys-color--surface-dim",
+      "--lumi-sys-color--surface-dim"
+    ],
+    "surfaceContainerLowest": [
+      "--gem-sys-color--surface-container-lowest"
+    ],
+    "surfaceContainerLow": [
+      "--gem-sys-color--surface-container-low"
+    ],
+    "surfaceContainer": [
+      "--gem-sys-color--surface-container",
+      "--bard-color-synthetic--chat-window-surface-container",
+      "--bard-color-sidenav-background-mobile",
+      "--bard-color-mode-switcher-container",
+      "--mat-sidenav-container-background-color",
+      "--mat-sidenav-content-background-color",
+      "--lumi-sys-color--surface-accent"
+    ],
+    "surfaceContainerHigh": [
+      "--gem-sys-color--surface-container-high",
+      "--bard-color-synthetic--chat-window-surface-container-high",
+      "--bard-color-sidenav-background-desktop",
+      "--lumi-sys-color--code-background"
+    ],
+    "surfaceContainerHighest": [
+      "--gem-sys-color--surface-container-highest",
+      "--bard-color-synthetic--chat-window-surface-container-highest"
+    ],
+    "onSurface": [
+      "--gem-sys-color--on-surface",
+      "--lumi-sys-color--on-surface",
+      "--mat-sidenav-container-text-color",
+      "--mat-sidenav-content-text-color",
+      "--lumi-sys-color--code-primary-text"
+    ],
+    "onSurfaceVariant": [
+      "--gem-sys-color--on-surface-variant",
+      "--lumi-sys-color--on-surface-variant",
+      "--lumi-sys-color--on-surface-low",
+      "--bard-color-sidenav-tile-text-aurora",
+      "--bard-color-sidenav-mobile-controls"
+    ],
+    "primary": [
+      "--gem-sys-color--primary",
+      "--lumi-sys-color-acc-color--accent-fixed"
+    ],
+    "onPrimary": [
+      "--gem-sys-color--on-primary"
+    ],
+    "primaryContainer": [
+      "--gem-sys-color--primary-container",
+      "--bard-color-custom-primary-container",
+      "--lumi-sys-color-acc-color--accent-container",
+      "--lumi-sys-color-acc-color--accent",
+      "--bard-color-sidenav-tile-background-aurora",
+      "--mat-list-active-indicator-color"
+    ],
+    "onPrimaryContainer": [
+      "--gem-sys-color--on-primary-container",
+      "--bard-color-on-tonal-container"
+    ],
+    "secondary": [
+      "--gem-sys-color--secondary"
+    ],
+    "onSecondary": [
+      "--gem-sys-color--on-secondary"
+    ],
+    "secondaryContainer": [
+      "--gem-sys-color--secondary-container"
+    ],
+    "onSecondaryContainer": [
+      "--gem-sys-color--on-secondary-container"
+    ],
+    "tertiary": [
+      "--gem-sys-color--tertiary"
+    ],
+    "onTertiary": [
+      "--gem-sys-color--on-tertiary"
+    ],
+    "tertiaryContainer": [
+      "--gem-sys-color--tertiary-container"
+    ],
+    "onTertiaryContainer": [
+      "--gem-sys-color--on-tertiary-container"
+    ],
+    "outline": [
+      "--gem-sys-color--outline"
+    ],
+    "outlineVariant": [
+      "--gem-sys-color--outline-variant"
+    ],
+    "error": [
+      "--gem-sys-color--error",
+      "--lumi-sys-color--error"
+    ],
+    "onError": [
+      "--gem-sys-color--on-error"
+    ],
+    "errorContainer": [
+      "--gem-sys-color--error-container",
+      "--lumi-sys-color--error-container"
+    ],
+    "onErrorContainer": [
+      "--gem-sys-color--on-error-container",
+      "--lumi-sys-color--on-error-container"
+    ]
+  }
+}

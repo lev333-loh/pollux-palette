@@ -1,0 +1,1086 @@
+/* Gemini Monet - Material You Saturated Styling */
+
+/* ============================================================
+   0. ZERO-DELAY TOUCH & PINCH-ZOOM LOCK (NATIVE FEEL)
+   ============================================================ */
+html, body {
+  touch-action: pan-x pan-y !important;
+  -webkit-text-size-adjust: 100% !important;
+  background-color: var(--gem-sys-color--surface, var(--monet-surface, #141216)) !important;
+}
+
+/* Page background: soft velvet Material 3 tinted dark, NEVER lifeless AMOLED black */
+mat-sidenav-container,
+mat-sidenav-content,
+main,
+.chat-container,
+.chat-history,
+infinite-scroller,
+.conversation-container,
+header,
+.top-bar,
+.mat-toolbar {
+  background-color: var(--gem-sys-color--surface, var(--monet-surface, #141216)) !important;
+}
+
+button, a, [role="button"], [role="menuitem"],
+mat-icon, gem-icon, .mdc-icon-button, [aria-label*="меню" i] {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Instant tactile bounce on touch for header buttons */
+button[aria-label*="Главное меню" i]:active,
+button[aria-label*="Закрыть" i]:active,
+.side-nav-button:active,
+.close-sidenav-button:active {
+  background-color: var(--monet-menu-hover-bg, rgba(0, 0, 0, 0.08)) !important;
+  transform: scale(0.92) !important;
+  transition: transform 0.05s ease !important;
+}
+
+/* ============================================================
+   1. USER MESSAGE BUBBLE (TELEGRAM STYLE - ACCENT MONET)
+   ============================================================ */
+/* Reset all outer wrapper rows so NO giant double-bubble ever appears */
+user-query,
+.user-query,
+.user-query-container,
+user-query-content,
+.query-content,
+.query-bubble-anchor,
+.horizontal-container,
+[class*="user-query-bubble-container"],
+[class*="user-query-bubble-anchor"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* User query outer row spacing */
+user-query {
+  margin-bottom: 12px !important;
+  display: block !important;
+}
+
+/* Align user query bubble to the right */
+user-query-content,
+.query-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+}
+
+/* ONLY the actual message bubble gets Monet styling and hugs content naturally */
+user-query .user-query-bubble-with-background,
+.user-query-bubble-with-background {
+  background-color: var(--monet-user-bubble-bg, var(--monet-a1-100, #FFD8ED)) !important;
+  border-radius: 24px 24px 4px 24px !important;
+  padding: 12px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: fit-content !important;
+  max-width: 85% !important;
+  align-self: flex-end !important;
+  margin-left: auto !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* Inner wrappers strictly respect bubble flex boundaries */
+.user-query-bubble-with-background .horizontal-container,
+.user-query-bubble-with-background .query-text {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* The text inside: wrapped, crisp, safely inset inside the bubble */
+.user-query-bubble-with-background p,
+.user-query-bubble-with-background .query-text-line {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+/* Action icons (copy, edit) align to the right under the bubble */
+user-query .query-actions,
+user-query [class*="action"],
+user-query .actions-container,
+.luminous-actions-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-self: flex-end !important;
+  gap: 4px !important;
+  margin-top: 4px !important;
+}
+
+/* Prevent double background or nested padding/gaps inside the bubble */
+.user-query-bubble-with-background *,
+user-query-content *,
+.query-content * {
+  box-sizing: border-box !important;
+}
+
+.user-query-bubble-with-background user-query-content,
+.user-query-bubble-with-background .query-content,
+.user-query-bubble-with-background expandable-text,
+.user-query-bubble-with-background .expandable-text,
+.user-query-bubble-with-background [class*="expandable"],
+user-query expandable-text,
+user-query .expandable-text,
+user-query [class*="expandable-text-container"],
+user-query-content:has(.user-query-bubble-with-background),
+.query-content:has(.user-query-bubble-with-background) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+/* User message text inside bubble */
+.user-query-bubble-with-background .query-text,
+.user-query-bubble-with-background p,
+.user-query-bubble-with-background .query-text-line,
+user-query expandable-text p {
+  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+}
+
+/* Action buttons below the bubble (copy, edit - "теги") */
+user-query [class*="action"],
+user-query .query-actions,
+user-query [class*="button-container"],
+user-query .actions-container {
+  margin-top: 6px !important;
+  margin-bottom: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+/* KILL gradient fade strip completely - neat clean icon only */
+user-query [class*="gradient"],
+/* KILL gradient fade strip inside user queries ONLY - neat clean icon only */
+user-query [class*="gradient"],
+user-query [class*="fade"],
+user-query [class*="overlay"],
+user-query [class*="mask"],
+user-query [class*="gradient-container"],
+user-query [class*="fade-container"],
+user-query-content [class*="gradient"],
+user-query-content [class*="fade"],
+user-query-content [class*="overlay"],
+user-query-content [class*="mask"],
+.user-query-bubble-with-background [class*="gradient"],
+.user-query-bubble-with-background [class*="fade"],
+.user-query-bubble-with-background [class*="overlay"],
+.user-query-bubble-with-background [class*="mask"],
+.user-query-bubble-with-background [class*="gradient-container"],
+.user-query-bubble-with-background [class*="fade-container"] {
+  display: none !important;
+  background: none !important;
+  background-color: transparent !important;
+  mask: none !important;
+  -webkit-mask: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ============================================================
+   LUMINOUS EXPAND / COLLAPSE BUTTON FIX (NO EXTRA ROW, NO OVAL)
+   ============================================================ */
+/* 1. Toggle container: naturally placed at the bottom-right of the bubble, NO extra row */
+html body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-container,
+html body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-container,
+.enable-luminous-prompt-bubble .luminous-toggle-container,
+user-query .luminous-toggle-container,
+.luminous-toggle-container,
+user-query [class*="expand-button-container"],
+user-query [class*="collapse-button-container"],
+user-query [class*="toggle-container"] {
+  position: absolute !important;
+  inset-inline-end: 10px !important;
+  right: 10px !important;
+  bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+}
+
+/* 2. The button: compact, perfectly centered inside container */
+html body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-button,
+html body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-button,
+.enable-luminous-prompt-bubble .luminous-toggle-button,
+user-query .luminous-toggle-button,
+.luminous-toggle-button,
+button[data-test-id="luminous-collapse-button"],
+button[data-test-id="luminous-expand-button"],
+user-query button[aria-label*="развернуть" i],
+user-query button[aria-label*="свернуть" i],
+user-query button[aria-label*="expand" i],
+user-query button[aria-label*="collapse" i],
+user-query button[aria-label*="показать" i],
+user-query button[aria-label*="show more" i],
+user-query .expand-button,
+user-query .collapse-button,
+user-query .expandable-text-button,
+user-query [class*="expand-button"],
+user-query [class*="collapse-button"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  color: var(--monet-user-bubble-text) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
+  transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease !important;
+}
+
+/* 3. Toggle pill / icon inside button - NO CONTRASTING OVAL, SMOOTH BLEND */
+.luminous-toggle-pill,
+.luminous-toggle-button {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 50% !important;
+}
+
+.luminous-toggle-pill {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Subtle, smooth feedback on tap/hold - blends naturally with bubble, NO harsh oval */
+.luminous-toggle-button:hover,
+.luminous-toggle-button:focus,
+.luminous-toggle-button:focus-visible {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  opacity: 0.85 !important;
+}
+
+.luminous-toggle-button:active {
+  background-color: rgba(0, 0, 0, 0.14) !important;
+  transform: scale(0.92) !important;
+  opacity: 0.75 !important;
+}
+
+/* Kill ANY ripple, persistent ripple, or harsh pseudo-element oval */
+.luminous-toggle-button .mat-ripple,
+.luminous-toggle-button [class*="ripple"],
+.luminous-toggle-button .mat-mdc-button-persistent-ripple,
+.luminous-toggle-button .mat-mdc-button-touch-target,
+.luminous-toggle-pill .mat-ripple,
+.luminous-toggle-pill [class*="ripple"],
+.luminous-toggle-button::before,
+.luminous-toggle-button::after,
+.luminous-toggle-pill::before,
+.luminous-toggle-pill::after {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  content: none !important;
+  background: none !important;
+}
+
+.luminous-toggle-pill mat-icon,
+.luminous-toggle-pill gem-icon,
+.luminous-toggle-button mat-icon,
+.luminous-toggle-button gem-icon,
+.luminous-toggle-button svg {
+  color: var(--monet-user-bubble-text) !important;
+  fill: var(--monet-user-bubble-text) !important;
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* 4. Native inline spacer on the last text line keeps text from touching chevron without empty row */
+.has-luminous-collapse-spacer::after,
+.query-text.has-luminous-collapse-spacer .query-text-line:last-child::after,
+.luminous-collapse-spacer {
+  content: "" !important;
+  display: inline-block !important;
+  width: 26px !important;
+  height: 1em !important;
+  vertical-align: middle !important;
+  pointer-events: none !important;
+}
+
+/* Photo & File previews in chat - MUST NEVER BE CIRCLES */
+.file-preview-container,
+[class*="file-preview-container"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+  max-width: 100% !important;
+}
+
+.file-preview,
+[class*="file-preview"],
+.file-preview-container button,
+.file-preview-container [role="button"],
+.file-preview-container img,
+user-query .file-preview,
+user-query [class*="image-preview"],
+user-query [class*="file-preview-container"] img,
+user-query [class*="file-preview-container"] button,
+user-query [class*="file-preview-container"] [role="button"],
+user-query img {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+
+.file-preview img,
+.file-preview-container img,
+user-query .file-preview-container img {
+  border-radius: 14px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* ONLY action icons (Copy, Edit) below bubble get round 50% shape */
+.luminous-actions-container button,
+.luminous-action-button button,
+gem-icon-button.luminous-action-button button,
+user-query .query-actions button,
+user-query [class*="action-button"] button,
+button[data-test-id="prompt-copy-button"] button,
+button[data-test-id="prompt-edit-button"] button {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: var(--monet-user-bubble-text) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.luminous-actions-container button:hover,
+.luminous-action-button button:hover,
+gem-icon-button.luminous-action-button button:hover,
+user-query .query-actions button:hover,
+user-query [class*="action-button"] button:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ============================================================
+   USER QUERY EDIT MODE (EXACT MESSAGE BUBBLE, NO NESTED OVALS)
+   ============================================================ */
+/* Strip any outer wrappers, frames, and nested ovals when editing */
+user-query:has(textarea),
+user-query-content:has(textarea),
+.query-content:has(textarea),
+user-query form {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* The edit container / form: looks EXACTLY like the user message bubble */
+user-query form:has(textarea),
+user-query form.edit-query-form,
+user-query [class*="edit-box"]:has(textarea) {
+  background-color: var(--monet-user-bubble-bg, var(--monet-a1-100, #FFD8ED)) !important;
+  border-radius: 24px 24px 4px 24px !important;
+  padding: 12px 18px !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-self: flex-end !important;
+  margin-left: auto !important;
+  width: auto !important;
+  max-width: 85% !important;
+  box-sizing: border-box !important;
+}
+
+/* Inner field wrapper inside form: completely transparent, NO nested borders or ovals */
+user-query form .text-input-field,
+user-query form [class*="text-input-field"],
+user-query form [class*="text-area"],
+user-query form [class*="edit-box"],
+user-query form [class*="input-container"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* The textarea itself: seamless text matching message typography */
+user-query form textarea,
+user-query textarea,
+user-query [contenteditable="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  resize: none !important;
+}
+
+user-query textarea:focus,
+user-query [contenteditable="true"]:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Buttons row inside the edit bubble: neatly aligned to bottom right */
+user-query form [class*="button-container"],
+user-query form [class*="buttons"],
+user-query form footer,
+user-query form [class*="action"],
+user-query [class*="edit"] [class*="button-container"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  width: 100% !important;
+}
+
+/* Cancel button: clean text button without heavy frames */
+user-query form button[type="button"],
+user-query form button:first-child,
+user-query form [class*="cancel"],
+user-query button[aria-label*="отмена" i],
+user-query button[aria-label*="cancel" i] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--monet-user-bubble-text, #340B29) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  padding: 5px 12px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  opacity: 0.75 !important;
+  cursor: pointer !important;
+  transition: opacity 0.2s ease, background-color 0.2s ease !important;
+}
+
+user-query form button[type="button"]:hover,
+user-query form button:first-child:hover,
+user-query button[aria-label*="отмена" i]:hover {
+  opacity: 1 !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Update button: neat, subtle pill button inside the bubble */
+user-query form button[type="submit"],
+user-query form button:last-child,
+user-query form [class*="update"],
+user-query form [class*="save"],
+user-query button[aria-label*="обновить" i],
+user-query button[aria-label*="update" i] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+  color: var(--monet-user-bubble-text, #340B29) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  padding: 6px 16px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+user-query form button[type="submit"]:hover,
+user-query form button:last-child:hover,
+user-query button[aria-label*="обновить" i]:hover {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+user-query mat-icon,
+user-query-content mat-icon,
+user-query gem-icon,
+user-query svg,
+user-query-content svg,
+.user-query-bubble-with-background mat-icon,
+.user-query-bubble-with-background svg,
+button[aria-label*="развернуть" i] mat-icon,
+button[aria-label*="развернуть" i] svg,
+button[aria-label*="свернуть" i] mat-icon,
+button[aria-label*="свернуть" i] svg,
+[class*="expand"] mat-icon,
+[class*="expand"] svg,
+[class*="collapse"] mat-icon,
+[class*="collapse"] svg {
+  color: var(--monet-user-bubble-text) !important;
+  fill: var(--monet-user-bubble-text) !important;
+}
+
+/* Thought process / Reasoning expander */
+.thought-container,
+model-thought,
+.model-thought,
+.thoughts-container,
+mat-expansion-panel {
+  background-color: var(--monet-code-bg, var(--gem-sys-color--surface-container)) !important;
+  border: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant)) !important;
+  border-radius: 16px !important;
+  color: var(--monet-code-text) !important;
+}
+
+.thought-container mat-icon,
+model-thought mat-icon,
+.thoughts-container mat-icon,
+mat-expansion-panel mat-icon {
+  color: var(--monet-sidebar-icon, var(--gem-sys-color--primary)) !important;
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary)) !important;
+}
+
+
+/* ============================================================
+   2. INPUT AREA PILL (SATURATED MATERIAL YOU COLOR)
+   ============================================================ */
+input-area-v2,
+.input-area-container input-area-v2,
+.lm-input-redesign {
+  background-color: var(--monet-input-bg, var(--monet-a1-100, #FFD8ED)) !important;
+  border-radius: 40px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+input-area-v2 input,
+input-area-v2 textarea,
+input-area-v2 .ql-editor,
+input-area-v2 .text-input-field_textarea,
+input-area-v2 mat-icon,
+input-area-v2 svg {
+  color: var(--monet-input-text, var(--monet-a1-900, #340B29)) !important;
+  fill: var(--monet-input-text, var(--monet-a1-900, #340B29)) !important;
+}
+
+
+/* ============================================================
+   3. CODE BLOCKS & TEXT CARDS (PLAINTEXT, SYNTAX) - MATERIAL YOU
+   ============================================================ */
+code-block,
+.code-block,
+.code-container,
+.formatted-code-block-internal-container,
+pre:has(code),
+pre code {
+  background-color: var(--monet-code-bg, var(--gem-sys-color--surface-container, #FAEAF0)) !important;
+  color: var(--monet-code-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+/* Material You card outline and radius */
+code-block,
+.code-block {
+  border: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+/* Strip gradient masks and fade overlays without hiding containers */
+.bottom-gradient-container,
+.top-gradient-container,
+.bottom-gradient,
+.top-gradient,
+.input-gradient-overlay {
+  background: none !important;
+  background-color: transparent !important;
+  mask: none !important;
+  -webkit-mask: none !important;
+  box-shadow: none !important;
+}
+
+code-block::before,
+code-block::after,
+.code-block::before,
+.code-block::after,
+.code-container::before,
+.code-container::after,
+.input-gradient::before,
+.input-gradient::after,
+.input-gradient-overlay::before,
+.input-gradient-overlay::after {
+  display: none !important;
+  background: none !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Bottom scroll clearance: neat 110px offset on the very last turn so it clears the ~80px floating input bar */
+.conversation-container:last-child,
+[class*="conversation-container"]:last-child {
+  padding-bottom: 110px !important;
+}
+
+/* Code block header bar (Plaintext title & buttons) - Material You header */
+code-block .code-block-decoration,
+code-block .header,
+.code-block-header,
+.header-formatted {
+  background-color: var(--monet-code-header-bg, var(--gem-sys-color--surface-container-highest, #F0DEE6)) !important;
+  border-bottom: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  padding: 8px 16px !important;
+}
+
+/* Language title text (Plaintext, bash, etc.) */
+code-block .code-block-decoration span,
+code-block .header-text,
+code-block .language-text,
+.code-block-header span,
+.header-formatted span {
+  color: var(--monet-code-text, #340B29) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+/* Action buttons in header (Copy, Download, Run) */
+code-block mat-icon,
+code-block svg,
+code-block mat-icon *,
+code-block button,
+.code-block mat-icon,
+.code-block svg,
+.code-block button {
+  color: var(--monet-code-text, #340B29) !important;
+  fill: var(--monet-code-text, #340B29) !important;
+}
+
+code-block button,
+.code-block button {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-radius: 50% !important;
+}
+
+code-block button:hover,
+.code-block button:hover {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Code content text inside */
+code-block pre,
+code-block code,
+pre code,
+.code-container,
+.code-container.formatted {
+  color: var(--monet-code-text, #22191E) !important;
+  background-color: transparent !important;
+  font-family: "Google Sans Code", "Google Sans Mono", monospace !important;
+}
+
+
+/* ============================================================
+   4. MONET ACCENT 1: SIDEBAR & NAVIGATION DRAWER
+   ============================================================ */
+mat-sidenav,
+.mat-drawer,
+.mat-sidenav,
+side-navigation-v2,
+side-navigation-content,
+.gds-sidenav-list {
+  background-color: var(--monet-sidebar-bg, var(--gem-sys-color--surface, #FFF8F9)) !important;
+}
+
+/* Unselected items: readable dark text & Accent 1 deep tone icons */
+.conversations-container .conversation,
+gem-nav-list-item,
+.gds-sidenav-list a,
+.gds-sidenav-list button,
+.gds-sidenav-list .mat-list-item-content,
+side-navigation-v2 a,
+side-navigation-v2 button {
+  color: var(--monet-sidebar-text, var(--gem-sys-color--on-surface, #3A2F35)) !important;
+}
+
+side-navigation-v2 mat-icon,
+.gds-sidenav-list mat-icon,
+gem-nav-list-item mat-icon {
+  color: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+}
+
+/* Selected conversation item: Accent 1 tone 200 pill with dark text */
+.conversations-container .conversation.selected,
+.gem-nav-list-item.is-active,
+.gds-sidenav-list .is-active,
+side-navigation-v2 .is-active {
+  background-color: var(--monet-sidebar-selected-bg, var(--gem-sys-color--primary-container, #FCBCE2)) !important;
+  color: var(--monet-sidebar-selected-text, var(--gem-sys-color--on-primary-container, #3A2F35)) !important;
+  border-radius: 28px !important;
+}
+
+/* Hover / touch state */
+.conversations-container .conversation:hover,
+gem-nav-list-item:hover {
+  background-color: var(--monet-sidebar-hover-bg, var(--gem-sys-color--surface-container-high, #FAEAF0)) !important;
+}
+
+/* Bottom "Скачать приложение" or secondary button in drawer */
+side-navigation-v2 .get-app-button,
+side-navigation-v2 footer button,
+.gds-sidenav-footer button {
+  background-color: var(--monet-sidebar-hover-bg, #FAEAF0) !important;
+  color: var(--monet-sidebar-text, #3A2F35) !important;
+}
+
+
+/* ============================================================
+   5. HEADER MODEL SWITCHER CHIP (MATERIAL YOU TONAL PILL)
+   ============================================================ */
+gem-button[data-test-id="bard-mode-menu-button"] button,
+.logo-pill-btn button,
+bard-mode-switcher button,
+.mode-picker-in-header button {
+  background-color: var(--monet-chip-bg, var(--gem-sys-color--surface-container-high, #F5E4EB)) !important;
+  border: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  padding: 4px 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+gem-button[data-test-id="bard-mode-menu-button"] button:active,
+.logo-pill-btn button:active,
+bard-mode-switcher button:active {
+  background-color: var(--monet-menu-selected-bg, var(--gem-sys-color--primary-container, #FCBCE2)) !important;
+}
+
+.logo-pill-btn .picker-secondary-text,
+bard-mode-switcher .picker-secondary-text {
+  color: var(--monet-menu-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  font-weight: 600 !important;
+}
+
+.logo-pill-btn .logo-pill-dropdown-icon mat-icon,
+bard-mode-switcher .logo-pill-dropdown-icon mat-icon {
+  color: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+}
+
+
+/* ============================================================
+   6. MENUS, POPOVERS & AI MODE SWITCHER (SATURATED MATERIAL 3)
+   ============================================================ */
+/* Prevent nested double borders in Angular CDK overlays */
+.cdk-overlay-pane:has(gem-menu),
+.container:has(gem-menu),
+.popover-menu:has(gem-menu) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Card Container for Menus & Popovers */
+gem-menu,
+[data-test-id="gem-mode-menu"],
+.popover-menu:not(:has(gem-menu)),
+mat-menu-panel,
+.mat-mdc-menu-panel {
+  background-color: var(--monet-menu-bg, var(--gem-sys-color--surface-container-high, #F5E4EB)) !important;
+  border: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Menu Items */
+gem-menu-item,
+[role="menuitemradio"],
+[role="menuitem"],
+.mat-mdc-menu-item {
+  border-radius: 20px !important;
+  margin: 4px 0 !important;
+  padding: 10px 16px !important;
+  box-sizing: border-box !important;
+  background-color: transparent !important;
+  transition: background-color 0.15s ease !important;
+}
+
+gem-menu-item-content {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+gem-menu-item:not(.selected):hover,
+gem-menu-item:not(.selected):active,
+[role="menuitemradio"]:not(.selected):hover,
+[role="menuitemradio"]:not(.selected):active,
+.mat-mdc-menu-item:not(.selected):hover,
+.mat-mdc-menu-item:not(.selected):active {
+  background-color: var(--monet-menu-hover-bg, rgba(0, 0, 0, 0.05)) !important;
+}
+
+/* Unselected items typography */
+gem-menu-item .title,
+gem-menu-item [class*="title"],
+gem-menu-item .label,
+.mat-mdc-menu-item .mat-mdc-menu-item-text {
+  color: var(--monet-menu-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+gem-menu-item .sublabel,
+gem-menu-item [class*="sublabel"],
+gem-menu-item .subtitle,
+gem-menu-item .description {
+  color: var(--monet-menu-subtext, var(--gem-sys-color--on-surface-variant, #695B62)) !important;
+  opacity: 0.85 !important;
+  font-size: 12px !important;
+  margin-top: 2px !important;
+}
+
+/* Menu Dividers & Separators */
+gem-menu hr,
+gem-menu mat-divider,
+gem-menu .divider,
+[role="separator"],
+.mat-divider {
+  border-color: var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  opacity: 0.7 !important;
+}
+
+
+/* ============================================================
+   7. SELECTED AI MODE (VIBRANT MONET ACCENT PILL)
+   ============================================================ */
+gem-menu-item.selected,
+gem-menu-item:has(.selected),
+gem-menu-item[aria-checked="true"],
+gem-menu-item[aria-selected="true"],
+.mat-mdc-menu-item.selected {
+  background-color: var(--monet-menu-selected-bg, var(--gem-sys-color--primary-container, #FCBCE2)) !important;
+  border-radius: 20px !important;
+}
+
+/* Ensure all text inside selected item has high contrast on-primary-container */
+gem-menu-item.selected *,
+gem-menu-item:has(.selected) *,
+gem-menu-item-content.selected *,
+gem-menu-item[aria-checked="true"] * {
+  color: var(--monet-menu-selected-text, var(--gem-sys-color--on-primary-container, #340B29)) !important;
+}
+
+gem-menu-item.selected .title,
+gem-menu-item:has(.selected) .title,
+gem-menu-item-content.selected .title,
+gem-menu-item.selected [class*="title"],
+gem-menu-item-content.selected [class*="title"] {
+  color: var(--monet-menu-selected-text, var(--gem-sys-color--on-primary-container, #340B29)) !important;
+  font-weight: 700 !important;
+}
+
+gem-menu-item.selected .sublabel,
+gem-menu-item:has(.selected) .sublabel,
+gem-menu-item-content.selected .sublabel,
+gem-menu-item.selected [class*="sublabel"],
+gem-menu-item-content.selected [class*="sublabel"] {
+  color: var(--monet-menu-selected-text, var(--gem-sys-color--on-primary-container, #340B29)) !important;
+  opacity: 0.9 !important;
+  font-weight: 500 !important;
+}
+
+/* Checkmark Icon inside selected item */
+gem-menu-item.selected mat-icon,
+gem-menu-item:has(.selected) mat-icon,
+gem-menu-item-content.selected mat-icon,
+gem-menu-item.selected gem-icon,
+gem-menu-item.selected svg,
+gem-menu-item [data-mat-icon-name="check"],
+gem-menu-item [fonticon="check"] {
+  color: var(--monet-menu-selected-text, var(--gem-sys-color--on-primary-container, #340B29)) !important;
+  fill: var(--monet-menu-selected-text, var(--gem-sys-color--on-primary-container, #340B29)) !important;
+  font-weight: 900 !important;
+}
+
+
+/* ============================================================
+   8. BOTTOM SHEET ("+" ATTACH & TOOLS MENU) - MATERIAL YOU
+   ============================================================ */
+mat-bottom-sheet-container,
+.mat-bottom-sheet-container,
+gem-bottom-sheet,
+.gem-bottom-sheet {
+  background-color: var(--monet-sheet-bg, var(--gem-sys-color--surface-container-low, #FFF0F5)) !important;
+  border-radius: 28px 28px 0 0 !important;
+  border-top: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Drag handle pill */
+.drag-handle,
+.gem-bottom-sheet .drag-handle {
+  background-color: var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 4px !important;
+}
+
+/* Quick Action Buttons in Top Row (Камера, Фото, Файлы, Диск) */
+.gem-bottom-sheet .mobile-button-item button,
+gem-bottom-sheet .mobile-button-item button,
+.gem-bottom-sheet button.mat-mdc-unelevated-button,
+.gem-bottom-sheet button[type="square"] {
+  background-color: var(--monet-sheet-item-bg, var(--gem-sys-color--surface-container-high, #F5E4EB)) !important;
+  border: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.15s ease !important;
+}
+
+.gem-bottom-sheet .mobile-button-item button:active,
+.gem-bottom-sheet .mobile-button-item button:hover {
+  background-color: var(--monet-menu-selected-bg, var(--gem-sys-color--primary-container, #FCBCE2)) !important;
+}
+
+.gem-bottom-sheet .mobile-button-item span,
+.gem-bottom-sheet .mobile-button-item .gds-body-l {
+  color: var(--monet-menu-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  font-weight: 500 !important;
+}
+
+.gem-bottom-sheet .mobile-button-item mat-icon,
+.gem-bottom-sheet .mobile-button-item gem-icon {
+  color: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+}
+
+/* List items below (Создание изображений, Создание видео, etc.) */
+.gem-bottom-sheet a,
+.gem-bottom-sheet [role="listitem"],
+.gem-bottom-sheet mat-list-item,
+.gem-bottom-sheet .tool-item,
+.gem-bottom-sheet .entry-item {
+  color: var(--monet-menu-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  border-radius: 16px !important;
+}
+
+.gem-bottom-sheet [role="listitem"] mat-icon,
+.gem-bottom-sheet mat-list-item mat-icon,
+.gem-bottom-sheet .entry-item mat-icon {
+  color: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #653655)) !important;
+}
+
+
+/* ============================================================
+   9. FAST DRAWER TRANSITIONS & CLICK GUARANTEE
+   ============================================================ */
+/* Fast native-feeling drawer animation (180ms decelerate curve) */
+mat-sidenav.mat-drawer,
+.mat-drawer.mat-sidenav {
+  transition-duration: 180ms !important;
+  transition-timing-function: cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+  will-change: transform !important;
+}
+
+side-navigation-content {
+  --side-nav-transition-duration: 180ms !important;
+  --side-nav-open-item-opacity-duration: 100ms !important;
+}
+
+/* Ensure sidebar and close button "X" can ALWAYS receive clicks */
+mat-sidenav,
+.mat-drawer,
+.mat-sidenav-container.sidenav-open,
+side-navigation-content,
+.close-sidenav-button,
+.sidenav-header-buttons,
+gem-icon-button,
+button[aria-label*="Закрыть" i],
+button[aria-label*="close" i] {
+  pointer-events: auto !important;
+}
+
+/* Fast lightweight backdrop: kill heavy GPU blur filters on mobile */
+mat-drawer-backdrop,
+.mat-drawer-backdrop,
+.cdk-overlay-backdrop {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: rgba(0, 0, 0, 0.42) !important;
+  will-change: opacity !important;
+}
