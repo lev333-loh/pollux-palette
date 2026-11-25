@@ -13,7 +13,8 @@
     "storage",
     "tabs",
     "theme",
-    "https://gemini.google.com/*"
+    "https://gemini.google.com/*",
+    "https://ogs.google.com/*"
   ],
   "browser_action": {
     "default_icon": {
@@ -33,11 +34,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://gemini.google.com/*"],
+      "matches": [
+        "https://gemini.google.com/*",
+        "https://ogs.google.com/*"
+      ],
       "js": ["content.js"],
       "css": ["inject.css"],
       "run_at": "document_start",
-      "all_frames": false
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [

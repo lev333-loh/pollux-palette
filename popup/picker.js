@@ -51,17 +51,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   applyBtn.addEventListener("click", () => {
-    browser.storage.local.get(["schemeStyle"], (res) => {
+    browser.storage.local.get(["schemeStyle", "monetEra", "themeMode"], (res) => {
       const scheme = (res && res.schemeStyle) || "rainbow";
-      const palette = MaterialColor.generateM3Palette(currentHex, scheme);
+      const era = (res && res.monetEra) || "2021";
+      const themeMode = (res && res.themeMode) || "dark";
+      const palette = MaterialColor.generateM3Palette(currentHex, scheme, era);
       browser.runtime.sendMessage({
         type: "UPDATE_PALETTE",
         seedColor: currentHex,
         presetName: "wallpaper",
         schemeStyle: scheme,
+        monetEra: era,
+        themeMode: themeMode,
         palette: palette,
       }).then(() => {
-        statusMsg.style.display = "block";
+        statusMsg.style.display = "flex";
       });
     });
   });

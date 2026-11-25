@@ -1,12 +1,20 @@
 /* Gemini Monet - Material You Saturated Styling */
 
+@scope (html:not([data-monet-disabled="1"])) {
 /* ============================================================
    0. ZERO-DELAY TOUCH & PINCH-ZOOM LOCK (NATIVE FEEL)
    ============================================================ */
-html, body {
+:scope, body {
   touch-action: pan-x pan-y !important;
   -webkit-text-size-adjust: 100% !important;
   background-color: var(--gem-sys-color--surface, var(--monet-surface, #141216)) !important;
+}
+
+/* OneGoogleWidgetUi (ogs.google.com) outer iframe body must stay transparent for 28px rounded cards */
+:scope:has(> body[jscontroller]),
+body[jscontroller] {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* Page background: soft velvet Material 3 tinted dark, NEVER lifeless AMOLED black */
@@ -43,11 +51,11 @@ button[aria-label*="Закрыть" i]:active,
    1. USER MESSAGE BUBBLE (TELEGRAM STYLE - ACCENT MONET)
    ============================================================ */
 /* Reset all outer wrapper rows so NO giant double-bubble ever appears */
-user-query,
-.user-query,
-.user-query-container,
-user-query-content,
-.query-content,
+user-query:not(:has(.edit-mode)),
+.user-query:not(:has(.edit-mode)),
+.user-query-container:not(.edit-mode),
+user-query-content:not(.edit-mode),
+.query-content:not(.edit-mode),
 .query-bubble-anchor,
 .horizontal-container,
 [class*="user-query-bubble-container"],
@@ -61,14 +69,14 @@ user-query-content,
 }
 
 /* User query outer row spacing */
-user-query {
+user-query:not(:has(.edit-mode)) {
   margin-bottom: 12px !important;
   display: block !important;
 }
 
 /* Align user query bubble to the right */
-user-query-content,
-.query-content {
+user-query-content:not(.edit-mode),
+.query-content:not(.edit-mode) {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-end !important;
@@ -78,7 +86,7 @@ user-query-content,
 /* ONLY the actual message bubble gets Monet styling and hugs content naturally */
 user-query .user-query-bubble-with-background,
 .user-query-bubble-with-background {
-  background-color: var(--monet-user-bubble-bg, var(--monet-a1-100, #FFD8ED)) !important;
+  background-color: var(--monet-user-bubble-bg, #FFD8ED) !important;
   border-radius: 24px 24px 4px 24px !important;
   padding: 12px 20px !important;
   display: flex !important;
@@ -110,16 +118,16 @@ user-query .user-query-bubble-with-background,
   padding: 0 !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;
-  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  color: var(--monet-user-bubble-text, #340B29) !important;
   font-weight: 500 !important;
   line-height: 1.45 !important;
 }
 
 /* Action icons (copy, edit) align to the right under the bubble */
-user-query .query-actions,
-user-query [class*="action"],
-user-query .actions-container,
-.luminous-actions-container {
+user-query:not(:has(.edit-mode)) .query-actions,
+user-query:not(:has(.edit-mode)) [class*="action"],
+user-query:not(:has(.edit-mode)) .actions-container,
+user-query:not(:has(.edit-mode)) .luminous-actions-container {
   display: flex !important;
   justify-content: flex-end !important;
   align-self: flex-end !important;
@@ -129,8 +137,8 @@ user-query .actions-container,
 
 /* Prevent double background or nested padding/gaps inside the bubble */
 .user-query-bubble-with-background *,
-user-query-content *,
-.query-content * {
+user-query-content:not(.edit-mode) *,
+.query-content:not(.edit-mode) * {
   box-sizing: border-box !important;
 }
 
@@ -159,16 +167,16 @@ user-query-content:has(.user-query-bubble-with-background),
 .user-query-bubble-with-background p,
 .user-query-bubble-with-background .query-text-line,
 user-query expandable-text p {
-  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  color: var(--monet-user-bubble-text, #340B29) !important;
   font-weight: 500 !important;
   line-height: 1.45 !important;
 }
 
 /* Action buttons below the bubble (copy, edit - "теги") */
-user-query [class*="action"],
-user-query .query-actions,
-user-query [class*="button-container"],
-user-query .actions-container {
+user-query:not(:has(.edit-mode)) [class*="action"],
+user-query:not(:has(.edit-mode)) .query-actions,
+user-query:not(:has(.edit-mode)) [class*="button-container"],
+user-query:not(:has(.edit-mode)) .actions-container {
   margin-top: 6px !important;
   margin-bottom: 10px !important;
   display: flex !important;
@@ -176,19 +184,17 @@ user-query .actions-container {
   justify-content: flex-end !important;
 }
 
-/* KILL gradient fade strip completely - neat clean icon only */
-user-query [class*="gradient"],
 /* KILL gradient fade strip inside user queries ONLY - neat clean icon only */
-user-query [class*="gradient"],
-user-query [class*="fade"],
-user-query [class*="overlay"],
-user-query [class*="mask"],
-user-query [class*="gradient-container"],
-user-query [class*="fade-container"],
-user-query-content [class*="gradient"],
-user-query-content [class*="fade"],
-user-query-content [class*="overlay"],
-user-query-content [class*="mask"],
+user-query:not(:has(.edit-mode)) [class*="gradient"],
+user-query:not(:has(.edit-mode)) [class*="fade"],
+user-query:not(:has(.edit-mode)) [class*="overlay"],
+user-query:not(:has(.edit-mode)) [class*="mask"],
+user-query:not(:has(.edit-mode)) [class*="gradient-container"],
+user-query:not(:has(.edit-mode)) [class*="fade-container"],
+user-query-content:not(.edit-mode) [class*="gradient"],
+user-query-content:not(.edit-mode) [class*="fade"],
+user-query-content:not(.edit-mode) [class*="overlay"],
+user-query-content:not(.edit-mode) [class*="mask"],
 .user-query-bubble-with-background [class*="gradient"],
 .user-query-bubble-with-background [class*="fade"],
 .user-query-bubble-with-background [class*="overlay"],
@@ -210,8 +216,8 @@ user-query-content [class*="mask"],
    LUMINOUS EXPAND / COLLAPSE BUTTON FIX (NO EXTRA ROW, NO OVAL)
    ============================================================ */
 /* 1. Toggle container: naturally placed at the bottom-right of the bubble, NO extra row */
-html body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-container,
-html body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-container,
+:scope body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-container,
+:scope body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-container,
 .enable-luminous-prompt-bubble .luminous-toggle-container,
 user-query .luminous-toggle-container,
 .luminous-toggle-container,
@@ -239,8 +245,8 @@ user-query [class*="toggle-container"] {
 }
 
 /* 2. The button: compact, perfectly centered inside container */
-html body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-button,
-html body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-button,
+:scope body user-query user-query-content .user-query-bubble-with-background .luminous-toggle-button,
+:scope body user-query-content.enable-luminous-prompt-bubble .luminous-toggle-button,
 .enable-luminous-prompt-bubble .luminous-toggle-button,
 user-query .luminous-toggle-button,
 .luminous-toggle-button,
@@ -424,47 +430,115 @@ user-query [class*="action-button"] button:hover {
   background-color: rgba(0, 0, 0, 0.08) !important;
 }
 
+}
+
 /* ============================================================
-   USER QUERY EDIT MODE (EXACT MESSAGE BUBBLE, NO NESTED OVALS)
+   USER QUERY EDIT MODE (CANON: ONE SEAMLESS MONET BUBBLE)
+   Disabled when plugin is off or when Edit Mode is switched to Legacy (OG Gemini)
    ============================================================ */
-/* Strip any outer wrappers, frames, and nested ovals when editing */
+@scope (html:not([data-monet-disabled="1"]):not([data-monet-edit-mode="legacy"])) {
+/* Strip outer alignment & frame wrappers when editing */
 user-query:has(textarea),
-user-query-content:has(textarea),
-.query-content:has(textarea),
-user-query form {
+user-query:has(.edit-mode),
+span.user-query-container:has(.edit-mode),
+user-query-content.edit-mode,
+user-query-content:has(textarea) {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
   background: transparent !important;
   background-color: transparent !important;
   border-radius: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* The edit container / form: looks EXACTLY like the user message bubble */
-user-query form:has(textarea),
-user-query form.edit-query-form,
-user-query [class*="edit-box"]:has(textarea) {
-  background-color: var(--monet-user-bubble-bg, var(--monet-a1-100, #FFD8ED)) !important;
+/* Center Canon edit bubble vertically between previous answer actions (~60px gap) and next reply (~14px gap) */
+user-query:has(textarea),
+user-query:has(.edit-mode) {
+  margin: 0 auto 34px auto !important;
+}
+
+.conversation-container ~ .conversation-container user-query:has(textarea),
+.conversation-container ~ .conversation-container user-query:has(.edit-mode) {
+  margin-top: -12px !important;
+  margin-bottom: 34px !important;
+}
+
+/* Single unified Monet bubble wrapping both the editor and the Cancel/Update row
+   (Gemini splits .edit-form and .edit-button-area across two .edit-container siblings) */
+user-query div.user-query-container.edit-mode,
+user-query:not(:has(div.user-query-container.edit-mode)) form:has(textarea),
+user-query:not(:has(div.user-query-container.edit-mode)) form.edit-query-form,
+user-query:not(:has(div.user-query-container.edit-mode)) [class*="edit-box"]:has(textarea) {
+  background-color: var(--monet-user-bubble-bg, #57404E) !important;
+  color: var(--monet-user-bubble-text, #FFD8ED) !important;
   border-radius: 24px 24px 4px 24px !important;
-  padding: 12px 18px !important;
-  border: none !important;
+  padding: 14px 18px !important;
+  border: 1px solid color-mix(in srgb, var(--monet-user-bubble-text, #FFD8ED) 7%, transparent) !important;
   outline: none !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
   display: flex !important;
   flex-direction: column !important;
+  flex: 0 1 auto !important;
   align-self: flex-end !important;
-  margin-left: auto !important;
-  width: auto !important;
-  max-width: 85% !important;
+  margin: 0 0 0 auto !important;
+  width: min(100%, 560px) !important;
+  max-width: 90% !important;
   box-sizing: border-box !important;
+  transition: border-color 0.2s ease !important;
 }
 
-/* Inner field wrapper inside form: completely transparent, NO nested borders or ovals */
+user-query div.user-query-container.edit-mode:focus-within,
+user-query:not(:has(div.user-query-container.edit-mode)) form:has(textarea):focus-within {
+  border-color: color-mix(in srgb, var(--gem-sys-color--primary, var(--monet-user-bubble-text, #FCBCE2)) 22%, transparent) !important;
+}
+
+div.user-query-container.edit-mode > .file-preview-container {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  justify-content: flex-start !important;
+}
+
+div.user-query-container.edit-mode > .file-preview-container:not(:has(> *)) {
+  display: none !important;
+}
+
+div.user-query-container.edit-mode > .file-preview-container:has(> *) {
+  margin-bottom: 10px !important;
+}
+
+/* Strip ALL native mat-form-field outlines, inner wrappers, asymmetric margins & both .edit-container boxes */
+div.user-query-container.edit-mode .mdc-notched-outline,
+div.user-query-container.edit-mode .mdc-notched-outline__leading,
+div.user-query-container.edit-mode .mdc-notched-outline__notch,
+div.user-query-container.edit-mode .mdc-notched-outline__trailing,
+.query-content.edit-mode .mdc-notched-outline,
+.query-content.edit-mode .mat-mdc-form-field-focus-overlay,
+.query-content.edit-mode .mat-mdc-form-field-subscript-wrapper,
+user-query .mdc-notched-outline {
+  border: none !important;
+  display: none !important;
+  opacity: 0 !important;
+}
+
+div.user-query-container.edit-mode > .query-content.edit-mode,
+div.user-query-container.edit-mode .edit-container,
+.query-content.edit-mode,
+.query-content:has(.edit-container),
+div.user-query-container.edit-mode .edit-form,
+div.user-query-container.edit-mode .rich-edit-form,
+div.user-query-container.edit-mode .mat-mdc-form-field,
+div.user-query-container.edit-mode .mat-mdc-text-field-wrapper,
+div.user-query-container.edit-mode .mat-mdc-form-field-flex,
+div.user-query-container.edit-mode .mat-mdc-form-field-infix,
+div.user-query-container.edit-mode .text-input-field,
+div.user-query-container.edit-mode [class*="input-container"],
 user-query form .text-input-field,
-user-query form [class*="text-input-field"],
 user-query form [class*="text-area"],
-user-query form [class*="edit-box"],
-user-query form [class*="input-container"] {
+user-query form [class*="edit-box"] {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;
@@ -472,30 +546,51 @@ user-query form [class*="input-container"] {
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  padding-inline: 0 !important;
   margin: 0 !important;
+  margin-inline: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  flex: 0 1 auto !important;
+  display: block !important;
+  box-sizing: border-box !important;
 }
 
-/* The textarea itself: seamless text matching message typography */
+/* The textarea / rich editor inside the unified edit bubble (preserve Gemini's native typography) */
+div.user-query-container.edit-mode textarea,
+div.user-query-container.edit-mode .ql-editor,
+div.user-query-container.edit-mode .edit-rich-textarea,
 user-query form textarea,
 user-query textarea,
 user-query [contenteditable="true"] {
   background: transparent !important;
   background-color: transparent !important;
-  color: var(--monet-user-bubble-text, var(--monet-a1-900, #340B29)) !important;
+  color: var(--monet-user-bubble-text, #FFD8ED) !important;
+  caret-color: var(--gem-sys-color--primary, #FCBCE2) !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
-  font-family: inherit !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
-  line-height: 1.45 !important;
   box-sizing: border-box !important;
   width: 100% !important;
-  min-height: 44px !important;
+  min-height: 28px !important;
   resize: none !important;
+}
+
+/* Fallback only for plain <textarea> so browser default monospace/serif never leaks through */
+user-query textarea:not(.ql-editor) {
+  font-family: "Google Sans Flex", "Google Sans", "Helvetica Neue", sans-serif;
+  font-size: 17px;
+  line-height: 24px;
+}
+
+div.user-query-container.edit-mode .ql-editor p {
+  color: var(--monet-user-bubble-text, #FFD8ED) !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 user-query textarea:focus,
@@ -505,82 +600,126 @@ user-query [contenteditable="true"]:focus {
   box-shadow: none !important;
 }
 
-/* Buttons row inside the edit bubble: neatly aligned to bottom right */
+/* Buttons row inside the unified edit bubble (.edit-button-area & legacy form actions) */
+div.user-query-container.edit-mode .edit-button-area,
+.user-query-container .edit-button-area,
 user-query form [class*="button-container"],
 user-query form [class*="buttons"],
 user-query form footer,
-user-query form [class*="action"],
 user-query [class*="edit"] [class*="button-container"] {
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-end !important;
   gap: 8px !important;
-  margin-top: 10px !important;
+  margin: 12px 0 0 0 !important;
   padding: 0 !important;
   background: transparent !important;
   border: none !important;
   width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Cancel button: clean text button without heavy frames */
-user-query form button[type="button"],
-user-query form button:first-child,
-user-query form [class*="cancel"],
+/* Clear Gemini's native margin-inline-end: auto on gem-button.update-button */
+div.user-query-container.edit-mode .edit-button-area gem-button {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+/* Cancel button: clean ghost pill */
+.edit-button-area gem-button.cancel-button button,
+.edit-button-area button[aria-label*="отмена" i],
+.edit-button-area button[aria-label*="cancel" i],
+user-query form > button[type="button"],
 user-query button[aria-label*="отмена" i],
 user-query button[aria-label*="cancel" i] {
   background: transparent !important;
   background-color: transparent !important;
-  color: var(--monet-user-bubble-text, #340B29) !important;
-  border: none !important;
+  color: var(--monet-user-bubble-text, #FFD8ED) !important;
+  border: 1px solid color-mix(in srgb, var(--monet-user-bubble-text, #FFD8ED) 32%, transparent) !important;
   outline: none !important;
   box-shadow: none !important;
-  border-radius: 8px !important;
-  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 18px !important;
   font-weight: 500 !important;
   font-size: 13px !important;
-  opacity: 0.75 !important;
+  opacity: 0.92 !important;
   cursor: pointer !important;
   transition: opacity 0.2s ease, background-color 0.2s ease !important;
 }
 
-user-query form button[type="button"]:hover,
-user-query form button:first-child:hover,
-user-query button[aria-label*="отмена" i]:hover {
-  opacity: 1 !important;
-  background-color: rgba(0, 0, 0, 0.06) !important;
+.edit-button-area gem-button.cancel-button button *,
+user-query button[aria-label*="отмена" i] *,
+user-query button[aria-label*="cancel" i] * {
+  color: var(--monet-user-bubble-text, #FFD8ED) !important;
 }
 
-/* Update button: neat, subtle pill button inside the bubble */
-user-query form button[type="submit"],
-user-query form button:last-child,
-user-query form [class*="update"],
-user-query form [class*="save"],
+.edit-button-area gem-button.cancel-button button:hover,
+.edit-button-area button[aria-label*="отмена" i]:hover,
+.edit-button-area button[aria-label*="cancel" i]:hover,
+user-query form > button[type="button"]:hover,
+user-query button[aria-label*="отмена" i]:hover {
+  opacity: 1 !important;
+  background-color: color-mix(in srgb, var(--monet-user-bubble-text, #FFD8ED) 12%, transparent) !important;
+}
+
+/* Update button: saturated Monet M3 primary pill */
+.edit-button-area gem-button.update-button button,
+.edit-button-area button.update-button,
+.edit-button-area button[aria-label*="обновить" i],
+.edit-button-area button[aria-label*="update" i],
+user-query form > button[type="submit"],
 user-query button[aria-label*="обновить" i],
 user-query button[aria-label*="update" i] {
-  background-color: rgba(0, 0, 0, 0.12) !important;
-  color: var(--monet-user-bubble-text, #340B29) !important;
+  background-color: var(--gem-sys-color--primary, #FFB3B1) !important;
+  color: var(--gem-sys-color--on-primary, #4D191B) !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  border-radius: 12px !important;
-  padding: 6px 16px !important;
+  border-radius: 20px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 20px !important;
   font-weight: 600 !important;
   font-size: 13px !important;
+  opacity: 1 !important;
   cursor: pointer !important;
-  transition: background-color 0.2s ease !important;
+  transition: filter 0.2s ease, opacity 0.2s ease !important;
 }
 
-user-query form button[type="submit"]:hover,
-user-query form button:last-child:hover,
-user-query button[aria-label*="обновить" i]:hover {
-  background-color: rgba(0, 0, 0, 0.2) !important;
+.edit-button-area gem-button.update-button button *,
+user-query button[aria-label*="обновить" i] *,
+user-query button[aria-label*="update" i] * {
+  color: var(--gem-sys-color--on-primary, #4D191B) !important;
 }
 
-user-query mat-icon,
-user-query-content mat-icon,
-user-query gem-icon,
-user-query svg,
-user-query-content svg,
+.edit-button-area gem-button.update-button.gem-button-disabled button,
+.edit-button-area gem-button.update-button button:disabled,
+.edit-button-area button[disabled],
+.edit-button-area button[aria-disabled="true"] {
+  opacity: 0.45 !important;
+  cursor: default !important;
+  filter: none !important;
+}
+
+.edit-button-area gem-button.update-button:not(.gem-button-disabled) button:hover,
+.edit-button-area button[aria-label*="обновить" i]:not(:disabled):not([aria-disabled="true"]):hover,
+user-query form > button[type="submit"]:not(:disabled):hover,
+user-query button[aria-label*="обновить" i]:not(:disabled):not([aria-disabled="true"]):hover {
+  filter: brightness(1.06) !important;
+}
+}
+
+@scope (html:not([data-monet-disabled="1"])) {
+user-query:not(:has(.edit-mode)) mat-icon,
+user-query-content:not(.edit-mode) mat-icon,
+user-query:not(:has(.edit-mode)) gem-icon,
+user-query:not(:has(.edit-mode)) svg,
+user-query-content:not(.edit-mode) svg,
 .user-query-bubble-with-background mat-icon,
 .user-query-bubble-with-background svg,
 button[aria-label*="развернуть" i] mat-icon,
@@ -619,12 +758,24 @@ mat-expansion-panel mat-icon {
 /* ============================================================
    2. INPUT AREA PILL (SATURATED MATERIAL YOU COLOR)
    ============================================================ */
+/* Scope strictly to the prompt pill — never <input-container>, which holds .lm-input-redesign too */
 input-area-v2,
 .input-area-container input-area-v2,
-.lm-input-redesign {
-  background-color: var(--monet-input-bg, var(--monet-a1-100, #FFD8ED)) !important;
+input-area-v2.lm-input-redesign,
+.initial-input-area-container {
+  background-color: var(--monet-input-bg, #F5E4EB) !important;
   border-radius: 40px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+input-container.input-gradient,
+input-container.input-gradient.input-gradient-overlay {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+input-container.input-gradient.input-gradient-overlay {
+  background-color: transparent !important;
 }
 
 input-area-v2 input,
@@ -633,57 +784,77 @@ input-area-v2 .ql-editor,
 input-area-v2 .text-input-field_textarea,
 input-area-v2 mat-icon,
 input-area-v2 svg {
-  color: var(--monet-input-text, var(--monet-a1-900, #340B29)) !important;
-  fill: var(--monet-input-text, var(--monet-a1-900, #340B29)) !important;
+  color: var(--monet-input-text, #201A1D) !important;
+  fill: var(--monet-input-text, #201A1D) !important;
+}
+
+input-area-v2 input::placeholder,
+input-area-v2 textarea::placeholder,
+input-area-v2 .ql-placeholder,
+input-area-v2 .ql-editor.ql-blank::before {
+  color: var(--monet-input-placeholder, rgba(0, 0, 0, 0.55)) !important;
+  opacity: 0.75 !important;
 }
 
 
 /* ============================================================
    3. CODE BLOCKS & TEXT CARDS (PLAINTEXT, SYNTAX) - MATERIAL YOU
    ============================================================ */
-code-block,
+/* Custom host element <code-block> defaults to inline — keep it block & frame-free so Firefox
+   never draws broken inline border ticks above/below the inner .code-block card */
+code-block {
+  display: block !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Single unified Material You card on .code-block (and standalone markdown pre:has(code)) */
 .code-block,
-.code-container,
-.formatted-code-block-internal-container,
-pre:has(code),
-pre code {
+pre:has(code):not(.code-block pre) {
   background-color: var(--monet-code-bg, var(--gem-sys-color--surface-container, #FAEAF0)) !important;
   color: var(--monet-code-text, var(--gem-sys-color--on-surface, #22191E)) !important;
+  border: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 16px 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
 }
 
-/* Material You card outline and radius */
-code-block,
-.code-block {
-  border: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-}
-
-/* Strip gradient masks and fade overlays without hiding containers */
-.bottom-gradient-container,
-.top-gradient-container,
-.bottom-gradient,
-.top-gradient,
-.input-gradient-overlay {
-  background: none !important;
+/* Flatten inner structural wrappers so header & code sit flush edge-to-edge inside .code-block */
+.code-block .formatted-code-block-internal-container,
+.code-block .animated-opacity,
+.code-block .code-container,
+.code-block pre {
+  background: transparent !important;
   background-color: transparent !important;
-  mask: none !important;
-  -webkit-mask: none !important;
-  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
 }
 
+/* Preserve native bottom/input/disclaimer backdrop fade gradients; only strip code-block pseudo fades */
 code-block::before,
 code-block::after,
 .code-block::before,
 .code-block::after,
 .code-container::before,
-.code-container::after,
-.input-gradient::before,
-.input-gradient::after,
-.input-gradient-overlay::before,
-.input-gradient-overlay::after {
+.code-container::after {
   display: none !important;
   background: none !important;
   height: 0 !important;
@@ -696,20 +867,26 @@ code-block::after,
   padding-bottom: 110px !important;
 }
 
-/* Code block header bar (Plaintext title & buttons) - Material You header */
-code-block .code-block-decoration,
-code-block .header,
-.code-block-header,
-.header-formatted {
+/* Code block header bar (Plaintext title & buttons) - full-bleed Material You header */
+.code-block .code-block-decoration,
+.code-block .code-block-decoration.header,
+.code-block .code-block-decoration.header-formatted,
+.code-block-header {
   background-color: var(--monet-code-header-bg, var(--gem-sys-color--surface-container-highest, #F0DEE6)) !important;
   border-bottom: 1px solid var(--monet-code-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  margin-inline: 0 !important;
   padding: 8px 16px !important;
+  padding-inline: 16px !important;
+  top: 0 !important;
+  min-height: 40px !important;
 }
 
 /* Language title text (Plaintext, bash, etc.) */
-code-block .code-block-decoration span,
-code-block .header-text,
-code-block .language-text,
+.code-block .code-block-decoration span,
+.code-block .header-text,
+.code-block .language-text,
 .code-block-header span,
 .header-formatted span {
   color: var(--monet-code-text, #340B29) !important;
@@ -718,36 +895,30 @@ code-block .language-text,
 }
 
 /* Action buttons in header (Copy, Download, Run) */
-code-block mat-icon,
-code-block svg,
-code-block mat-icon *,
-code-block button,
 .code-block mat-icon,
 .code-block svg,
+.code-block mat-icon *,
 .code-block button {
   color: var(--monet-code-text, #340B29) !important;
   fill: var(--monet-code-text, #340B29) !important;
 }
 
-code-block button,
 .code-block button {
-  background-color: rgba(0, 0, 0, 0.06) !important;
+  background-color: transparent !important;
   border-radius: 50% !important;
 }
 
-code-block button:hover,
 .code-block button:hover {
-  background-color: rgba(0, 0, 0, 0.12) !important;
+  background-color: color-mix(in srgb, var(--monet-code-text, currentColor) 12%, transparent) !important;
 }
 
 /* Code content text inside */
-code-block pre,
-code-block code,
-pre code,
-.code-container,
-.code-container.formatted {
+.code-block code,
+.code-block code.formatted,
+pre:has(code):not(.code-block pre) code {
   color: var(--monet-code-text, #22191E) !important;
   background-color: transparent !important;
+  padding: 14px 18px !important;
   font-family: "Google Sans Code", "Google Sans Mono", monospace !important;
 }
 
@@ -766,7 +937,11 @@ side-navigation-content,
 
 /* Unselected items: readable dark text & Accent 1 deep tone icons */
 .conversations-container .conversation,
+.conversations-container .conversation span,
+.conversations-container .conversation .conversation-title,
 gem-nav-list-item,
+gem-nav-list-item span,
+gem-nav-list-item [class*="title"],
 .gds-sidenav-list a,
 .gds-sidenav-list button,
 .gds-sidenav-list .mat-list-item-content,
@@ -792,7 +967,27 @@ side-navigation-v2 .is-active {
   border-radius: 28px !important;
 }
 
-/* Hover / touch state */
+/* Hover / touch state: NO GREY TEXT, stay crisp, dark and saturated! */
+.conversations-container .conversation:hover,
+.conversations-container .conversation:hover *,
+.conversations-container .conversation:hover span,
+.conversations-container .conversation:hover .conversation-title,
+gem-nav-list-item:hover,
+gem-nav-list-item:hover *,
+gem-nav-list-item:hover span,
+gem-nav-list-item:hover [class*="title"],
+side-navigation-v2 a:hover,
+side-navigation-v2 a:hover *,
+side-navigation-v2 button:hover,
+side-navigation-v2 button:hover *,
+.gds-sidenav-list a:hover,
+.gds-sidenav-list a:hover *,
+.gds-sidenav-list button:hover,
+.gds-sidenav-list button:hover * {
+  color: var(--monet-sidebar-text, var(--gem-sys-color--on-surface, #1E1A1D)) !important;
+  opacity: 1 !important;
+}
+
 .conversations-container .conversation:hover,
 gem-nav-list-item:hover {
   background-color: var(--monet-sidebar-hover-bg, var(--gem-sys-color--surface-container-high, #FAEAF0)) !important;
@@ -802,28 +997,53 @@ gem-nav-list-item:hover {
 side-navigation-v2 .get-app-button,
 side-navigation-v2 footer button,
 .gds-sidenav-footer button {
-  background-color: var(--monet-sidebar-hover-bg, #FAEAF0) !important;
-  color: var(--monet-sidebar-text, #3A2F35) !important;
+  background-color: var(--monet-sidebar-hover-bg, var(--gem-sys-color--surface-container-high)) !important;
+  color: var(--monet-sidebar-text, var(--gem-sys-color--on-surface)) !important;
 }
 
 
 /* ============================================================
-   5. HEADER MODEL SWITCHER CHIP (MATERIAL YOU TONAL PILL)
+   5. HEADER MODEL SWITCHER CHIP & MENU BUTTON (M3 TONAL PILL)
    ============================================================ */
+/* Reset outer wrapper so there is NEVER a double nested border on narrow screens */
+gem-button.logo-pill-btn,
+.logo-pill-btn:not(button),
+.pill-ui-logo-container,
+bard-mode-switcher {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
 gem-button[data-test-id="bard-mode-menu-button"] button,
 .logo-pill-btn button,
+button.logo-pill-btn,
 bard-mode-switcher button,
+[data-test-id="bard-mode-switcher"] button,
 .mode-picker-in-header button {
-  background-color: var(--monet-chip-bg, var(--gem-sys-color--surface-container-high, #F5E4EB)) !important;
-  border: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
+  background-color: var(--monet-chip-bg, var(--gem-sys-color--surface-container-high, #2D282C)) !important;
+  border: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, rgba(255, 255, 255, 0.14))) !important;
   border-radius: 24px !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
   padding: 4px 12px !important;
   transition: all 0.2s ease !important;
 }
 
+gem-button[data-test-id="bard-mode-menu-button"] button:hover,
+.logo-pill-btn button:hover,
+button.logo-pill-btn:hover,
+bard-mode-switcher button:hover,
+[data-test-id="bard-mode-switcher"] button:hover,
+.mode-picker-in-header button:hover {
+  background-color: var(--monet-menu-hover-bg, var(--gem-sys-color--surface-container-highest, #383337)) !important;
+  border-color: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #FCBCE2)) !important;
+}
+
 gem-button[data-test-id="bard-mode-menu-button"] button:active,
 .logo-pill-btn button:active,
+button.logo-pill-btn:active,
 bard-mode-switcher button:active {
   background-color: var(--monet-menu-selected-bg, var(--gem-sys-color--primary-container, #FCBCE2)) !important;
 }
@@ -865,7 +1085,8 @@ mat-menu-panel,
   border-radius: 28px !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
   padding: 8px !important;
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
 /* Menu Items */
@@ -892,6 +1113,72 @@ gem-menu-item:not(.selected):active,
 [role="menuitemradio"]:not(.selected):active,
 .mat-mdc-menu-item:not(.selected):hover,
 .mat-mdc-menu-item:not(.selected):active {
+  background-color: var(--monet-menu-hover-bg, rgba(0, 0, 0, 0.05)) !important;
+}
+
+/* Strip automatic Firefox/CDK focus ring on first menu item ("Авто") when menu opens
+   without hiding .mat-focus-indicator host <a/button class="mat-mdc-menu-item mat-focus-indicator"> items */
+gem-menu gem-menu-item,
+gem-menu [role="menuitem"],
+gem-menu [role="menuitemradio"],
+.mat-mdc-menu-panel .mat-mdc-menu-item,
+.mat-mdc-menu-panel .mat-mdc-menu-item.lm-menu-item-theme:focus-visible,
+[role="menu"] [role="menuitem"],
+[role="menu"] [role="menuitemradio"],
+gem-menu button,
+.mat-mdc-menu-panel button,
+gem-menu *:focus,
+gem-menu *:focus-visible,
+gem-menu *:focus-within,
+.mat-mdc-menu-panel *:focus,
+.mat-mdc-menu-panel *:focus-visible,
+.mat-mdc-menu-panel *:focus-within,
+[role="menu"] *:focus,
+[role="menu"] *:focus-visible,
+[role="menu"] *:focus-within,
+gem-menu .cdk-focused,
+gem-menu .cdk-program-focused,
+gem-menu .cdk-keyboard-focused,
+.mat-mdc-menu-panel .cdk-focused,
+.mat-mdc-menu-panel .cdk-program-focused,
+.mat-mdc-menu-panel .cdk-keyboard-focused {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --mat-focus-indicator-display: none !important;
+  --mat-focus-indicator-border-width: 0px !important;
+}
+
+gem-menu *::-moz-focus-inner,
+.mat-mdc-menu-panel *::-moz-focus-inner,
+[role="menu"] *::-moz-focus-inner {
+  border: 0 !important;
+}
+
+gem-menu span.mat-focus-indicator::before,
+gem-menu span.mat-focus-indicator::after,
+gem-menu span.mat-mdc-focus-indicator::before,
+gem-menu span.mat-mdc-focus-indicator::after,
+.mat-mdc-menu-panel span.mat-focus-indicator::before,
+.mat-mdc-menu-panel span.mat-focus-indicator::after,
+.mat-mdc-menu-panel span.mat-mdc-focus-indicator::before,
+.mat-mdc-menu-panel span.mat-mdc-focus-indicator::after,
+[role="menu"] span.mat-focus-indicator::before,
+[role="menu"] span.mat-focus-indicator::after,
+[role="menu"] span.mat-mdc-focus-indicator::before,
+[role="menu"] span.mat-mdc-focus-indicator::after {
+  display: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+gem-menu-item.cdk-keyboard-focused:not(.selected),
+[role="menuitemradio"].cdk-keyboard-focused:not(.selected),
+[role="menuitem"].cdk-keyboard-focused:not(.selected),
+.mat-mdc-menu-item.cdk-keyboard-focused:not(.selected) {
   background-color: var(--monet-menu-hover-bg, rgba(0, 0, 0, 0.05)) !important;
 }
 
@@ -984,12 +1271,20 @@ gem-menu-item [fonticon="check"] {
    ============================================================ */
 mat-bottom-sheet-container,
 .mat-bottom-sheet-container,
-gem-bottom-sheet,
-.gem-bottom-sheet {
+gem-bottom-sheet:not(mat-bottom-sheet-container *),
+.gem-bottom-sheet:not(mat-bottom-sheet-container *) {
   background-color: var(--monet-sheet-bg, var(--gem-sys-color--surface-container-low, #FFF0F5)) !important;
   border-radius: 28px 28px 0 0 !important;
   border-top: 1px solid var(--monet-menu-border, var(--gem-sys-color--outline-variant, #D5C2CC)) !important;
   box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+mat-bottom-sheet-container > gem-bottom-sheet,
+mat-bottom-sheet-container > .gem-bottom-sheet {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 /* Drag handle pill */
@@ -1083,4 +1378,435 @@ mat-drawer-backdrop,
   -webkit-backdrop-filter: none !important;
   background-color: rgba(0, 0, 0, 0.42) !important;
   will-change: opacity !important;
+}
+
+
+/* ============================================================
+   10. MATERIAL 3 TOOLTIPS (ACTUAL .mat-mdc-tooltip-surface)
+   ============================================================ */
+/* Keep outer tooltip wrappers & offscreen CDK aria-describedby nodes completely transparent/unstyled;
+   render ONLY the single inner .mat-mdc-tooltip-surface / .mdc-tooltip__surface pill */
+.cdk-overlay-pane:has(mat-tooltip-component),
+.cdk-overlay-pane:has(.mat-mdc-tooltip),
+.cdk-overlay-pane:has(.mat-mdc-tooltip-surface),
+mat-tooltip-component,
+.mat-mdc-tooltip-panel,
+.mat-mdc-tooltip,
+.mdc-tooltip,
+.gem-tooltip:not(.mat-mdc-tooltip-surface):not(.mdc-tooltip__surface),
+[id^="cdk-describedby-message"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.cdk-overlay-pane:has(mat-tooltip-component),
+.cdk-overlay-pane:has(.mat-mdc-tooltip),
+.cdk-overlay-pane:has(.mat-mdc-tooltip-surface),
+.gem-tooltip,
+mat-tooltip-component,
+.mat-mdc-tooltip-panel,
+.mat-mdc-tooltip,
+.mdc-tooltip,
+.mat-tooltip,
+[mattooltip] {
+  --mat-tooltip-container-color: var(--monet-surface-container-highest, var(--gem-sys-color--surface-container-highest, #383136)) !important;
+  --mat-tooltip-supporting-text-color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+  --mdc-plain-tooltip-container-color: var(--monet-surface-container-highest, var(--gem-sys-color--surface-container-highest, #383136)) !important;
+  --mdc-plain-tooltip-supporting-text-color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+  --gem-sys-color--inverse-surface: var(--monet-surface-container-highest, var(--gem-sys-color--surface-container-highest, #383136)) !important;
+  --gem-sys-color--inverse-on-surface: var(--monet-input-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+}
+
+.gem-tooltip .mat-mdc-tooltip-surface,
+.mat-mdc-tooltip .mat-mdc-tooltip-surface,
+.mat-mdc-tooltip .mdc-tooltip__surface,
+.mat-mdc-tooltip-surface,
+.mdc-tooltip__surface {
+  background-color: var(--monet-surface-container-highest, var(--gem-sys-color--surface-container-highest, #383136)) !important;
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+  border: 1px solid var(--monet-border, var(--gem-sys-color--outline-variant, rgba(255, 255, 255, 0.14))) !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.15px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+  box-sizing: border-box !important;
+}
+
+.gem-tooltip .mat-mdc-tooltip-surface *,
+.mat-mdc-tooltip-surface *,
+.mdc-tooltip__surface * {
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+  opacity: 1 !important;
+}
+
+/* Keep the bottom model-switcher hover tooltip above the button instead of covering the footer */
+.cdk-overlay-pane.mat-mdc-tooltip-panel[data-monet-tooltip-above="1"] {
+  transform: translateY(calc(-100% - var(--monet-tt-btn-h, 40px) - 8px)) !important;
+}
+
+.cdk-overlay-pane.mat-mdc-tooltip-panel[data-monet-tooltip-above="1"] mat-tooltip-component > div {
+  transform-origin: center bottom !important;
+}
+
+
+/* ============================================================
+   11. TOP MENU BUTTON & SIDEBAR ICON HOVER
+   ============================================================ */
+button[aria-label*="меню" i],
+button[aria-label*="menu" i],
+.mat-drawer-button {
+  border-radius: 50% !important;
+  transition: background-color 0.15s ease !important;
+}
+
+button[aria-label*="меню" i]:hover,
+button[aria-label*="menu" i]:hover,
+.mat-drawer-button:hover {
+  background-color: var(--monet-sidebar-hover-bg, var(--gem-sys-color--surface-container-high)) !important;
+}
+
+
+/* ============================================================
+   12. PROFILE & ONE GOOGLE ACCOUNT WIDGET (ogs.google.com)
+   ============================================================ */
+/* Sidebar profile item in footer */
+.user-profile-button,
+[data-test-id="user-profile-button"],
+.gds-sidenav-footer a:has(img),
+.gds-sidenav-footer button:has(img),
+side-navigation-v2 .user-info,
+side-navigation-v2 [class*="profile"] {
+  border-radius: 20px !important;
+  color: var(--monet-sidebar-text, var(--gem-sys-color--on-surface, #EDE0E4)) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.user-profile-button:hover,
+[data-test-id="user-profile-button"]:hover,
+.gds-sidenav-footer a:has(img):hover,
+.gds-sidenav-footer button:has(img):hover {
+  background-color: var(--monet-sidebar-hover-bg, var(--gem-sys-color--surface-container-high)) !important;
+}
+
+/* Outer host frame on gemini.google.com MUST stay transparent/borderless/shadowless:
+   OGS renders the single .Lvwayc card inset 12px/8px inside the iframe so its shadow never clips */
+.boqOnegoogleliteOgbOneGoogleBar iframe[name="account"],
+iframe[name="account"],
+iframe[name="account"][src*="ogs.google.com"],
+.cdk-overlay-pane:has(iframe[name="account"]) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Inside OneGoogleWidgetUi (ogs.google.com): keep outer wrappers transparent so .Lvwayc/.EHzcec never clip */
+body[jscontroller] .T4LgNb,
+body[jscontroller] .UFjXSc {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body[jscontroller] .Lvwayc,
+body[jscontroller] .EHzcec,
+body[jscontroller] .nz9sqb.EHzcec {
+  background-color: var(--monet-surface-container, var(--gm3-sys-color-surface-container, #241F22)) !important;
+  color: var(--monet-input-text, var(--gm3-sys-color-on-surface, #EDE0E4)) !important;
+  border: 1px solid var(--monet-border, var(--gm3-sys-color-hairline, rgba(255, 255, 255, 0.14))) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  box-sizing: border-box !important;
+}
+
+body[jscontroller] .bMnvr {
+  background-color: var(--monet-surface-container-highest, var(--gm3-sys-color-surface-container-highest, #383236)) !important;
+  color: var(--monet-input-text, var(--gm3-sys-color-on-surface, #EDE0E4)) !important;
+}
+
+body[jscontroller] .LVal7b,
+body[jscontroller] .nz9sqb .LVal7b,
+body[jscontroller] .kibP6b,
+body[jscontroller] .lHtSbd,
+body[jscontroller] .Agku8b,
+body[jscontroller] .HEN9Lb {
+  background-color: var(--monet-sheet-bg, var(--gm3-sys-color-surface-container-low, #1E191C)) !important;
+  color: var(--monet-input-text, var(--gm3-sys-color-on-surface, #EDE0E4)) !important;
+}
+
+/* Keep avatar personal-info wrapper clean & preserve native padding so it never shifts left */
+body[jscontroller] a.JP6mTe,
+body[jscontroller] .JP6mTe,
+body[jscontroller] .zH8ZJ {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body[jscontroller] .Rq5Gcb,
+body[jscontroller] .p37w9e,
+body[jscontroller] .Cop04b,
+body[jscontroller] .Dz0Ydc,
+body[jscontroller] .fL9B0b,
+body[jscontroller] .N3tlYd {
+  color: var(--monet-input-text, var(--gm3-sys-color-on-surface, #EDE0E4)) !important;
+}
+
+body[jscontroller] .OdHJXd,
+body[jscontroller] .MnI9ke,
+body[jscontroller] .DM2Ltc,
+body[jscontroller] .CkSNRd {
+  color: var(--monet-input-placeholder, var(--gm3-sys-color-on-surface-variant, #A18F97)) !important;
+}
+
+/* Manage Google Account outlined pill (.NQV3m & main button a.Agku8b, NOT avatar .JP6mTe) */
+body[jscontroller] .NQV3m,
+body[jscontroller] .nz9sqb .NQV3m,
+body[jscontroller] a.Agku8b[href*="myaccount.google.com"] {
+  background-color: var(--monet-chip-bg, var(--gm3-sys-color-surface-container-high, #2D282C)) !important;
+  color: var(--monet-input-text, var(--gm3-sys-color-on-surface, #EDE0E4)) !important;
+  border: 1px solid var(--monet-border, var(--gm3-sys-color-outline, rgba(255, 255, 255, 0.18))) !important;
+  border-radius: 100px !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+body[jscontroller] .NQV3m:hover,
+body[jscontroller] a.Agku8b[href*="myaccount.google.com"]:hover,
+body[jscontroller] .Agku8b.w5k6Yd:hover,
+body[jscontroller] .tX9u1b:hover,
+body[jscontroller] .kibP6b:hover,
+body[jscontroller] .lHtSbd:hover {
+  background-color: var(--monet-menu-hover-bg, var(--gm3-sys-color-surface-container-highest, #383337)) !important;
+}
+
+/* Add account icon badge, Pro tier chip & filled CTA buttons inside OGS */
+body[jscontroller] .DM2Ltc:has(> .N6gx9b) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body[jscontroller] .N6gx9b {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 3px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+}
+
+body[jscontroller] .N6gx9b path {
+  fill: currentColor !important;
+}
+
+body[jscontroller] .Pzuhxc.CkSNRd {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body[jscontroller] .N6gx9b,
+body[jscontroller] .kykVM,
+body[jscontroller] .NPEKs,
+body[jscontroller] .nz9sqb .NPEKs,
+body[jscontroller] .bOwcqf,
+body[jscontroller] .nz9sqb .bOwcqf {
+  background-color: var(--monet-sidebar-selected-bg, var(--gm3-sys-color-primary, #57404E)) !important;
+  color: var(--monet-sidebar-selected-text, var(--gm3-sys-color-on-primary, #FFD8ED)) !important;
+  fill: var(--monet-sidebar-selected-text, var(--gm3-sys-color-on-primary, #FFD8ED)) !important;
+}
+
+body[jscontroller] .kykVM,
+c-wiz.aRDKUe .kykVM,
+c-wiz.J5OKee .kykVM,
+.kykVM {
+  background: var(--monet-sidebar-selected-bg, var(--gm3-sys-color-primary, #57404E)) !important;
+  background-color: var(--monet-sidebar-selected-bg, var(--gm3-sys-color-primary, #57404E)) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.kykVM::before,
+.kykVM::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+/* Strip hardcoded blue gradient wave image inside Pro pill */
+body[jscontroller] .kykVM .oU5yj,
+body[jscontroller] img.oU5yj,
+c-wiz.aRDKUe .kykVM .oU5yj,
+c-wiz.J5OKee .kykVM .oU5yj,
+.kykVM > img,
+img.oU5yj,
+img[src*="tier_wave"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+}
+
+body[jscontroller] .kykVM .YzbLde,
+c-wiz.aRDKUe .kykVM .YzbLde,
+c-wiz.J5OKee .kykVM .YzbLde,
+.kykVM .YzbLde {
+  color: var(--monet-sidebar-selected-text, var(--gm3-sys-color-on-primary, #FFD8ED)) !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Replace Google rainbow avatar ring PNG with crisp Material You primary ring */
+body[jscontroller] .zH8ZJ:has(> img.R1BIob),
+body[jscontroller] .zH8ZJ:has(> img[src*="/gb/images/ring/"]) {
+  overflow: visible !important;
+}
+
+body[jscontroller] img.R1BIob,
+body[jscontroller] img[src*="/gb/images/ring/"],
+.gb_2 img[src*="/gb/images/ring/"],
+img[src*="/gb/images/ring/"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body[jscontroller] .zH8ZJ:has(> img.R1BIob)::before,
+body[jscontroller] .zH8ZJ:has(> img[src*="/gb/images/ring/"])::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -4px !important;
+  border-radius: 50% !important;
+  border: 2.5px solid var(--monet-sidebar-icon, var(--gm3-sys-color-primary, #FCBCE2)) !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Also recolor OneGoogleBar Pro avatar ring if shown on gemini.google.com header */
+.boqOnegoogleliteOgbOneGoogleBar :is(a, div, span):has(> img[src*="/gb/images/ring/"]),
+.gb_2:has(> img[src*="/gb/images/ring/"]) {
+  position: relative !important;
+}
+
+.boqOnegoogleliteOgbOneGoogleBar :is(a, div, span):has(> img[src*="/gb/images/ring/"])::before,
+.gb_2:has(> img[src*="/gb/images/ring/"])::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--monet-sidebar-icon, var(--gem-sys-color--primary, #FCBCE2)) !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+}
+
+svg.gb_2 path[fill]:not([fill="none"]) {
+  fill: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #FCBCE2)) !important;
+}
+
+svg.gb_2 circle[stroke]:not([stroke="none"]),
+svg.gb_2 path[stroke]:not([stroke="none"]) {
+  stroke: var(--monet-sidebar-icon, var(--gem-sys-color--primary, #FCBCE2)) !important;
+}
+
+/* Footer links & muted metadata */
+body[jscontroller] .Z6NXed,
+body[jscontroller] a[href*="privacy"],
+body[jscontroller] a[href*="terms"],
+body[jscontroller] a[href*="policies.google.com"] {
+  color: var(--monet-input-placeholder, var(--gm3-sys-color-on-surface-variant, #A18F97)) !important;
+}
+
+
+/* ============================================================
+   13. REACT / STYLEX ISLANDS (/library, Search Chats Modal) & MATERIAL DIALOGS
+   Semantic fallbacks ensure Library and Search stay Monet even if StyleX hashes rotate
+   ============================================================ */
+/* 1. /library page shell & route island background */
+declared-route-island-page,
+declared-route-island-page .route-island-host,
+declared-route-island-page .route-island-host > [data-root-style],
+declared-route-island-page .route-island-host > [data-root-style] > div {
+  background-color: var(--gem-sys-color--surface, var(--monet-surface, #141216)) !important;
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+}
+
+declared-route-island-page h1,
+declared-route-island-page h2 {
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+}
+
+/* 2. Document cards & media tiles inside /library */
+declared-route-island-page section li {
+  background-color: var(--monet-surface-container, var(--gem-sys-color--surface-container, #241F22)) !important;
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+  border: 1px solid color-mix(in srgb, var(--monet-border, var(--gem-sys-color--outline-variant, #50434A)) 55%, transparent) !important;
+}
+
+declared-route-island-page section li > a {
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+}
+
+declared-route-island-page section div > button:has(> img) {
+  background-color: var(--monet-surface-container-highest, var(--gem-sys-color--surface-container-highest, #383236)) !important;
+}
+
+/* 3. "Поиск по чатам" React island dialog & general Angular Material dialogs
+   (excluding full-bleed image lightbox & video trimmer overlays) */
+body > div [role="dialog"]:has([role="search"]),
+[data-root-style] [role="dialog"],
+.mat-mdc-dialog-panel:not(.image-expansion-dialog-panel):not(.video-trimmer-dialog-panel) .mat-mdc-dialog-surface,
+.cdk-overlay-pane:not(.image-expansion-dialog-panel):not(.video-trimmer-dialog-panel) mat-dialog-container .mat-mdc-dialog-surface {
+  background-color: var(--monet-surface-container, var(--gem-sys-color--surface-container, #241F22)) !important;
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+  border: 1px solid color-mix(in srgb, var(--monet-border, var(--gem-sys-color--outline-variant, #50434A)) 65%, transparent) !important;
+}
+
+[role="dialog"]:has([role="search"]) input {
+  background-color: transparent !important;
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+  caret-color: var(--gem-sys-color--primary, #FCBCE2) !important;
+}
+
+[role="dialog"]:has([role="search"]) input::placeholder {
+  color: var(--monet-input-placeholder, var(--gem-sys-color--on-surface-variant, #A18F97)) !important;
+  opacity: 0.85 !important;
+}
+
+[role="dialog"]:has([role="search"]) section > h2 {
+  color: var(--monet-input-placeholder, var(--gem-sys-color--on-surface-variant, #A18F97)) !important;
+}
+
+[role="dialog"]:has([role="search"]) ul li > a {
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+  border-radius: 24px !important;
+}
+
+[role="dialog"]:has([role="search"]) button {
+  color: var(--monet-input-text, var(--gem-sys-color--on-surface, #EAE0E4)) !important;
+}
+
+[role="dialog"]:has([role="search"]) li > a:hover::after,
+declared-route-island-page section li > a:hover::after {
+  background-color: color-mix(in srgb, var(--gem-sys-color--primary, currentColor) 12%, transparent) !important;
+  opacity: 1 !important;
+}
 }

@@ -14,6 +14,18 @@
         <h1 class="title">Gemini Monet</h1>
         <span class="subtitle">Material You Theming</span>
       </div>
+      <div class="header-actions">
+        <button type="button" class="icon-btn power-toggle-btn active" id="powerToggleBtn" title="Вимкнути / Увімкнути плагін (перезавантажить Gemini)" aria-pressed="true">
+          <svg class="m3-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-75 26-142t72-120q9-11 21-10.5t20 8.5q8 8 10.5 20t-8.5 24q-38 45-59.5 101T140-480q0 141 99.5 240.5T480-140q142 0 241-99.5T820-480q0-63-21-119t-59-101q-11-12-9-24t10-20q8-8 20-8.5t21 10.5q46 53 72 120t26 142q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Zm-21.5-368.5Q450-457 450-470v-380q0-13 8.5-21.5T480-880q13 0 21.5 8.5T510-850v380q0 13-8.5 21.5T480-440q-13 0-21.5-8.5Z"/>
+          </svg>
+        </button>
+        <button type="button" class="icon-btn theme-toggle-btn" id="themeToggleBtn" title="Перемкнути режим (Світлий / Темний)">
+          <svg class="m3-icon" id="themeToggleIcon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path id="themeTogglePath" d="M480-120q-150 0-255-105T120-480q0-135 79.5-229T408-830q20-5 34-1t22 15q8 10 7.5 25t-8.5 35q-9 23-14 47t-5 49q0 90 63 153t153 63q25 0 48.5-4.5T754-461q22-8 38-7t26 9q10 8 13 23t-2 36q-27 121-121 200.5T480-120Zm0-60q109 0 190-67.5T771-406q-25 11-53.5 16.5T660-384q-115 0-195.5-80.5T384-660q0-24 5-51.5t18-62.5q-98 27-162.5 109.5T180-480q0 125 87.5 212.5T480-180Zm-4-297Z"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="active-preview">
@@ -22,31 +34,124 @@
         <span class="preview-label">Active Seed</span>
         <span class="preview-hex" id="activeHex">#814F70</span>
       </div>
-      <label class="custom-btn" title="Pick custom HEX color">
-        <input type="color" id="colorPicker" value="#814F70">
+      <button type="button" class="custom-btn" id="customToggleBtn" title="Власний колір: колірне коло та HEX">
+        <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+          <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-85 32-158t87.5-127q55.5-54 130-84.5T489-880q79 0 150 26.5T763.5-780q53.5 47 85 111.5T880-527q0 108-63 170.5T650-294h-75q-18 0-31 14t-13 31q0 27 14.5 46t14.5 44q0 38-21 58.5T480-80Zm0-400Zm-198 11q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm126-170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm214 0q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm131 170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15ZM480-140q11 0 15.5-4.5T500-159q0-14-14.5-26T471-238q0-46 30-81t76-35h73q76 0 123-44.5T820-527q0-132-100-212.5T489-820q-146 0-247.5 98.5T140-480q0 141 99.5 240.5T480-140Z"/>
+        </svg>
         <span>Custom</span>
-      </label>
+      </button>
+    </div>
+
+    <!-- Вбудований Color Wheel & HEX Picker (без системних діалогів) -->
+    <div class="custom-picker-panel" id="customPickerPanel" style="display: none;">
+      <div class="wheel-wrapper" id="wheelWrapper">
+        <canvas id="colorWheelCanvas" width="180" height="180"></canvas>
+        <div class="wheel-handle" id="wheelHandle"></div>
+      </div>
+      
+      <div class="slider-row">
+        <span class="slider-icon" aria-hidden="true">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960">
+            <path d="M346.16-160H220q-24.75 0-42.37-17.63Q160-195.25 160-220v-125.59L68-438q-9-9-13-19.81-4-10.82-4-22Q51-491 55-502q4-11 13-20l92-92.41V-740q0-24.75 17.63-42.38Q195.25-800 220-800h125.59L438-892q9-9 20.5-13t22.7-4q11.19 0 22.02 4.7 10.82 4.69 19.78 13.3l91 91h126q24.75 0 42.38 17.62Q800-764.75 800-740v125.59L892-522q9 9 13 19.81 4 10.82 4 22 0 11.19-4 22.19-4 11-13 20l-92 92.41V-220q0 24.75-17.62 42.37Q764.75-160 740-160H614l-91 90q-8.96 8.13-19.78 12.57Q492.39-53 481.2-53q-11.2 0-22.16-4.43Q448.07-61.87 439-70l-92.84-90ZM370-220l111 107 107.92-107H740v-151l109-109-109-109v-151H589L481-849 371-740H220v151L111-480l109 109v151h150Zm111-66q81 0 138-57.05 57-57.06 57-138Q676-562 618.96-619 561.92-676 481-676v390Zm-1-195Z"/>
+          </svg>
+        </span>
+        <input type="range" id="valueSlider" class="value-slider" min="0" max="100" value="100" title="Яскравість (Value)">
+      </div>
+
+      <div class="hex-input-row">
+        <span class="hex-symbol">#</span>
+        <input type="text" id="customHexInput" class="custom-hex-input" placeholder="814F70" maxlength="7" spellcheck="false" title="Введіть свій HEX код">
+        <div class="custom-hex-preview" id="customHexPreview"></div>
+      </div>
     </div>
 
     <!-- Pywalfox / System Sync Button -->
     <button class="pywalfox-btn" id="pywalfoxBtn" title="Sync with Pywalfox / Firefox active theme">
-      <span class="pywal-icon">🦊</span>
+      <span class="pywal-icon-badge" aria-hidden="true">
+        <svg class="m3-icon" viewBox="0 -960 960 960">
+          <path d="M220-477q0 63 23.5 109.5T307-287l30 21v-94q0-13 8.5-21.5T367-390q13 0 21.5 8.5T397-360v170q0 13-8.5 21.5T367-160H197q-13 0-21.5-8.5T167-190q0-13 8.5-21.5T197-220h100l-15-12q-64-51-93-111t-29-134q0-94 49.5-171.5T342-766q11-5 21 0t14 16q5 11 0 22.5T361-710q-64 34-102.5 96.5T220-477Zm520-6q0-48-23.5-97.5T655-668l-29-26v94q0 13-8.5 21.5T596-570q-13 0-21.5-8.5T566-600v-170q0-13 8.5-21.5T596-800h170q13 0 21.5 8.5T796-770q0 13-8.5 21.5T766-740H665l15 14q60 56 90 120t30 123q0 93-48 169.5T623-195q-11 6-22.5 1.5T584-210q-5-11 0-22.5t16-17.5q65-33 102.5-96T740-483Z"/>
+        </svg>
+      </span>
       <div class="pywal-text">
         <span class="pywal-title">Sync with Pywalfox</span>
         <span class="pywal-sub">Auto-sync with Linux desktop theme</span>
       </div>
     </button>
 
+    <div class="section-title">Ера алгоритму Monet</div>
+    <div class="era-container">
+      <div class="era-segmented-control" id="eraControl">
+        <button type="button" class="era-btn active" data-era="2021" id="era2021Btn" title="Monet 2021: офіційна AOSP специфікація Android 12">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="M477-120q-142 0-243.5-95.5T121-451q-1-12 7.5-21t21.5-9q12 0 20.5 8.5T181-451q11 115 95 193t201 78q127 0 215-89t88-216q0-124-89-209.5T477-780q-68 0-127.5 31T246-667h75q13 0 21.5 8.5T351-637q0 13-8.5 21.5T321-607H172q-13 0-21.5-8.5T142-637v-148q0-13 8.5-21.5T172-815q13 0 21.5 8.5T202-785v76q52-61 123.5-96T477-840q75 0 141 28t115.5 76.5Q783-687 811.5-622T840-482q0 75-28.5 141t-78 115Q684-177 618-148.5T477-120Zm34-374 115 113q9 9 9 21.5t-9 21.5q-9 9-21 9t-21-9L460-460q-5-5-7-10.5t-2-11.5v-171q0-13 8.5-21.5T481-683q13 0 21.5 8.5T511-653v159Z"/>
+          </svg>
+          <span>2021 (AOSP)</span>
+        </button>
+        <button type="button" class="era-btn" data-era="2026" id="era2026Btn" title="Monet 2026: наближення (approximation) на базі M3 Expressive">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="M772-658q-5 0-8.5-2t-5.5-7l-29-68-73-32q-5-2-7-5.5t-2-8.5q0-5 2-8.5t7-5.5l73-31 29-65q2-5 5.5-7t8.5-2q5 0 8.5 2t5.5 7l29 65 73 31q5 2 7 5.5t2 8.5q0 5-2 8.5t-7 5.5l-73 32-29 68q-2 5-5.5 7t-8.5 2Zm0 596q-4 0-8-2t-6-7l-29-65-72-31q-5-2-7-5.5t-2-8.5q0-5 2-8.5t7-5.5l72-31 29-69q2-5 5.5-7t8.5-2q5 0 8.5 2t5.5 7l29 69 72 31q5 2 7 5.5t2 8.5q0 5-2 8.5t-7 5.5l-72 31-29 65q-2 5-6 7t-8 2ZM333-235q-8 0-15.5-4.5T306-252l-65-139-140-63q-8-4-12.5-11.5T84-481q0-8 4.5-15.5T101-508l140-63 65-138q4-9 11.5-13.5T333-727q8 0 15.5 4.5T360-710l66 139 139 63q9 4 13.5 11.5T583-481q0 8-4.5 15.5T565-454l-139 63-66 139q-4 9-11.5 13t-15.5 4Zm0-107 48-96 98-43-98-43-48-96-47 96-99 43 99 43 47 96Zm0-139Z"/>
+          </svg>
+          <span>2026 (Приближ.)</span>
+        </button>
+      </div>
+      <div class="era-hint">* 2026: наближення, точний алгоритм Google не публікувався</div>
+    </div>
+
+    <div class="section-title">Режим редагування тексту</div>
+    <div class="era-container">
+      <div class="era-segmented-control" id="editModeControl">
+        <button type="button" class="era-btn active" data-edit-mode="canon" id="editCanonBtn" title="Canon: єдина Monet-бульбашка справа (як зроблено зараз)">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m152-145-23-7q-32-14-43.5-48t6.5-67l60-136v258Zm186 78q-34 0-58-24t-24-58v-207l92 262q2 8 6 14t10 13h-26Zm188-24q-21 9-44-4t-33-36L258-650q-10-23 2-45t37-32l318-115q23-8 45 4t32 36l191 513q7 25-3 49t-35 33L526-91Zm-61-504q9-9 9-21t-9-21q-9-9-21-9t-21 9q-9 9-9 21t9 21q9 9 21 9t21-9Zm42 446 318-116-191-519-318 115 191 520ZM316-669l318-115-318 115Z"/>
+          </svg>
+          <span>Canon (Monet)</span>
+        </button>
+        <button type="button" class="era-btn" data-edit-mode="legacy" id="editLegacyBtn" title="Legacy: широке стандартне поле як в офіційному Gemini">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="M190-410q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h240q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H190Zm0-165q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h410q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H190Zm0-165q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h410q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H190Zm330 550v-81q0-5.57 2-10.78 2-5.22 7-10.22l211.61-210.77q9.11-9.12 20.25-13.18Q772-520 783-520q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5t-13.58 20.62L652-169q-5 5-10.22 7-5.21 2-10.78 2h-81q-12.75 0-21.37-8.63Q520-177.25 520-190Zm300-233-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/>
+          </svg>
+          <span>Legacy (OG)</span>
+        </button>
+      </div>
+    </div>
+
     <div class="section-title">Схема палітри (M3 Style)</div>
-    <div class="scheme-container">
-      <select id="schemeSelect" class="scheme-dropdown" title="Вибір стилю генерації Material 3">
-        <option value="tonal_spot">🎯 M3: Тональна точка (Tonal Spot)</option>
-        <option value="rainbow">🌈 M3: Веселка (Rainbow)</option>
-        <option value="vibrant">⚡ M3: Яскравий (Vibrant)</option>
-        <option value="expressive">🎨 M3: Виразний (Expressive)</option>
-        <option value="neutral">⚪ M3: Нейтральний (Neutral)</option>
-        <option value="fidelity">🎯 M3: Точний (Fidelity)</option>
-      </select>
+    <div class="scheme-container" id="schemeContainer">
+      <button type="button" class="scheme-trigger" id="schemeTrigger" aria-haspopup="listbox" aria-expanded="false" title="Вибір стилю генерації Material 3">
+        <svg class="m3-icon m3-icon-sm scheme-trigger-icon" viewBox="0 -960 960 960" aria-hidden="true">
+          <path id="schemeTriggerPath" d="M551-409.24q29-29.23 29-71Q580-522 550.76-551q-29.23-29-71-29Q438-580 409-550.76q-29 29.23-29 71Q380-438 409.24-409q29.23 29 71 29Q522-380 551-409.24ZM480.27-80q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/>
+        </svg>
+        <span class="scheme-trigger-label" id="schemeTriggerLabel">M3: Тональна точка (Tonal Spot)</span>
+        <svg class="m3-icon m3-icon-sm scheme-arrow" viewBox="0 -960 960 960" aria-hidden="true">
+          <path d="M469-358q-5-2-10-7L261-563q-9-9-8.5-21.5T262-606q9-9 21.5-9t21.5 9l175 176 176-176q9-9 21-8.5t21 9.5q9 9 9 21.5t-9 21.5L501-365q-5 5-10 7t-11 2q-6 0-11-2Z"/>
+        </svg>
+      </button>
+      <div class="scheme-menu" id="schemeMenu" role="listbox" hidden>
+        <button type="button" class="scheme-option active" role="option" data-value="tonal_spot">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M551-409.24q29-29.23 29-71Q580-522 550.76-551q-29.23-29-71-29Q438-580 409-550.76q-29 29.23-29 71Q380-438 409.24-409q29.23 29 71 29Q522-380 551-409.24ZM480.27-80q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/></svg>
+          <span>M3: Тональна точка (Tonal Spot)</span>
+        </button>
+        <button type="button" class="scheme-option" role="option" data-value="rainbow">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-660q-150 0-258.5 101T101-311q-1 13-9.5 22T70-280q-12 0-21-8.5T41-309q6-86 42.5-161T179-600.5Q238-656 315.5-688T480-720q87 0 164.5 32T781-600.5Q840-545 876.5-470T919-309q1 12-8 20.5t-21 8.5q-13 0-21.5-9t-9.5-22q-12-147-120-248T480-660Zm0 120q-102 0-175.5 67T221-306q-1 11-10 18.5t-21 7.5q-13 0-21.5-9.5T162-312q12-123 102-205.5T480-600q126 0 216 82.5T798-312q2 13-6.5 22.5T770-280q-12 0-21-7.5T739-306q-10-100-83.5-167T480-540Z"/></svg>
+          <span>M3: Веселка (Rainbow)</span>
+        </button>
+        <button type="button" class="scheme-option" role="option" data-value="vibrant">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="m393-165 279-335H492l36-286-253 366h154l-36 255Zm-33-195H217q-18 0-26.5-16t2.5-31l338-488q8-11 20-15t24 1q12 5 19 16t5 24l-39 309h176q19 0 27 17t-4 32L388-66q-8 10-20.5 13T344-55q-11-5-17.5-16T322-95l38-265Zm113-115Z"/></svg>
+          <span>M3: Яскравий (Vibrant)</span>
+        </button>
+        <button type="button" class="scheme-option" role="option" data-value="expressive">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-85 32-158t87.5-127q55.5-54 130-84.5T489-880q79 0 150 26.5T763.5-780q53.5 47 85 111.5T880-527q0 108-63 170.5T650-294h-75q-18 0-31 14t-13 31q0 27 14.5 46t14.5 44q0 38-21 58.5T480-80Zm0-400Zm-198 11q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm126-170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm214 0q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm131 170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15ZM480-140q11 0 15.5-4.5T500-159q0-14-14.5-26T471-238q0-46 30-81t76-35h73q76 0 123-44.5T820-527q0-132-100-212.5T489-820q-146 0-247.5 98.5T140-480q0 141 99.5 240.5T480-140Z"/></svg>
+          <span>M3: Виразний (Expressive)</span>
+        </button>
+        <button type="button" class="scheme-option" role="option" data-value="neutral">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM500-140q137-10 228.5-106T820-480q0-138-91.5-234T500-820v680Z"/></svg>
+          <span>M3: Нейтральний (Neutral)</span>
+        </button>
+        <button type="button" class="scheme-option" role="option" data-value="fidelity">
+          <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M180-120q-24 0-42-18t-18-42v-142q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v142h142q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H180Zm600 0H638q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h142v-142q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v142q0 24-18 42t-42 18ZM120-638v-142q0-24 18-42t42-18h142q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H180v142q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37Zm660 0v-142H638q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h142q24 0 42 18t18 42v142q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37ZM347.5-347.5Q293-402 293-480t54.5-132.5Q402-667 480-667t132.5 54.5Q667-558 667-480t-54.5 132.5Q558-293 480-293t-132.5-54.5Zm223-42Q607-426 607-480t-36.5-90.5Q534-607 480-607t-90.5 36.5Q353-534 353-480t36.5 90.5Q426-353 480-353t90.5-36.5ZM480-480Z"/></svg>
+          <span>M3: Точний (Fidelity)</span>
+        </button>
+      </div>
     </div>
 
     <div class="section-title">Presets</div>
@@ -75,11 +180,19 @@
       <button class="preset-chip" data-color="#3B5998" data-name="slate">
         <span class="chip-dot" style="background: #3B5998;"></span>Slate
       </button>
+      <button type="button" class="add-preset-chip span-2" id="addPresetChip" title="Добавить текущий Active Seed в Presets">
+        <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+          <path d="M450-450H230q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h220v-220q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v220h220q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H510v220q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-220Z"/>
+        </svg>
+      </button>
     </div>
 
     <div class="action-row">
       <button class="wallpaper-btn" id="openPickerBtn" title="Open wallpaper extractor or drop image here">
-        <span>🖼️ Pick from Wallpaper (or drop here)</span>
+        <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+          <path d="M180-120q-24 0-42-18t-18-42v-240q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v240h240q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H180Zm600 0H540q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h240v-240q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v240q0 24-18 42t-42 18ZM448-293l120-155q5-6 12-6t12 6l117 156q5 8 .75 16T697-268H268q-9 0-13.5-8t1.5-16l87-112q5-6 12-6t12 6l81 111ZM120-780q0-24 18-42t42-18h240q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H180v240q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-240Zm720 0v240q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-240H540q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h240q24 0 42 18t18 42ZM585.5-585.5Q570-601 570-624t15.5-38.5Q601-678 624-678t38.5 15.5Q678-647 678-624t-15.5 38.5Q647-570 624-570t-38.5-15.5Z"/>
+        </svg>
+        <span>Pick from Wallpaper (or drop here)</span>
       </button>
     </div>
 

@@ -81,8 +81,11 @@
     return "#" + [r, g, bVal].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
   }
 
-  function generateM3Palette(seedHex, scheme) {
+  function generateM3Palette(seedHex, scheme, era) {
     scheme = (scheme || "tonal_spot").toLowerCase();
+    era = (era || (scheme === "monet_2026" ? "2026" : "2021")).toString().toLowerCase();
+    const is2026 = era.includes("2026") || scheme === "monet_2026";
+
     const [r, g, b] = hexToRgb(seedHex || "#814F70");
     const [x, y, z] = rgbToXyz(r, g, b);
     const [, a, bVal] = xyzToLab(x, y, z);
@@ -101,64 +104,151 @@
 
     switch (scheme) {
       case "rainbow": { // M3 Rainbow (як у Noctalia / KDE Plasma)
+        if (is2026) {
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(68, c * 1.35));
+          const [a2x, a2y] = rotateLab(h, 0, 28);
+          const [a3x, a3y] = rotateLab(h, rad60, 36);
+          const [n1x, n1y] = rotateLab(h, 0, 7);
+          const [n2x, n2y] = rotateLab(h, 0, 11);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(48, c));
+          const [a2x, a2y] = rotateLab(h, 0, 18);
+          const [a3x, a3y] = rotateLab(h, rad60, 26);
+          const [n1x, n1y] = rotateLab(h, 0, 4);
+          const [n2x, n2y] = rotateLab(h, 0, 7);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
+        break;
+      }
+      case "vibrant": { // M3 Vibrant (яскравий, насичений)
+        if (is2026) {
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(76, c * 1.5));
+          const [a2x, a2y] = rotateLab(h, 0, 32);
+          const [a3x, a3y] = rotateLab(h, rad60, 42);
+          const [n1x, n1y] = rotateLab(h, 0, 8);
+          const [n2x, n2y] = rotateLab(h, 0, 14);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(56, c * 1.15));
+          const [a2x, a2y] = rotateLab(h, 0, 24);
+          const [a3x, a3y] = rotateLab(h, rad60, 32);
+          const [n1x, n1y] = rotateLab(h, 0, 6);
+          const [n2x, n2y] = rotateLab(h, 0, 10);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
+        break;
+      }
+      case "expressive": { // M3 Expressive (виразний, сміливий зсув)
+        if (is2026) {
+          const [a1x, a1y] = rotateLab(h, rad120, Math.max(58, c * 1.25));
+          const [a2x, a2y] = rotateLab(h, rad120, 30);
+          const [a3x, a3y] = rotateLab(h, rad240, 44);
+          const [n1x, n1y] = rotateLab(h, rad120, 8);
+          const [n2x, n2y] = rotateLab(h, rad120, 14);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          const [a1x, a1y] = rotateLab(h, rad120, Math.max(42, c));
+          const [a2x, a2y] = rotateLab(h, rad120, 20);
+          const [a3x, a3y] = rotateLab(h, rad240, 28);
+          const [n1x, n1y] = rotateLab(h, rad120, 6);
+          const [n2x, n2y] = rotateLab(h, rad120, 10);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
+        break;
+      }
+      case "neutral": { // M3 Neutral (нейтральний, спокійний)
+        if (is2026) {
+          const [a1x, a1y] = rotateLab(h, 0, 16);
+          const [a2x, a2y] = rotateLab(h, 0, 10);
+          const [a3x, a3y] = rotateLab(h, 0, 18);
+          const [n1x, n1y] = rotateLab(h, 0, 4);
+          const [n2x, n2y] = rotateLab(h, 0, 6);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          const [a1x, a1y] = rotateLab(h, 0, 12);
+          const [a2x, a2y] = rotateLab(h, 0, 8);
+          const [a3x, a3y] = rotateLab(h, 0, 12);
+          const [n1x, n1y] = rotateLab(h, 0, 3);
+          const [n2x, n2y] = rotateLab(h, 0, 4);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
+        break;
+      }
+      case "fidelity": { // M3 Fidelity (точний колір)
+        if (is2026) {
+          const [a1x, a1y] = [a * 1.15, bVal * 1.15];
+          const [a2x, a2y] = rotateLab(h, 0, Math.max(22, c * 0.55));
+          const [a3x, a3y] = rotateLab(h, rad60, Math.max(28, c * 0.8));
+          const [n1x, n1y] = rotateLab(h, 0, Math.min(8, c * 0.15));
+          const [n2x, n2y] = rotateLab(h, 0, Math.min(14, c * 0.25));
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          const [a1x, a1y] = [a, bVal];
+          const [a2x, a2y] = rotateLab(h, 0, Math.max(16, c * 0.45));
+          const [a3x, a3y] = rotateLab(h, rad60, Math.max(20, c * 0.65));
+          const [n1x, n1y] = rotateLab(h, 0, Math.min(6, c * 0.12));
+          const [n2x, n2y] = rotateLab(h, 0, Math.min(10, c * 0.20));
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
+        break;
+      }
+      case "monet_2021": { // Monet 2021 (Android 12 Original AOSP ColorScheme)
+        // Специфікація AOSP frameworks/base/packages/SystemUI/monet/src/com/android/systemui/monet/ColorScheme.kt
+        // Константи: ACCENT1_CHROMA = 48.0, ACCENT2_CHROMA = 16.0, ACCENT3_CHROMA = 32.0 (hue + 60 deg),
+        //            NEUTRAL1_CHROMA = 4.0, NEUTRAL2_CHROMA = 8.0
         const [a1x, a1y] = rotateLab(h, 0, Math.max(48, c));
-        const [a2x, a2y] = rotateLab(h, 0, 20);
-        const [a3x, a3y] = rotateLab(h, rad60, 28);
-        const [n1x, n1y] = rotateLab(h, 0, 6);
+        const [a2x, a2y] = rotateLab(h, 0, 16);
+        const [a3x, a3y] = rotateLab(h, rad60, 32);
+        const [n1x, n1y] = rotateLab(h, 0, 4);
         const [n2x, n2y] = rotateLab(h, 0, 8);
         a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
         n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
         break;
       }
-      case "vibrant": { // M3 Vibrant (яскравий, насичений)
-        const [a1x, a1y] = rotateLab(h, 0, Math.max(65, c * 1.3));
-        const [a2x, a2y] = rotateLab(h, 0, 28);
-        const [a3x, a3y] = rotateLab(h, rad60, 36);
-        const [n1x, n1y] = rotateLab(h, 0, 10);
-        const [n2x, n2y] = rotateLab(h, 0, 14);
-        a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
-        n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
-        break;
-      }
-      case "expressive": { // M3 Expressive (виразний, сміливий зсув)
-        const [a1x, a1y] = rotateLab(h, rad120, Math.max(45, c));
-        const [a2x, a2y] = rotateLab(h, rad120, 24);
-        const [a3x, a3y] = rotateLab(h, rad240, 32);
-        const [n1x, n1y] = rotateLab(h, rad120, 8);
-        const [n2x, n2y] = rotateLab(h, rad120, 12);
-        a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
-        n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
-        break;
-      }
-      case "neutral": { // M3 Neutral (нейтральний, спокійний)
-        const [a1x, a1y] = rotateLab(h, 0, 14);
-        const [a2x, a2y] = rotateLab(h, 0, 8);
-        const [a3x, a3y] = rotateLab(h, 0, 16);
-        const [n1x, n1y] = rotateLab(h, 0, 3);
-        const [n2x, n2y] = rotateLab(h, 0, 5);
-        a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
-        n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
-        break;
-      }
-      case "fidelity": { // M3 Fidelity (точний колір)
-        const [a1x, a1y] = [a, bVal];
-        const [a2x, a2y] = rotateLab(h, 0, Math.max(16, c * 0.45));
-        const [a3x, a3y] = rotateLab(h, rad60, Math.max(20, c * 0.65));
-        const [n1x, n1y] = rotateLab(h, 0, Math.min(8, c * 0.15));
-        const [n2x, n2y] = rotateLab(h, 0, Math.min(12, c * 0.25));
+      case "monet_2026": { // Monet 2026 (Приближення / Approximation на базі Material 3 Expressive / High Vibrancy)
+        // УВАГА: Офіційний алгоритм Monet 2026 не опублікований Google;
+        // дана реалізація є алгоритмічним наближенням (approximation) на базі M3 Expressive / Dynamic Color
+        // і не повинна видаватися за точну копію.
+        const [a1x, a1y] = rotateLab(h, 0, Math.max(72, c * 1.4));
+        const [a2x, a2y] = rotateLab(h, 0, Math.max(28, c * 0.6));
+        const [a3x, a3y] = rotateLab(h, rad120, Math.max(42, c * 0.8));
+        const [n1x, n1y] = rotateLab(h, 0, 5);
+        const [n2x, n2y] = rotateLab(h, 0, 12);
         a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
         n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
         break;
       }
       case "tonal_spot":
-      default: { // M3 Tonal Spot (дефолт Android Monet)
-        const [a1x, a1y] = rotateLab(h, 0, Math.max(36, c));
-        const [a2x, a2y] = rotateLab(h, 0, 16);
-        const [a3x, a3y] = rotateLab(h, rad60, 24);
-        const [n1x, n1y] = rotateLab(h, 0, 6);
-        const [n2x, n2y] = rotateLab(h, 0, 8);
-        a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
-        n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+      default: { // M3 Tonal Spot (дефолт Android Monet, керується ерою 2021 або 2026)
+        if (is2026) {
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(48, c * 1.15));
+          const [a2x, a2y] = rotateLab(h, 0, 20);
+          const [a3x, a3y] = rotateLab(h, rad60, 28);
+          const [n1x, n1y] = rotateLab(h, 0, 6);
+          const [n2x, n2y] = rotateLab(h, 0, 10);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        } else {
+          // Канонічний M3 Tonal Spot: делікатний, спокійний пастельний баланс
+          const [a1x, a1y] = rotateLab(h, 0, Math.max(36, c));
+          const [a2x, a2y] = rotateLab(h, 0, 16);
+          const [a3x, a3y] = rotateLab(h, rad60, 24);
+          const [n1x, n1y] = rotateLab(h, 0, 6);
+          const [n2x, n2y] = rotateLab(h, 0, 8);
+          a1_a = a1x; a1_b = a1y; a2_a = a2x; a2_b = a2y; a3_a = a3x; a3_b = a3y;
+          n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
+        }
         break;
       }
     }
@@ -176,6 +266,7 @@
         surfaceContainer: toneToHex(94, n1_a, n1_b),
         surfaceContainerHigh: toneToHex(92, n1_a, n1_b),
         surfaceContainerHighest: toneToHex(90, n1_a, n1_b),
+        surfaceVariant: toneToHex(90, n2_a, n2_b),
         onSurface: toneToHex(10, n1_a, n1_b),
         onSurfaceVariant: toneToHex(30, n2_a, n2_b),
         primary: toneToHex(40, a1_a, a1_b),
@@ -192,6 +283,9 @@
         onTertiaryContainer: toneToHex(10, a3_a, a3_b),
         outline: toneToHex(50, n2_a, n2_b),
         outlineVariant: toneToHex(80, n2_a, n2_b),
+        inverseSurface: toneToHex(20, n1_a, n1_b),
+        inverseOnSurface: toneToHex(95, n1_a, n1_b),
+        inversePrimary: toneToHex(80, a1_a, a1_b),
         error: "#BA1A1A",
         onError: "#FFFFFF",
         errorContainer: "#FFDAD6",
@@ -206,6 +300,7 @@
         surfaceContainer: toneToHex(14, n1_a, n1_b),
         surfaceContainerHigh: toneToHex(18, n1_a, n1_b),
         surfaceContainerHighest: toneToHex(22, n1_a, n1_b),
+        surfaceVariant: toneToHex(30, n2_a, n2_b),
         onSurface: toneToHex(90, n1_a, n1_b),
         onSurfaceVariant: toneToHex(80, n2_a, n2_b),
         primary: toneToHex(80, a1_a, a1_b),
@@ -222,6 +317,9 @@
         onTertiaryContainer: toneToHex(90, a3_a, a3_b),
         outline: toneToHex(60, n2_a, n2_b),
         outlineVariant: toneToHex(30, n2_a, n2_b),
+        inverseSurface: toneToHex(90, n1_a, n1_b),
+        inverseOnSurface: toneToHex(20, n1_a, n1_b),
+        inversePrimary: toneToHex(40, a1_a, a1_b),
         error: "#FFB4AB",
         onError: "#690005",
         errorContainer: "#93000A",
