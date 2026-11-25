@@ -24,25 +24,51 @@
 
 ## Installation
 
-### Firefox Desktop:
-1. Open Firefox and navigate to `about:debugging#/runtime/this-firefox`.
-2. Click **"Load Temporary Add-on..."**.
-3. Select `dist/gemini-monet.xpi` (or `manifest.json` from this folder).
-4. Open [gemini.google.com](https://gemini.google.com) and click the extension icon in your toolbar to customize colors.
+### Permanent Install (No Temporary Reloading Required)
 
-### Firefox Android (Nightly / Beta):
-1. Enable Debug mode in Firefox Settings (tap Firefox logo 5 times).
-2. Install via Custom Add-on Collection or USB debugging via `about:debugging`.
+> **Why a signed `.xpi` or ESR/Dev build is required:** Standard **Firefox Release** checks Mozilla cryptographic signatures on `.xpi` packages and ignores `xpinstall.signatures.required` overrides for unsigned files.
+
+#### Option A — Any Release Firefox (Desktop & Android) via Free Self-Signed `.xpi` *(Recommended)*
+1. Build the clean release bundle:
+   ```bash
+   python3 build.py
+   ```
+2. Submit `dist/pollux-palette-1.0.0-amo.zip` to Mozilla Add-ons using the **Unlisted ("On your own")** channel — either:
+   - **Web upload:** open [Mozilla Add-ons Developer Hub](https://addons.mozilla.org/developers/addon/submit/distribution), choose **"On your own"**, upload `dist/pollux-palette-1.0.0-amo.zip`, and download the signed `.xpi`.
+   - **CLI signing:** create API keys at [AMO API Keys](https://addons.mozilla.org/developers/addon/api/key/) and run:
+     ```bash
+     AMO_JWT_ISSUER="your-issuer" AMO_JWT_SECRET="your-secret" python3 build.py --sign
+     ```
+     Signed `.xpi` packages are saved to `dist/signed/`.
+3. In Firefox, open `about:addons`, click the gear icon, select **"Install Add-on From File..."**, and choose the signed `.xpi`. It persists permanently across restarts.
+
+#### Option B — Firefox ESR / Developer Edition / Nightly / LibreWolf (Unsigned Direct Install)
+1. Open `about:config` and set `xpinstall.signatures.required` to `false`.
+2. Open `about:addons`, click the gear icon, select **"Install Add-on From File..."**, and choose `dist/pollux-palette-1.0.0-unsigned.xpi`.
+
+### Temporary Install (Development / Testing)
+
+- **Firefox Desktop:** Open `about:debugging#/runtime/this-firefox` -> **"Load Temporary Add-on..."** -> select `manifest.json` (or `dist/pollux-palette-1.0.0-unsigned.xpi`).
+- **Firefox Android (Nightly / Beta):** Enable Debug mode in Firefox Settings (tap Firefox logo 5 times) and install via Custom Add-on Collection or USB `about:debugging`.
 
 ---
 
 ## Build
 
-To re-package `.xpi` and `.zip`:
+Package unsigned `.xpi` and AMO upload `.zip` into `dist/`:
 ```bash
 python3 build.py
 ```
-Output artifacts are generated in `dist/`.
+
+Package and validate strictly clean release files with `web-ext lint`:
+```bash
+python3 build.py --lint
+```
+
+Generated artifacts in `dist/`:
+- `dist/pollux-palette-1.0.0-unsigned.xpi` — standalone unsigned `.xpi` (ESR / Developer Edition / Nightly / LibreWolf / debugging).
+- `dist/pollux-palette-1.0.0-amo.zip` — clean archive containing strictly runtime files + `LICENSE` + `NOTICE` for AMO Unlisted signing.
+- `dist/gemini-monet.xpi`, `dist/gemini-monet.zip` — compatibility aliases matching legacy filenames.
 
 ---
 
