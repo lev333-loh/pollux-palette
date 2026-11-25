@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Gemini Monet — Material You",
+  "name": "Pollux Palette",
   "version": "1.0.0",
-  "description": "Full Material You (Monet) dynamic theming and native M3 styling for Gemini Web.",
+  "description": "Gemini Material You Theme — dynamic Material 3 (Monet) theming and native styling for Gemini Web.",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -22,7 +22,7 @@
       "32": "icons/icon-32.png",
       "48": "icons/icon-48.png"
     },
-    "default_title": "Gemini Monet Settings",
+    "default_title": "Pollux Palette — Settings",
     "default_popup": "popup/popup.html"
   },
   "background": {

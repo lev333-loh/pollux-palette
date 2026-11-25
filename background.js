@@ -1,5 +1,5 @@
 /**
- * Gemini Monet Background Worker
+ * Pollux Palette — Gemini Material You Theme (Background Worker)
  * Manages active Monet palette & broadcasts updates to Gemini tabs.
  */
 "use strict";

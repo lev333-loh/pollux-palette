@@ -1,4 +1,4 @@
-/* Gemini Monet Standalone Content Script (document_start, gemini.google.com). */
+/* Pollux Palette — Gemini Material You Theme (document_start, gemini.google.com). */
 (function () {
   "use strict";
 

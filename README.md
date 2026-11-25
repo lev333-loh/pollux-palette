@@ -1,6 +1,6 @@
-# Pollux Palette (Gemini Monet WebExtension)
+# Pollux Palette
 
-Standalone WebExtension for Firefox (Desktop & Mobile) that injects full Material You (Monet) dynamic theming and native Material 3 styling into Gemini Web (`gemini.google.com`) and the One Google Account widget (`ogs.google.com`).
+**Gemini Material You Theme** — standalone WebExtension for Firefox (Desktop & Mobile) that brings dynamic Material You (Monet) theming and native Material 3 styling to Gemini Web (`gemini.google.com`) and the One Google Account widget (`ogs.google.com`).
 
 ---
 
