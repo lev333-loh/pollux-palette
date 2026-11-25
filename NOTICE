@@ -1,0 +1,25 @@
+Pollux Palette (Gemini Monet WebExtension)
+Copyright 2026 lev333-loh and contributors
+
+This product includes or references the following third-party resources and specifications:
+
+1. Google Material Symbols Rounded (SVG icon paths)
+   Source: https://github.com/google/material-design-icons
+   License: Apache License 2.0
+   Used in: popup/popup.html, popup/popup.js, popup/picker.html
+
+2. Android Open Source Project (AOSP) SystemUI Monet ColorScheme constants
+   Source: frameworks/base/packages/SystemUI/monet/src/com/android/systemui/monet/ColorScheme.kt
+   License: Apache License 2.0
+   Referenced for tonal chroma constants in the "Monet 2021" mode of material-color.js.
+
+3. Note on "Monet 2026" mode
+   The "Monet 2026" option in material-color.js is an independent, cleanroom algorithmic
+   approximation inspired by Material 3 Expressive dynamic color guidelines. No official
+   Google "Monet 2026" specification has been published, and no proprietary Google source
+   code or compiled assets are bundled in this extension.
+
+Disclaimer:
+This project is an unofficial third-party browser extension and is not affiliated with,
+endorsed by, or sponsored by Google LLC. "Google", "Gemini", "Material You", and
+"Material Design" are trademarks or service marks of Google LLC.

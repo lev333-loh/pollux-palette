@@ -17,6 +17,8 @@ def build():
         "inject.css",
         "theme-map.json",
         "material-color.js",
+        "LICENSE",
+        "NOTICE",
     ]
     include_dirs = ["icons", "popup"]
     
