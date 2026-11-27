@@ -419,7 +419,8 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCustomPresets(null);
       updateActiveUI(currentSeed, currentPreset);
 
-      const initialPalette = MaterialColor.generateM3Palette(currentSeed, currentScheme, currentEra);
+      const initialScheme = MaterialColor.resolveEffectiveScheme(currentScheme, currentPreset);
+      const initialPalette = MaterialColor.generateM3Palette(currentSeed, initialScheme, currentEra);
       applyMonetThemeToPopup(initialPalette, currentThemeMode);
 
       // Initial draw of color wheel
@@ -432,13 +433,15 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   function updateActiveUI(hex, preset) {
-    if (activeDot.style.backgroundColor) {
+    const isMonochrome = preset === "monochrome" || currentScheme === "monochrome";
+    if (activeDot.style.backgroundColor || activeDot.classList.contains("is-monochrome")) {
       activeDot.classList.remove("is-pulsing");
       void activeDot.offsetWidth;
       activeDot.classList.add("is-pulsing");
     }
-    activeDot.style.backgroundColor = hex;
-    activeHex.textContent = hex.toUpperCase();
+    activeDot.classList.toggle("is-monochrome", isMonochrome);
+    activeDot.style.backgroundColor = isMonochrome ? "" : hex;
+    activeHex.textContent = preset === "monochrome" ? "MONOCHROME" : hex.toUpperCase();
 
     if (customToggleBtn) {
       if (preset === "custom") {
@@ -480,7 +483,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSchemeUI(currentScheme);
 
     updateActiveUI(hex, presetName);
-    const palette = MaterialColor.generateM3Palette(hex, currentScheme, currentEra);
+    const effectiveScheme = MaterialColor.resolveEffectiveScheme(currentScheme, presetName);
+    const palette = MaterialColor.generateM3Palette(hex, effectiveScheme, currentEra);
     applyMonetThemeToPopup(palette, currentThemeMode);
 
     browser.runtime.sendMessage({

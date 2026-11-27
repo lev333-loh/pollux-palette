@@ -55,7 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const scheme = (res && res.schemeStyle) || "rainbow";
       const era = (res && res.monetEra) || "2021";
       const themeMode = (res && res.themeMode) || "dark";
-      const palette = MaterialColor.generateM3Palette(currentHex, scheme, era);
+      const effectiveScheme = MaterialColor.resolveEffectiveScheme(scheme, "wallpaper");
+      const palette = MaterialColor.generateM3Palette(currentHex, effectiveScheme, era);
       browser.runtime.sendMessage({
         type: "UPDATE_PALETTE",
         seedColor: currentHex,

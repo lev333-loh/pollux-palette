@@ -7,13 +7,13 @@
 ## Features
 
 - **Zero-dependency Color Engine (`material-color.js`)**: Pure Vanilla JS sRGB / CIE XYZ / CIE L\*a\*b\* tonal palette generator.
-- **Monet Eras (`2021` & `2026` Approx.) & 6 M3 Schemes**:
+- **Monet Eras (`2021` & `2026` Approx.) & 7 M3 Schemes**:
   - `Monet 2021 (AOSP)`: Follows documented Android 12 `ColorScheme.kt` chroma ratios.
   - `Monet 2026 (Approx.)`: Cleanroom algorithmic approximation inspired by Material 3 Expressive higher vibrancy *(see Disclaimer below)*.
-  - Schemes: `Tonal Spot`, `Rainbow`, `Vibrant`, `Expressive`, `Neutral`, `Fidelity`.
+  - Schemes: `Tonal Spot`, `Rainbow`, `Vibrant`, `Expressive`, `Neutral`, `Fidelity`, `Monochrome`.
 - **Light & Dark Modes + Pywalfox Sync**: Toggle Light/Dark live or pull your active Firefox/Pywalfox theme seed color.
 - **Color Wheel, Presets & `+` Custom Presets**:
-  - 8 built-in seeds (`Sakura`, `Lavender`, `Emerald`, `Ocean`, `Amber`, `Berry`, `Nord`, `Slate`).
+  - 9 built-in presets (`Sakura`, `Lavender`, `Emerald`, `Ocean`, `Amber`, `Berry`, `Nord`, `Slate`, plus standalone `Monochrome`).
   - One-click `+` chip adds the current `Active Seed` as a persistent custom preset (with remove `×` button and parity-responsive 1/2-column width).
 - **Pick from Wallpaper (`popup/picker.html`)**: Drop or paste an image to extract its dominant seed color and apply the Monet palette.
 - **User Query Edit Mode (`Canon` vs `Legacy`)**: Live switch between the unified Monet bubble (`Canon`) and native Gemini wide edit form (`Legacy`), scoped with native CSS `@scope`.

@@ -81,10 +81,93 @@
     return "#" + [r, g, bVal].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
   }
 
+  function resolveEffectiveScheme(scheme, presetName) {
+    const normalized = (scheme || "tonal_spot").toLowerCase();
+    if (normalized === "monochrome" || (presetName || "").toLowerCase() === "monochrome") {
+      return "monochrome";
+    }
+    return normalized;
+  }
+
+  function buildMonochromeTheme(is2026) {
+    const gray = (L) => toneToHex(L, 0, 0);
+    return {
+      light: {
+        surface: gray(is2026 ? 99 : 98),
+        surfaceDim: gray(is2026 ? 86 : 87),
+        surfaceBright: gray(is2026 ? 99 : 98),
+        surfaceContainerLowest: "#FFFFFF",
+        surfaceContainerLow: gray(is2026 ? 97 : 96),
+        surfaceContainer: gray(94),
+        surfaceContainerHigh: gray(is2026 ? 91 : 92),
+        surfaceContainerHighest: gray(is2026 ? 88 : 89),
+        surfaceVariant: gray(is2026 ? 88 : 89),
+        onSurface: gray(is2026 ? 6 : 10),
+        onSurfaceVariant: gray(is2026 ? 28 : 32),
+        primary: gray(is2026 ? 0 : 20),
+        onPrimary: "#FFFFFF",
+        primaryContainer: gray(is2026 ? 85 : 86),
+        onPrimaryContainer: gray(is2026 ? 5 : 10),
+        secondary: gray(is2026 ? 24 : 32),
+        onSecondary: "#FFFFFF",
+        secondaryContainer: gray(is2026 ? 88 : 89),
+        onSecondaryContainer: gray(is2026 ? 10 : 14),
+        tertiary: gray(is2026 ? 36 : 42),
+        onTertiary: "#FFFFFF",
+        tertiaryContainer: gray(is2026 ? 90 : 91),
+        onTertiaryContainer: gray(is2026 ? 12 : 16),
+        outline: gray(is2026 ? 45 : 50),
+        outlineVariant: gray(is2026 ? 78 : 80),
+        inverseSurface: gray(is2026 ? 14 : 18),
+        inverseOnSurface: gray(is2026 ? 97 : 95),
+        inversePrimary: gray(is2026 ? 90 : 84),
+        error: "#BA1A1A",
+        onError: "#FFFFFF",
+        errorContainer: "#FFDAD6",
+        onErrorContainer: "#410002",
+      },
+      dark: {
+        surface: gray(is2026 ? 6 : 10),
+        surfaceDim: gray(is2026 ? 4 : 8),
+        surfaceBright: gray(is2026 ? 22 : 24),
+        surfaceContainerLowest: gray(is2026 ? 3 : 6),
+        surfaceContainerLow: gray(is2026 ? 8 : 11),
+        surfaceContainer: gray(is2026 ? 12 : 15),
+        surfaceContainerHigh: gray(is2026 ? 16 : 19),
+        surfaceContainerHighest: gray(is2026 ? 20 : 23),
+        surfaceVariant: gray(is2026 ? 25 : 28),
+        onSurface: gray(is2026 ? 94 : 91),
+        onSurfaceVariant: gray(is2026 ? 78 : 76),
+        primary: gray(is2026 ? 100 : 92),
+        onPrimary: gray(is2026 ? 0 : 12),
+        primaryContainer: gray(is2026 ? 24 : 28),
+        onPrimaryContainer: gray(is2026 ? 98 : 94),
+        secondary: gray(is2026 ? 84 : 80),
+        onSecondary: gray(is2026 ? 14 : 18),
+        secondaryContainer: gray(is2026 ? 22 : 25),
+        onSecondaryContainer: gray(is2026 ? 96 : 92),
+        tertiary: gray(is2026 ? 74 : 70),
+        onTertiary: gray(is2026 ? 14 : 18),
+        tertiaryContainer: gray(is2026 ? 26 : 30),
+        onTertiaryContainer: gray(is2026 ? 94 : 90),
+        outline: gray(is2026 ? 55 : 58),
+        outlineVariant: gray(is2026 ? 28 : 30),
+        inverseSurface: gray(is2026 ? 94 : 91),
+        inverseOnSurface: gray(is2026 ? 14 : 18),
+        inversePrimary: gray(is2026 ? 25 : 35),
+        error: "#FFB4AB",
+        onError: "#690005",
+        errorContainer: "#93000A",
+        onErrorContainer: "#FFDAD6",
+      },
+    };
+  }
+
   function generateM3Palette(seedHex, scheme, era) {
     scheme = (scheme || "tonal_spot").toLowerCase();
     era = (era || (scheme === "monet_2026" ? "2026" : "2021")).toString().toLowerCase();
     const is2026 = era.includes("2026") || scheme === "monet_2026";
+    const isMonochrome = scheme === "monochrome";
 
     const [r, g, b] = hexToRgb(seedHex || "#814F70");
     const [x, y, z] = rgbToXyz(r, g, b);
@@ -229,6 +312,11 @@
         n1_a = n1x; n1_b = n1y; n2_a = n2x; n2_b = n2y;
         break;
       }
+      case "monochrome": { // M3 Monochrome (чистий ахроматичний ЧБ-режим, chroma = 0)
+        a1_a = 0; a1_b = 0; a2_a = 0; a2_b = 0; a3_a = 0; a3_b = 0;
+        n1_a = 0; n1_b = 0; n2_a = 0; n2_b = 0;
+        break;
+      }
       case "tonal_spot":
       default: { // M3 Tonal Spot (дефолт Android Monet, керується ерою 2021 або 2026)
         if (is2026) {
@@ -256,7 +344,7 @@
     const tones = [0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
     const mapTones = (t) => t === 50 ? 5 : t / 10;
 
-    const res = {
+    const res = isMonochrome ? buildMonochromeTheme(is2026) : {
       light: {
         surface: toneToHex(98, n1_a, n1_b),
         surfaceDim: toneToHex(87, n1_a, n1_b),
@@ -369,5 +457,6 @@
   global.MaterialColor = {
     generateM3Palette,
     extractDominantColor,
+    resolveEffectiveScheme,
   };
 })(typeof window !== "undefined" ? window : globalThis);

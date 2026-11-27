@@ -82,13 +82,14 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg && msg.type === "GET_PALETTE") {
     browser.storage.local.get(
-      ["activePalette", "seedColor", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle"],
+      ["activePalette", "seedColor", "presetName", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle"],
       (res) => {
         let pal = res.activePalette;
         if (!pal) {
+          const effScheme = MaterialColor.resolveEffectiveScheme(res.schemeStyle, res.presetName);
           pal = MaterialColor.generateM3Palette(
             res.seedColor || DEFAULT_SEED,
-            res.schemeStyle || "tonal_spot",
+            effScheme,
             res.monetEra || "2021"
           );
           browser.storage.local.set({ activePalette: pal });
@@ -117,9 +118,10 @@ if (browser.theme && browser.theme.onUpdated) {
           const colors = theme && theme.colors;
           const pywalColor = colors && (colors.accentcolor || colors.toolbar_field_focus || colors.toolbar || colors.frame);
           if (pywalColor) {
+            const effScheme = MaterialColor.resolveEffectiveScheme(res.schemeStyle, "pywalfox");
             const palette = MaterialColor.generateM3Palette(
               pywalColor,
-              res.schemeStyle || "tonal_spot",
+              effScheme,
               res.monetEra || "2021"
             );
             browser.storage.local.set({
