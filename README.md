@@ -67,8 +67,10 @@ python3 build.py --lint
 
 Generated artifacts in `dist/`:
 - `dist/pollux-palette-1.0.0-unsigned.xpi` — standalone unsigned `.xpi` (ESR / Developer Edition / Nightly / LibreWolf / debugging).
-- `dist/pollux-palette-1.0.0-amo.zip` — clean archive containing strictly runtime files + `LICENSE` + `NOTICE` for AMO Unlisted signing.
+- `dist/pollux-palette-1.0.0-amo.zip` — clean archive containing strictly runtime files + `LICENSE` + `NOTICE` for AMO Unlisted or Listed submission.
 - `dist/gemini-monet.xpi`, `dist/gemini-monet.zip` — compatibility aliases matching legacy filenames.
+
+For public AMO Listed submission instructions and store metadata, see [PUBLISHING_AMO.md](PUBLISHING_AMO.md) and [amo-metadata.json](amo-metadata.json).
 
 ---
 

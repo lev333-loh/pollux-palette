@@ -1,0 +1,25 @@
+{
+  "categories": {
+    "firefox": ["appearance"],
+    "android": ["appearance"]
+  },
+  "summary": {
+    "en-US": "Gemini Material You Theme — dynamic Material 3 (Monet) theming and native styling for Gemini Web."
+  },
+  "description": {
+    "en-US": "Pollux Palette brings dynamic Material You (Monet) theming and cohesive Material 3 styling to Gemini Web (gemini.google.com) and the Google Account popup (ogs.google.com).\n\nFeatures:\n- Pure client-side Monet tonal palette generator (sRGB / CIE XYZ / CIE L*a*b*) with zero external network requests.\n- Monet 2021 (AOSP tonal ratios) and Monet 2026 (Approx.) eras across 6 schemes: Tonal Spot, Rainbow, Vibrant, Expressive, Neutral, Fidelity.\n- Light and Dark mode switching plus automatic Firefox/Pywalfox theme color sync.\n- Built-in color wheel, 8 curated presets, custom saved preset chips, and Wallpaper Color Picker.\n- Canon vs Legacy user-query edit layout toggle and instant power switch in the popup header.\n- Styles chats, /library, Search Chats modal, code blocks, menus, tooltips, and One Google Account iframe.\n\nDisclaimer: Pollux Palette is an independent, unofficial extension and is not affiliated with, endorsed by, or sponsored by Google LLC. \"Monet 2026\" is an independent algorithmic approximation labeled explicitly in the UI and code."
+  },
+  "homepage": {
+    "en-US": "https://github.com/lev333-loh/pollux-palette"
+  },
+  "support_url": {
+    "en-US": "https://github.com/lev333-loh/pollux-palette/issues"
+  },
+  "version": {
+    "license": "Apache-2.0",
+    "release_notes": {
+      "en-US": "Initial listed release of Pollux Palette (Gemini Material You Theme) v1.0.0."
+    },
+    "approval_notes": "Source clarity: No bundler, minification, or obfuscation is used; all JS/CSS/JSON files are shipped directly in readable form.\n\nData collection: Zero telemetry, zero external API calls, and zero analytics (data_collection_permissions.required = [\"none\"]). All settings live strictly in browser.storage.local.\n\nPermissions rationale:\n- storage: Persists active palette, custom presets, mode, and enable state locally.\n- theme: Optional Pywalfox / Firefox active theme accent color sync via browser.theme.getCurrent() / browser.theme.onUpdated.\n- tabs + https://gemini.google.com/*: Broadcasts live palette updates to open Gemini tabs and reloads them when the extension enable switch toggles.\n- https://ogs.google.com/* (all_frames: true): Themes the embedded One Google Account widget popup inside Gemini.\n\nThird-party attribution (Apache-2.0): Material Symbols Rounded SVG paths (google/material-design-icons) and AOSP ColorScheme.kt chroma constants are credited in NOTICE and LICENSE."
+  }
+}

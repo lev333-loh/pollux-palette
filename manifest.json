@@ -3,6 +3,11 @@
   "name": "Pollux Palette",
   "version": "1.0.0",
   "description": "Gemini Material You Theme — dynamic Material 3 (Monet) theming and native styling for Gemini Web.",
+  "homepage_url": "https://github.com/lev333-loh/pollux-palette",
+  "developer": {
+    "name": "lev333-loh",
+    "url": "https://github.com/lev333-loh/pollux-palette"
+  },
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",

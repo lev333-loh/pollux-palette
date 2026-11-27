@@ -109,6 +109,7 @@ def run_sign(
     channel: str,
     api_key: str | None,
     api_secret: str | None,
+    metadata_path: Path | None = None,
 ) -> int:
     """Submit the clean staged extension to Mozilla AMO for signing."""
     if not api_key or not api_secret:
@@ -119,6 +120,10 @@ def run_sign(
             "https://addons.mozilla.org/developers/addon/submit/distribution",
             file=sys.stderr,
         )
+        return 1
+
+    if metadata_path is not None and not metadata_path.is_file():
+        print(f"Error: AMO metadata file not found: {metadata_path}", file=sys.stderr)
         return 1
 
     web_ext = find_web_ext()
@@ -141,6 +146,10 @@ def run_sign(
             "--api-secret",
             api_secret,
         ]
+        if channel == "listed":
+            cmd.extend(["--approval-timeout", "0"])
+        if metadata_path is not None:
+            cmd.extend(["--amo-metadata", str(metadata_path)])
         return subprocess.run(cmd, check=False).returncode
 
 
@@ -153,6 +162,12 @@ def build(argv: list[str] | None = None) -> int:
         default="unlisted",
         choices=("unlisted", "listed"),
         help="AMO distribution channel when --sign is used (default: unlisted).",
+    )
+    parser.add_argument(
+        "--metadata",
+        type=Path,
+        default=None,
+        help="Path to --amo-metadata JSON (defaults to amo-metadata.json for --channel listed).",
     )
     parser.add_argument("--api-key", default=os.environ.get("AMO_JWT_ISSUER"), help="AMO API JWT issuer.")
     parser.add_argument("--api-secret", default=os.environ.get("AMO_JWT_SECRET"), help="AMO API JWT secret.")
@@ -181,7 +196,12 @@ def build(argv: list[str] | None = None) -> int:
             return rc
 
     if args.sign:
-        return run_sign(entries, dist_dir / "signed", args.channel, args.api_key, args.api_secret)
+        metadata_path = args.metadata
+        if metadata_path is None and args.channel == "listed":
+            default_meta = root / "amo-metadata.json"
+            if default_meta.is_file():
+                metadata_path = default_meta
+        return run_sign(entries, dist_dir / "signed", args.channel, args.api_key, args.api_secret, metadata_path)
 
     return 0
 
