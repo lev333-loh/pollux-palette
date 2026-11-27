@@ -929,6 +929,8 @@ pre:has(code):not(.code-block pre) code {
 mat-sidenav,
 .mat-drawer,
 .mat-sidenav,
+bard-sidenav,
+bard-sidenav-container,
 side-navigation-v2,
 side-navigation-content,
 .gds-sidenav-list {
@@ -1361,6 +1363,8 @@ side-navigation-content {
 mat-sidenav,
 .mat-drawer,
 .mat-sidenav-container.sidenav-open,
+bard-sidenav,
+bard-sidenav-container,
 side-navigation-content,
 .close-sidenav-button,
 .sidenav-header-buttons,

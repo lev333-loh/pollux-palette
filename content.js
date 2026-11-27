@@ -450,7 +450,7 @@
       );
     } else {
       const baseList = [
-        "mat-sidenav", ".mat-drawer", "side-navigation-v2", "side-navigation-content",
+        "mat-sidenav", ".mat-drawer", "bard-sidenav", "bard-sidenav-container", "side-navigation-v2", "side-navigation-content",
         "input-area-v2", ".user-query-bubble-with-background", "code-block",
         ".cdk-overlay-container", "mat-bottom-sheet-container", "gem-bottom-sheet",
         ".popover-menu", "gem-menu", "mat-menu-panel", ".mat-mdc-menu-panel",
