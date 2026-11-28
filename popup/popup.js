@@ -408,6 +408,16 @@ document.addEventListener("DOMContentLoaded", () => {
       currentSeed = res.seedColor || "#814F70";
       currentPreset = res.presetName || "sakura";
       currentScheme = res.schemeStyle || "tonal_spot";
+      if (currentPreset === "monochrome") {
+        currentScheme = "monochrome";
+        currentPreset = "sakura";
+        currentSeed = "#814F70";
+        browser.storage.local.set({
+          seedColor: currentSeed,
+          presetName: currentPreset,
+          schemeStyle: currentScheme,
+        });
+      }
       currentEra = res.monetEra || "2021";
       currentThemeMode = res.themeMode || "dark";
       customPresets = Array.isArray(res.customPresets) ? res.customPresets : [];
@@ -419,8 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCustomPresets(null);
       updateActiveUI(currentSeed, currentPreset);
 
-      const initialScheme = MaterialColor.resolveEffectiveScheme(currentScheme, currentPreset);
-      const initialPalette = MaterialColor.generateM3Palette(currentSeed, initialScheme, currentEra);
+      const initialPalette = MaterialColor.generateM3Palette(currentSeed, currentScheme, currentEra);
       applyMonetThemeToPopup(initialPalette, currentThemeMode);
 
       // Initial draw of color wheel
@@ -433,7 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   function updateActiveUI(hex, preset) {
-    const isMonochrome = preset === "monochrome" || currentScheme === "monochrome";
+    const isMonochrome = currentScheme === "monochrome";
     if (activeDot.style.backgroundColor || activeDot.classList.contains("is-monochrome")) {
       activeDot.classList.remove("is-pulsing");
       void activeDot.offsetWidth;
@@ -441,7 +450,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     activeDot.classList.toggle("is-monochrome", isMonochrome);
     activeDot.style.backgroundColor = isMonochrome ? "" : hex;
-    activeHex.textContent = preset === "monochrome" ? "MONOCHROME" : hex.toUpperCase();
+    activeHex.textContent = hex.toUpperCase();
 
     if (customToggleBtn) {
       if (preset === "custom") {
@@ -483,8 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSchemeUI(currentScheme);
 
     updateActiveUI(hex, presetName);
-    const effectiveScheme = MaterialColor.resolveEffectiveScheme(currentScheme, presetName);
-    const palette = MaterialColor.generateM3Palette(hex, effectiveScheme, currentEra);
+    const palette = MaterialColor.generateM3Palette(hex, currentScheme, currentEra);
     applyMonetThemeToPopup(palette, currentThemeMode);
 
     browser.runtime.sendMessage({

@@ -589,11 +589,13 @@ body {
   z-index: 60;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 6px;
+  gap: 1px;
+  padding: 4px;
+  max-height: 260px;
+  overflow-y: auto;
   background-color: var(--p-surface-container-highest, #383136);
   border: 1px solid var(--p-outline-variant, rgba(255, 255, 255, 0.16));
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
   transform-origin: bottom center;
   animation: md3MenuPop 0.14s var(--md-easing-decelerate);
@@ -613,12 +615,12 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
+  padding: 5px 9px;
   border: none;
-  border-radius: 10px;
+  border-radius: 9px;
   background: transparent;
   color: var(--p-on-surface, #EDE0E4);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
@@ -784,11 +786,6 @@ body {
   border-radius: 50%;
   flex-shrink: 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.chip-dot-monochrome {
-  background: linear-gradient(135deg, #F5F5F5 50%, #1F1F1F 50%);
-  border: 1px solid rgba(128, 128, 128, 0.45);
 }
 
 .action-row {

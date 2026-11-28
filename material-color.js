@@ -81,14 +81,6 @@
     return "#" + [r, g, bVal].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
   }
 
-  function resolveEffectiveScheme(scheme, presetName) {
-    const normalized = (scheme || "tonal_spot").toLowerCase();
-    if (normalized === "monochrome" || (presetName || "").toLowerCase() === "monochrome") {
-      return "monochrome";
-    }
-    return normalized;
-  }
-
   function buildMonochromeTheme(is2026) {
     const gray = (L) => toneToHex(L, 0, 0);
     return {
@@ -614,6 +606,5 @@
   global.MaterialColor = {
     generateM3Palette,
     extractDominantColor,
-    resolveEffectiveScheme,
   };
 })(typeof window !== "undefined" ? window : globalThis);

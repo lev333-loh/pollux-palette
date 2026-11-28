@@ -13,7 +13,7 @@
   - Schemes: `Tonal Spot`, `Rainbow`, `Vibrant`, `Expressive`, `Neutral`, `Fidelity`, `Monochrome`, plus `Direct` (linear Non-Monet RGB tint/shade scale directly from the seed color).
 - **Light & Dark Modes + Pywalfox Sync**: Toggle Light/Dark live or pull your active Firefox/Pywalfox theme seed color.
 - **Color Wheel, Presets & `+` Custom Presets**:
-  - 9 built-in presets (`Sakura`, `Lavender`, `Emerald`, `Ocean`, `Amber`, `Berry`, `Nord`, `Slate`, plus standalone `Monochrome`).
+  - 8 built-in seeds (`Sakura`, `Lavender`, `Emerald`, `Ocean`, `Amber`, `Berry`, `Nord`, `Slate`).
   - One-click `+` chip adds the current `Active Seed` as a persistent custom preset (with remove `×` button and parity-responsive 1/2-column width).
 - **Pick from Wallpaper (`popup/picker.html`)**: Drop or paste an image to extract its dominant seed color and apply the Monet palette.
 - **User Query Edit Mode (`Canon` vs `Legacy`)**: Live switch between the unified Monet bubble (`Canon`) and native Gemini wide edit form (`Legacy`), scoped with native CSS `@scope`.
