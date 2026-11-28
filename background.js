@@ -7,10 +7,11 @@
 const DEFAULT_SEED = "#814F70"; // Sakura Monet default
 
 browser.runtime.onInstalled.addListener(() => {
-  browser.storage.local.get(["seedColor", "activePalette", "monetEra", "themeMode", "pluginEnabled", "editModeStyle"], (res) => {
+  browser.storage.local.get(["seedColor", "activePalette", "monetEra", "themeMode", "pluginEnabled", "editModeStyle", "contrastLevel"], (res) => {
     const patch = {};
+    const contrastLevel = typeof res.contrastLevel === "number" ? res.contrastLevel : 0;
     if (!res.seedColor || !res.activePalette) {
-      const palette = MaterialColor.generateM3Palette(DEFAULT_SEED, "tonal_spot", "2021");
+      const palette = MaterialColor.generateM3Palette(DEFAULT_SEED, "tonal_spot", "2021", { contrastLevel });
       patch.seedColor = DEFAULT_SEED;
       patch.presetName = "sakura";
       patch.schemeStyle = "tonal_spot";
@@ -20,6 +21,7 @@ browser.runtime.onInstalled.addListener(() => {
     }
     if (typeof res.pluginEnabled !== "boolean") patch.pluginEnabled = true;
     if (!res.editModeStyle) patch.editModeStyle = "canon";
+    if (typeof res.contrastLevel !== "number") patch.contrastLevel = 0;
     if (Object.keys(patch).length) browser.storage.local.set(patch);
   });
 });
@@ -48,6 +50,7 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       schemeStyle: msg.schemeStyle,
       monetEra: msg.monetEra || "2021",
       themeMode: msg.themeMode || "dark",
+      contrastLevel: typeof msg.contrastLevel === "number" ? msg.contrastLevel : 0,
       activePalette: msg.palette,
     });
     broadcastPalette(msg.palette, msg.themeMode || "dark");
@@ -82,14 +85,16 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg && msg.type === "GET_PALETTE") {
     browser.storage.local.get(
-      ["activePalette", "seedColor", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle"],
+      ["activePalette", "seedColor", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle", "contrastLevel"],
       (res) => {
         let pal = res.activePalette;
         if (!pal) {
+          const contrastLevel = typeof res.contrastLevel === "number" ? res.contrastLevel : 0;
           pal = MaterialColor.generateM3Palette(
             res.seedColor || DEFAULT_SEED,
             res.schemeStyle || "tonal_spot",
-            res.monetEra || "2021"
+            res.monetEra || "2021",
+            { contrastLevel }
           );
           browser.storage.local.set({ activePalette: pal });
         }
@@ -110,17 +115,19 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 // Auto-sync with Pywalfox / Firefox theme changes
 if (browser.theme && browser.theme.onUpdated) {
   browser.theme.onUpdated.addListener(async () => {
-    browser.storage.local.get(["presetName", "schemeStyle", "monetEra", "themeMode"], async (res) => {
+    browser.storage.local.get(["presetName", "schemeStyle", "monetEra", "themeMode", "contrastLevel"], async (res) => {
       if (res && res.presetName === "pywalfox") {
         try {
           const theme = await browser.theme.getCurrent();
           const colors = theme && theme.colors;
           const pywalColor = colors && (colors.accentcolor || colors.toolbar_field_focus || colors.toolbar || colors.frame);
           if (pywalColor) {
+            const contrastLevel = typeof res.contrastLevel === "number" ? res.contrastLevel : 0;
             const palette = MaterialColor.generateM3Palette(
               pywalColor,
               res.schemeStyle || "tonal_spot",
-              res.monetEra || "2021"
+              res.monetEra || "2021",
+              { contrastLevel }
             );
             browser.storage.local.set({
               seedColor: pywalColor,

@@ -19,9 +19,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const editLegacyBtn = document.getElementById("editLegacyBtn");
   const powerToggleBtn = document.getElementById("powerToggleBtn");
   const popupCard = document.getElementById("popupCard");
+  const mainView = document.getElementById("mainView");
+  const settingsView = document.getElementById("settingsView");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const settingsBackBtn = document.getElementById("settingsBackBtn");
+  const settingsThemeToggleBtn = document.getElementById("settingsThemeToggleBtn");
+  const resetTuningBtn = document.getElementById("resetTuningBtn");
+  const contrastSlider = document.getElementById("contrastSlider");
+  const contrastValueBadge = document.getElementById("contrastValueBadge");
+  const contrastPresets = document.getElementById("contrastPresets");
   const addPresetChip = document.getElementById("addPresetChip");
   const themeToggleBtn = document.getElementById("themeToggleBtn");
-  const themeTogglePath = document.getElementById("themeTogglePath");
+  const themeTogglePaths = document.querySelectorAll(".theme-toggle-path");
 
   const ICON_CLOSE = "M480-438 270-228q-9 9-21 9t-21-9q-9-9-9-21t9-21l210-210-210-210q-9-9-9-21t9-21q9-9 21-9t21 9l210 210 210-210q9-9 21-9t21 9q9 9 9 21t-9 21L522-480l210 210q9 9 9 21t-9 21q-9 9-21 9t-21-9L480-438Z";
 
@@ -44,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentEra = "2021";
   let currentThemeMode = "dark";
   let currentEditModeStyle = "canon";
+  let currentContrast = 0;
   let isPluginEnabled = true;
   let customPresets = [];
 
@@ -388,22 +398,58 @@ document.addEventListener("DOMContentLoaded", () => {
     root.style.setProperty("--p-outline-variant", p.outlineVariant || (mode === "light" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.12)"));
   }
 
+  function formatContrastLabel(val) {
+    const rounded = Math.round(val * 10) / 10;
+    const prefix = rounded > 0 ? `+${rounded.toFixed(1)}` : rounded.toFixed(1);
+    if (Math.abs(rounded) < 0.05) return `Standard · 0.0`;
+    if (rounded >= 0.9) return `High · ${prefix}`;
+    if (rounded >= 0.4) return `Medium · ${prefix}`;
+    if (rounded < 0) return `Soft · ${prefix}`;
+    return prefix;
+  }
+
+  function updateContrastUI(val) {
+    const num = Number(val);
+    currentContrast = Number.isFinite(num) ? Math.max(-0.5, Math.min(1.0, Math.round(num * 10) / 10)) : 0;
+    if (contrastSlider) {
+      contrastSlider.value = String(currentContrast);
+      const pct = ((currentContrast - (-0.5)) / 1.5) * 100;
+      contrastSlider.style.setProperty("--slider-pct", `${Math.max(0, Math.min(100, pct)).toFixed(1)}%`);
+    }
+    if (contrastValueBadge) {
+      contrastValueBadge.textContent = formatContrastLabel(currentContrast);
+    }
+    if (contrastPresets) {
+      contrastPresets.querySelectorAll(".contrast-chip").forEach((chip) => {
+        const chipVal = parseFloat(chip.getAttribute("data-contrast"));
+        chip.classList.toggle("active", Math.abs(chipVal - currentContrast) < 0.05);
+      });
+    }
+  }
+
+  function showSettingsView(open) {
+    if (!mainView || !settingsView) return;
+    setSchemeMenuOpen(false);
+    mainView.hidden = open;
+    settingsView.hidden = !open;
+  }
+
   function updateThemeUI(mode) {
     currentThemeMode = mode === "light" ? "light" : "dark";
     document.body.classList.toggle("light-mode", currentThemeMode === "light");
-    if (themeTogglePath) {
-      themeTogglePath.setAttribute("d", currentThemeMode === "light" ? ICON_DARK_MODE : ICON_LIGHT_MODE);
-    }
-    if (themeToggleBtn) {
-      themeToggleBtn.title = currentThemeMode === "light"
-        ? "Переключити на темний режим"
-        : "Переключити на світлий режим";
-    }
+    const nextD = currentThemeMode === "light" ? ICON_DARK_MODE : ICON_LIGHT_MODE;
+    const nextTitle = currentThemeMode === "light"
+      ? "Переключити на темний режим"
+      : "Переключити на світлий режим";
+    themeTogglePaths.forEach((el) => el.setAttribute("d", nextD));
+    [themeToggleBtn, settingsThemeToggleBtn].forEach((btn) => {
+      if (btn) btn.title = nextTitle;
+    });
   }
 
   // Load current settings
   browser.storage.local.get(
-    ["seedColor", "presetName", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle", "customPresets"],
+    ["seedColor", "presetName", "schemeStyle", "monetEra", "themeMode", "pluginEnabled", "editModeStyle", "customPresets", "contrastLevel"],
     (res) => {
       currentSeed = res.seedColor || "#814F70";
       currentPreset = res.presetName || "sakura";
@@ -420,16 +466,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       currentEra = res.monetEra || "2021";
       currentThemeMode = res.themeMode || "dark";
+      currentContrast = typeof res.contrastLevel === "number" ? res.contrastLevel : 0;
       customPresets = Array.isArray(res.customPresets) ? res.customPresets : [];
       updatePowerUI(res.pluginEnabled !== false);
       updateEditModeUI(res.editModeStyle || "canon");
       updateSchemeUI(currentScheme);
       updateEraUI(currentEra);
       updateThemeUI(currentThemeMode);
+      updateContrastUI(currentContrast);
       renderCustomPresets(null);
       updateActiveUI(currentSeed, currentPreset);
 
-      const initialPalette = MaterialColor.generateM3Palette(currentSeed, currentScheme, currentEra);
+      const initialPalette = MaterialColor.generateM3Palette(currentSeed, currentScheme, currentEra, {
+        contrastLevel: currentContrast,
+      });
       applyMonetThemeToPopup(initialPalette, currentThemeMode);
 
       // Initial draw of color wheel
@@ -477,7 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
     syncPickerToHex(hex);
   }
 
-  function applySeed(hex, presetName, scheme, era, mode) {
+  function applySeed(hex, presetName, scheme, era, mode, contrast) {
     currentSeed = hex;
     currentPreset = presetName;
     currentScheme = scheme || currentScheme || "tonal_spot";
@@ -488,11 +538,16 @@ document.addEventListener("DOMContentLoaded", () => {
       currentThemeMode = mode;
       updateThemeUI(currentThemeMode);
     }
+    if (typeof contrast === "number") {
+      updateContrastUI(contrast);
+    }
     updateEraUI(currentEra);
     updateSchemeUI(currentScheme);
 
     updateActiveUI(hex, presetName);
-    const palette = MaterialColor.generateM3Palette(hex, currentScheme, currentEra);
+    const palette = MaterialColor.generateM3Palette(hex, currentScheme, currentEra, {
+      contrastLevel: currentContrast,
+    });
     applyMonetThemeToPopup(palette, currentThemeMode);
 
     browser.runtime.sendMessage({
@@ -502,8 +557,16 @@ document.addEventListener("DOMContentLoaded", () => {
       schemeStyle: currentScheme,
       monetEra: currentEra,
       themeMode: currentThemeMode,
+      contrastLevel: currentContrast,
       palette: palette,
     });
+  }
+
+  function handleThemeToggleClick() {
+    const nextMode = currentThemeMode === "dark" ? "light" : "dark";
+    updateThemeUI(nextMode);
+    browser.storage.local.set({ themeMode: nextMode });
+    applySeed(currentSeed, currentPreset, currentScheme, currentEra, nextMode);
   }
 
   if (powerToggleBtn) {
@@ -514,12 +577,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", () => {
-      const nextMode = currentThemeMode === "dark" ? "light" : "dark";
-      updateThemeUI(nextMode);
-      browser.storage.local.set({ themeMode: nextMode });
-      applySeed(currentSeed, currentPreset, currentScheme, currentEra, nextMode);
+  [themeToggleBtn, settingsThemeToggleBtn].forEach((btn) => {
+    if (btn) btn.addEventListener("click", handleThemeToggleClick);
+  });
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", () => showSettingsView(true));
+  }
+
+  if (settingsBackBtn) {
+    settingsBackBtn.addEventListener("click", () => showSettingsView(false));
+  }
+
+  if (resetTuningBtn) {
+    resetTuningBtn.addEventListener("click", () => {
+      applySeed(currentSeed, currentPreset, currentScheme, currentEra, null, 0);
+    });
+  }
+
+  if (contrastSlider) {
+    contrastSlider.addEventListener("input", () => {
+      const val = parseFloat(contrastSlider.value);
+      applySeed(currentSeed, currentPreset, currentScheme, currentEra, null, val);
+    });
+  }
+
+  if (contrastPresets) {
+    contrastPresets.addEventListener("click", (e) => {
+      const chip = e.target.closest(".contrast-chip");
+      if (!chip) return;
+      const val = parseFloat(chip.getAttribute("data-contrast"));
+      if (Number.isFinite(val)) {
+        applySeed(currentSeed, currentPreset, currentScheme, currentEra, null, val);
+      }
     });
   }
 

@@ -51,11 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   applyBtn.addEventListener("click", () => {
-    browser.storage.local.get(["schemeStyle", "monetEra", "themeMode"], (res) => {
+    browser.storage.local.get(["schemeStyle", "monetEra", "themeMode", "contrastLevel"], (res) => {
       const scheme = (res && res.schemeStyle) || "rainbow";
       const era = (res && res.monetEra) || "2021";
       const themeMode = (res && res.themeMode) || "dark";
-      const palette = MaterialColor.generateM3Palette(currentHex, scheme, era);
+      const contrastLevel = res && typeof res.contrastLevel === "number" ? res.contrastLevel : 0;
+      const palette = MaterialColor.generateM3Palette(currentHex, scheme, era, { contrastLevel });
       browser.runtime.sendMessage({
         type: "UPDATE_PALETTE",
         seedColor: currentHex,
@@ -63,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         schemeStyle: scheme,
         monetEra: era,
         themeMode: themeMode,
+        contrastLevel: contrastLevel,
         palette: palette,
       }).then(() => {
         statusMsg.style.display = "flex";

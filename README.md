@@ -17,6 +17,7 @@
   - One-click `+` chip adds the current `Active Seed` as a persistent custom preset (with remove `×` button and parity-responsive 1/2-column width).
 - **Pick from Wallpaper (`popup/picker.html`)**: Drop or paste an image to extract its dominant seed color and apply the Monet palette.
 - **User Query Edit Mode (`Canon` vs `Legacy`)**: Live switch between the unified Monet bubble (`Canon`) and native Gemini wide edit form (`Legacy`), scoped with native CSS `@scope`.
+- **In-Popup Settings & M3 Contrast Level (`-0.5` .. `+1.0`)**: Click the header gear button to open settings directly inside the popup (`Soft`, `Standard`, `Medium`, `High` contrast presets + slider, wired for upcoming Monet sliders).
 - **Power Toggle + Zero FOUC**: Header power button enables/disables extension theming and reloads open `gemini.google.com` tabs; styles apply at `document_start` via `document.adoptedStyleSheets`.
 - **Full Surface Coverage**: Styles main chat, React/StyleX islands (`/library` and Search Chats modal), menus, tooltips, bottom sheets, code blocks, and the One Google account popup.
 

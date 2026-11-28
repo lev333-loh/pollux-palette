@@ -8,6 +8,7 @@
 </head>
 <body>
   <div class="card" id="popupCard">
+    <div class="popup-view" id="mainView">
     <div class="header">
       <img src="../icons/icon-48.png" alt="Logo" class="logo">
       <div class="title-group">
@@ -22,7 +23,12 @@
         </button>
         <button type="button" class="icon-btn theme-toggle-btn" id="themeToggleBtn" title="Перемкнути режим (Світлий / Темний)">
           <svg class="m3-icon" id="themeToggleIcon" viewBox="0 -960 960 960" aria-hidden="true">
-            <path id="themeTogglePath" d="M480-120q-150 0-255-105T120-480q0-135 79.5-229T408-830q20-5 34-1t22 15q8 10 7.5 25t-8.5 35q-9 23-14 47t-5 49q0 90 63 153t153 63q25 0 48.5-4.5T754-461q22-8 38-7t26 9q10 8 13 23t-2 36q-27 121-121 200.5T480-120Zm0-60q109 0 190-67.5T771-406q-25 11-53.5 16.5T660-384q-115 0-195.5-80.5T384-660q0-24 5-51.5t18-62.5q-98 27-162.5 109.5T180-480q0 125 87.5 212.5T480-180Zm-4-297Z"/>
+            <path class="theme-toggle-path" id="themeTogglePath" d="M480-120q-150 0-255-105T120-480q0-135 79.5-229T408-830q20-5 34-1t22 15q8 10 7.5 25t-8.5 35q-9 23-14 47t-5 49q0 90 63 153t153 63q25 0 48.5-4.5T754-461q22-8 38-7t26 9q10 8 13 23t-2 36q-27 121-121 200.5T480-120Zm0-60q109 0 190-67.5T771-406q-25 11-53.5 16.5T660-384q-115 0-195.5-80.5T384-660q0-24 5-51.5t18-62.5q-98 27-162.5 109.5T180-480q0 125 87.5 212.5T480-180Zm-4-297Z"/>
+          </svg>
+        </button>
+        <button type="button" class="icon-btn settings-btn" id="settingsBtn" title="Налаштування Custom Monet">
+          <svg class="m3-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12L370-880h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm110-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T340-480q0 58 40.5 99t99.5 41Z"/>
           </svg>
         </button>
       </div>
@@ -36,7 +42,7 @@
       </div>
       <button type="button" class="custom-btn" id="customToggleBtn" title="Власний колір: колірне коло та HEX">
         <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
-          <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-85 32-158t87.5-127q55.5-54 130-84.5T489-880q79 0 150 26.5T763.5-780q53.5 47 85 111.5T880-527q0 108-63 170.5T650-294h-75q-18 0-31 14t-13 31q0 27 14.5 46t14.5 44q0 38-21 58.5T480-80Zm0-400Zm-198 11q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm126-170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm214 0q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm131 170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15ZM480-140q11 0 15.5-4.5T500-159q0-14-14.5-26T471-238q0-46 30-81t76-35h73q76 0 123-44.5T820-527q0-132-100-212.5T489-820q-146 0-247.5 98.5T140-480q0 141 99.5 240.5T480-140Z"/>
+          <path d="M120-230v-60h420v60H120Zm540 90v-240h60v90h120v60H720v90h-60ZM120-450v-60h160v60H120Zm220 90v-240h60v90h440v60H400v90h-60Zm200-220v-240h60v90h240v60H600v90h-60ZM120-670v-60h360v60H120Z"/>
         </svg>
         <span>Custom</span>
       </button>
@@ -206,6 +212,58 @@
 
     <div class="footer">
       <span>Drag & drop image or Ctrl+V to extract</span>
+    </div>
+    </div>
+
+    <div class="popup-view" id="settingsView" hidden>
+      <div class="header settings-header">
+        <button type="button" class="icon-btn back-btn" id="settingsBackBtn" title="Назад">
+          <svg class="m3-icon" viewBox="0 -960 960 960" aria-hidden="true">
+            <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+          </svg>
+        </button>
+        <div class="title-group">
+          <h1 class="title">Settings</h1>
+          <span class="subtitle">Custom Monet Seed</span>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="icon-btn theme-toggle-btn" id="settingsThemeToggleBtn" title="Перемкнути режим (Світлий / Темний)">
+            <svg class="m3-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <path class="theme-toggle-path" d="M480-120q-150 0-255-105T120-480q0-135 79.5-229T408-830q20-5 34-1t22 15q8 10 7.5 25t-8.5 35q-9 23-14 47t-5 49q0 90 63 153t153 63q25 0 48.5-4.5T754-461q22-8 38-7t26 9q10 8 13 23t-2 36q-27 121-121 200.5T480-120Zm0-60q109 0 190-67.5T771-406q-25 11-53.5 16.5T660-384q-115 0-195.5-80.5T384-660q0-24 5-51.5t18-62.5q-98 27-162.5 109.5T180-480q0 125 87.5 212.5T480-180Zm-4-297Z"/>
+            </svg>
+          </button>
+          <button type="button" class="icon-btn reset-btn" id="resetTuningBtn" title="Скинути налаштування (Standard 0.0)">
+            <svg class="m3-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <path d="M477-120q-142 0-243.5-95.5T121-451q-1-12 7.5-21t21.5-9q12 0 20.5 8.5T181-451q11 115 95 193t201 78q127 0 215-89t88-216q0-124-89-209.5T477-780q-68 0-127.5 31T246-667h75q13 0 21.5 8.5T351-637q0 13-8.5 21.5T321-607H172q-13 0-21.5-8.5T142-637v-148q0-13 8.5-21.5T172-815q13 0 21.5 8.5T202-785v76q52-61 123.5-96T477-840q75 0 141 28t115.5 76.5Q783-687 811.5-622T840-482q0 75-28.5 141t-78 115Q684-177 618-148.5T477-120Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="section-title">Custom Monet Seed</div>
+      <div class="settings-card" id="customMonetTuningCard">
+        <div class="sliders-stack" id="tuningSlidersStack">
+          <div class="tuning-item" id="contrastTuningItem">
+            <div class="tuning-item-head">
+              <div class="tuning-item-label">
+                <svg class="m3-icon m3-icon-sm" viewBox="0 -960 960 960" aria-hidden="true">
+                  <path d="M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM500-140q137-10 228.5-106T820-480q0-138-91.5-234T500-820v680Z"/>
+                </svg>
+                <span>Contrast Level</span>
+              </div>
+              <span class="tuning-badge" id="contrastValueBadge">Standard · 0.0</span>
+            </div>
+            <input type="range" id="contrastSlider" class="m3-slider" min="-0.5" max="1" step="0.1" value="0" aria-label="Contrast Level">
+            <div class="contrast-presets" id="contrastPresets">
+              <button type="button" class="contrast-chip" data-contrast="-0.3">Soft</button>
+              <button type="button" class="contrast-chip active" data-contrast="0">Standard</button>
+              <button type="button" class="contrast-chip" data-contrast="0.5">Medium</button>
+              <button type="button" class="contrast-chip" data-contrast="1">High</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-hint">Регулює контраст фону, тексту та рамок. Блок розрахований під 3 Monet-повзунки (Vibrancy та Tint — далі).</div>
+      </div>
     </div>
   </div>
 

@@ -81,72 +81,112 @@
     return "#" + [r, g, bVal].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
   }
 
-  function buildMonochromeTheme(is2026) {
-    const gray = (L) => toneToHex(L, 0, 0);
+  function clampContrast(value) {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return 0;
+    return Math.max(-0.5, Math.min(1.0, Math.round(num * 100) / 100));
+  }
+
+  function shiftContrastTone(baseL, isDark, role, contrastLevel) {
+    if (!contrastLevel) return baseL;
+    const c = contrastLevel;
+    let delta = 0;
+    if (c > 0) {
+      switch (role) {
+        case "surface": delta = isDark ? -5 * c : 1.5 * c; break;
+        case "container": delta = isDark ? -2.5 * c : 2 * c; break;
+        case "onSurface": delta = isDark ? 8 * c : -8 * c; break;
+        case "onSurfaceVariant": delta = isDark ? 12 * c : -15 * c; break;
+        case "primary": delta = isDark ? 12 * c : -18 * c; break;
+        case "onPrimary": delta = isDark ? -15 * c : 0; break;
+        case "onContainer": delta = isDark ? 8 * c : -8 * c; break;
+        case "outline": delta = isDark ? 18 * c : -20 * c; break;
+        case "outlineVariant": delta = isDark ? 18 * c : -24 * c; break;
+      }
+    } else {
+      const k = -c; // 0..0.5
+      switch (role) {
+        case "surface": delta = isDark ? 4 * k : -2.5 * k; break;
+        case "container": delta = isDark ? 2 * k : -2 * k; break;
+        case "onSurface": delta = isDark ? -8 * k : 8 * k; break;
+        case "onSurfaceVariant": delta = isDark ? -10 * k : 10 * k; break;
+        case "primary": delta = isDark ? -10 * k : 10 * k; break;
+        case "onPrimary": delta = isDark ? 6 * k : 0; break;
+        case "onContainer": delta = isDark ? -8 * k : 8 * k; break;
+        case "outline": delta = isDark ? -14 * k : 14 * k; break;
+        case "outlineVariant": delta = isDark ? -8 * k : 8 * k; break;
+      }
+    }
+    return Math.max(0, Math.min(100, baseL + delta));
+  }
+
+  function buildMonochromeTheme(is2026, contrastLevel) {
+    const c = contrastLevel || 0;
+    const gray = (L, isDark, role) => toneToHex(role ? shiftContrastTone(L, isDark, role, c) : L, 0, 0);
     return {
       light: {
-        surface: gray(is2026 ? 99 : 98),
-        surfaceDim: gray(is2026 ? 86 : 87),
-        surfaceBright: gray(is2026 ? 99 : 98),
+        surface: gray(is2026 ? 99 : 98, false, "surface"),
+        surfaceDim: gray(is2026 ? 86 : 87, false, "container"),
+        surfaceBright: gray(is2026 ? 99 : 98, false, "surface"),
         surfaceContainerLowest: "#FFFFFF",
-        surfaceContainerLow: gray(is2026 ? 97 : 96),
-        surfaceContainer: gray(94),
-        surfaceContainerHigh: gray(is2026 ? 91 : 92),
-        surfaceContainerHighest: gray(is2026 ? 88 : 89),
-        surfaceVariant: gray(is2026 ? 88 : 89),
-        onSurface: gray(is2026 ? 6 : 10),
-        onSurfaceVariant: gray(is2026 ? 28 : 32),
-        primary: gray(is2026 ? 0 : 20),
+        surfaceContainerLow: gray(is2026 ? 97 : 96, false, "container"),
+        surfaceContainer: gray(94, false, "container"),
+        surfaceContainerHigh: gray(is2026 ? 91 : 92, false, "container"),
+        surfaceContainerHighest: gray(is2026 ? 88 : 89, false, "container"),
+        surfaceVariant: gray(is2026 ? 88 : 89, false, "container"),
+        onSurface: gray(is2026 ? 6 : 10, false, "onSurface"),
+        onSurfaceVariant: gray(is2026 ? 28 : 32, false, "onSurfaceVariant"),
+        primary: gray(is2026 ? 0 : 20, false, "primary"),
         onPrimary: "#FFFFFF",
-        primaryContainer: gray(is2026 ? 85 : 86),
-        onPrimaryContainer: gray(is2026 ? 5 : 10),
-        secondary: gray(is2026 ? 24 : 32),
+        primaryContainer: gray(is2026 ? 85 : 86, false, "container"),
+        onPrimaryContainer: gray(is2026 ? 5 : 10, false, "onContainer"),
+        secondary: gray(is2026 ? 24 : 32, false, "primary"),
         onSecondary: "#FFFFFF",
-        secondaryContainer: gray(is2026 ? 88 : 89),
-        onSecondaryContainer: gray(is2026 ? 10 : 14),
-        tertiary: gray(is2026 ? 36 : 42),
+        secondaryContainer: gray(is2026 ? 88 : 89, false, "container"),
+        onSecondaryContainer: gray(is2026 ? 10 : 14, false, "onContainer"),
+        tertiary: gray(is2026 ? 36 : 42, false, "primary"),
         onTertiary: "#FFFFFF",
-        tertiaryContainer: gray(is2026 ? 90 : 91),
-        onTertiaryContainer: gray(is2026 ? 12 : 16),
-        outline: gray(is2026 ? 45 : 50),
-        outlineVariant: gray(is2026 ? 78 : 80),
-        inverseSurface: gray(is2026 ? 14 : 18),
-        inverseOnSurface: gray(is2026 ? 97 : 95),
-        inversePrimary: gray(is2026 ? 90 : 84),
+        tertiaryContainer: gray(is2026 ? 90 : 91, false, "container"),
+        onTertiaryContainer: gray(is2026 ? 12 : 16, false, "onContainer"),
+        outline: gray(is2026 ? 45 : 50, false, "outline"),
+        outlineVariant: gray(is2026 ? 78 : 80, false, "outlineVariant"),
+        inverseSurface: gray(is2026 ? 14 : 18, false, null),
+        inverseOnSurface: gray(is2026 ? 97 : 95, false, null),
+        inversePrimary: gray(is2026 ? 90 : 84, false, null),
         error: "#BA1A1A",
         onError: "#FFFFFF",
         errorContainer: "#FFDAD6",
         onErrorContainer: "#410002",
       },
       dark: {
-        surface: gray(is2026 ? 6 : 10),
-        surfaceDim: gray(is2026 ? 4 : 8),
-        surfaceBright: gray(is2026 ? 22 : 24),
-        surfaceContainerLowest: gray(is2026 ? 3 : 6),
-        surfaceContainerLow: gray(is2026 ? 8 : 11),
-        surfaceContainer: gray(is2026 ? 12 : 15),
-        surfaceContainerHigh: gray(is2026 ? 16 : 19),
-        surfaceContainerHighest: gray(is2026 ? 20 : 23),
-        surfaceVariant: gray(is2026 ? 25 : 28),
-        onSurface: gray(is2026 ? 94 : 91),
-        onSurfaceVariant: gray(is2026 ? 78 : 76),
-        primary: gray(is2026 ? 100 : 92),
-        onPrimary: gray(is2026 ? 0 : 12),
-        primaryContainer: gray(is2026 ? 24 : 28),
-        onPrimaryContainer: gray(is2026 ? 98 : 94),
-        secondary: gray(is2026 ? 84 : 80),
-        onSecondary: gray(is2026 ? 14 : 18),
-        secondaryContainer: gray(is2026 ? 22 : 25),
-        onSecondaryContainer: gray(is2026 ? 96 : 92),
-        tertiary: gray(is2026 ? 74 : 70),
-        onTertiary: gray(is2026 ? 14 : 18),
-        tertiaryContainer: gray(is2026 ? 26 : 30),
-        onTertiaryContainer: gray(is2026 ? 94 : 90),
-        outline: gray(is2026 ? 55 : 58),
-        outlineVariant: gray(is2026 ? 28 : 30),
-        inverseSurface: gray(is2026 ? 94 : 91),
-        inverseOnSurface: gray(is2026 ? 14 : 18),
-        inversePrimary: gray(is2026 ? 25 : 35),
+        surface: gray(is2026 ? 6 : 10, true, "surface"),
+        surfaceDim: gray(is2026 ? 4 : 8, true, "surface"),
+        surfaceBright: gray(is2026 ? 22 : 24, true, "container"),
+        surfaceContainerLowest: gray(is2026 ? 3 : 6, true, "surface"),
+        surfaceContainerLow: gray(is2026 ? 8 : 11, true, "container"),
+        surfaceContainer: gray(is2026 ? 12 : 15, true, "container"),
+        surfaceContainerHigh: gray(is2026 ? 16 : 19, true, "container"),
+        surfaceContainerHighest: gray(is2026 ? 20 : 23, true, "container"),
+        surfaceVariant: gray(is2026 ? 25 : 28, true, "container"),
+        onSurface: gray(is2026 ? 94 : 91, true, "onSurface"),
+        onSurfaceVariant: gray(is2026 ? 78 : 76, true, "onSurfaceVariant"),
+        primary: gray(is2026 ? 100 : 92, true, "primary"),
+        onPrimary: gray(is2026 ? 0 : 12, true, "onPrimary"),
+        primaryContainer: gray(is2026 ? 24 : 28, true, "container"),
+        onPrimaryContainer: gray(is2026 ? 98 : 94, true, "onContainer"),
+        secondary: gray(is2026 ? 84 : 80, true, "primary"),
+        onSecondary: gray(is2026 ? 14 : 18, true, "onPrimary"),
+        secondaryContainer: gray(is2026 ? 22 : 25, true, "container"),
+        onSecondaryContainer: gray(is2026 ? 96 : 92, true, "onContainer"),
+        tertiary: gray(is2026 ? 74 : 70, true, "primary"),
+        onTertiary: gray(is2026 ? 14 : 18, true, "onPrimary"),
+        tertiaryContainer: gray(is2026 ? 26 : 30, true, "container"),
+        onTertiaryContainer: gray(is2026 ? 94 : 90, true, "onContainer"),
+        outline: gray(is2026 ? 55 : 58, true, "outline"),
+        outlineVariant: gray(is2026 ? 28 : 30, true, "outlineVariant"),
+        inverseSurface: gray(is2026 ? 94 : 91, true, null),
+        inverseOnSurface: gray(is2026 ? 14 : 18, true, null),
+        inversePrimary: gray(is2026 ? 25 : 35, true, null),
         error: "#FFB4AB",
         onError: "#690005",
         errorContainer: "#93000A",
@@ -193,31 +233,37 @@
     return contrastRatio(lightOpt, bgRgb) >= contrastRatio(darkOpt, bgRgb) ? lightOpt : darkOpt;
   }
 
-  function buildDirectLinearTheme(seedRgb, is2026) {
+  function buildDirectLinearTheme(seedRgb, is2026, contrastLevel) {
     const BLACK = [0, 0, 0];
     const WHITE = [255, 255, 255];
+    const c = contrastLevel || 0;
+    const surfShift = c * 0.04;
+    const minPrimaryContrast = Math.max(4.0, 4.8 + c * 2.4);
+    const minTextContrast = Math.max(5.5, 8.0 + c * 3.0);
+    const minOutlineContrast = Math.max(2.2, 3.0 + c * 1.4);
+    const minBorderContrast = Math.max(1.25, 1.45 + c * 0.45);
 
-    const lSurf = mixRgb(seedRgb, WHITE, is2026 ? 0.90 : 0.93);
-    const lSurfCont = mixRgb(seedRgb, WHITE, is2026 ? 0.83 : 0.86);
-    const lSurfHigh = mixRgb(seedRgb, WHITE, is2026 ? 0.78 : 0.82);
-    const lOnSurf = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.84), lSurf, BLACK, 8.0);
-    const lPrim = ensureContrastOnBg(seedRgb, lSurf, BLACK, 4.8);
+    const lSurf = mixRgb(seedRgb, WHITE, Math.max(0.84, Math.min(0.97, (is2026 ? 0.90 : 0.93) + surfShift)));
+    const lSurfCont = mixRgb(seedRgb, WHITE, Math.max(0.76, Math.min(0.94, (is2026 ? 0.83 : 0.86) + surfShift * 0.7)));
+    const lSurfHigh = mixRgb(seedRgb, WHITE, Math.max(0.70, Math.min(0.91, (is2026 ? 0.78 : 0.82) + surfShift * 0.6)));
+    const lOnSurf = ensureContrastOnBg(mixRgb(seedRgb, BLACK, c > 0 ? 0.84 + 0.14 * c : 0.84 + 0.14 * c), lSurf, BLACK, minTextContrast);
+    const lPrim = ensureContrastOnBg(seedRgb, lSurf, BLACK, minPrimaryContrast);
     const lPrimCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.60 : 0.68), BLACK, WHITE, 7.2);
-    const lSec = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.25), lSurf, BLACK, 4.5);
+    const lSec = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.25), lSurf, BLACK, minPrimaryContrast);
     const lSecCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.66 : 0.73), BLACK, WHITE, 7.2);
-    const lTert = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35), lSurf, BLACK, 4.5);
+    const lTert = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35), lSurf, BLACK, minPrimaryContrast);
     const lTertCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.72 : 0.78), BLACK, WHITE, 7.2);
     const lInvSurf = mixRgb(seedRgb, BLACK, 0.84);
 
-    const dSurf = mixRgb(seedRgb, BLACK, is2026 ? 0.84 : 0.88);
-    const dSurfCont = mixRgb(seedRgb, BLACK, is2026 ? 0.77 : 0.81);
-    const dSurfHigh = mixRgb(seedRgb, BLACK, is2026 ? 0.72 : 0.76);
-    const dOnSurf = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.86), dSurf, WHITE, 8.0);
-    const dPrim = ensureContrastOnBg(seedRgb, dSurf, WHITE, 4.8);
+    const dSurf = mixRgb(seedRgb, BLACK, Math.max(0.78, Math.min(0.95, (is2026 ? 0.84 : 0.88) + surfShift)));
+    const dSurfCont = mixRgb(seedRgb, BLACK, Math.max(0.70, Math.min(0.91, (is2026 ? 0.77 : 0.81) + surfShift * 0.7)));
+    const dSurfHigh = mixRgb(seedRgb, BLACK, Math.max(0.64, Math.min(0.88, (is2026 ? 0.72 : 0.76) + surfShift * 0.6)));
+    const dOnSurf = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.86 + 0.12 * c), dSurf, WHITE, minTextContrast);
+    const dPrim = ensureContrastOnBg(seedRgb, dSurf, WHITE, minPrimaryContrast);
     const dPrimCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.45 : 0.55), WHITE, BLACK, 7.2);
-    const dSec = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.32), dSurf, WHITE, 4.5);
+    const dSec = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.32), dSurf, WHITE, minPrimaryContrast);
     const dSecCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.48 : 0.56), WHITE, BLACK, 7.2);
-    const dTert = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.48), dSurf, WHITE, 4.5);
+    const dTert = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.48), dSurf, WHITE, minPrimaryContrast);
     const dTertCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.52 : 0.60), WHITE, BLACK, 7.2);
     const dInvSurf = mixRgb(seedRgb, WHITE, 0.88);
 
@@ -233,7 +279,7 @@
         surfaceContainerHighest: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.73 : 0.77)),
         surfaceVariant: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.72 : 0.76)),
         onSurface: rgbTupleToHex(lOnSurf),
-        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.58), lSurfHigh, BLACK, 4.8)),
+        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.58 + 0.20 * c), lSurfHigh, BLACK, Math.max(4.0, 4.8 + 1.8 * c))),
         primary: rgbTupleToHex(lPrim),
         onPrimary: rgbTupleToHex(pickReadableText(lPrim, seedRgb, 7.0)),
         primaryContainer: rgbTupleToHex(lPrimCont),
@@ -246,8 +292,8 @@
         onTertiary: rgbTupleToHex(pickReadableText(lTert, seedRgb, 7.0)),
         tertiaryContainer: rgbTupleToHex(lTertCont),
         onTertiaryContainer: rgbTupleToHex(pickReadableText(lTertCont, seedRgb, 7.0)),
-        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35), lSurf, BLACK, 3.0)),
-        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.62 : 0.68), lSurfCont, BLACK, 1.45)),
+        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35 + 0.25 * c), lSurf, BLACK, minOutlineContrast)),
+        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.62 : 0.68), lSurfCont, BLACK, minBorderContrast)),
         inverseSurface: rgbTupleToHex(lInvSurf),
         inverseOnSurface: rgbTupleToHex(pickReadableText(lInvSurf, seedRgb, 7.0)),
         inversePrimary: rgbTupleToHex(ensureContrastOnBg(seedRgb, lInvSurf, WHITE, 4.5)),
@@ -267,7 +313,7 @@
         surfaceContainerHighest: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.66 : 0.71)),
         surfaceVariant: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.62 : 0.68)),
         onSurface: rgbTupleToHex(dOnSurf),
-        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.65), dSurfHigh, WHITE, 4.8)),
+        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.65 + 0.20 * c), dSurfHigh, WHITE, Math.max(4.0, 4.8 + 1.8 * c))),
         primary: rgbTupleToHex(dPrim),
         onPrimary: rgbTupleToHex(pickReadableText(dPrim, seedRgb, 7.0)),
         primaryContainer: rgbTupleToHex(dPrimCont),
@@ -280,8 +326,8 @@
         onTertiary: rgbTupleToHex(pickReadableText(dTert, seedRgb, 7.0)),
         tertiaryContainer: rgbTupleToHex(dTertCont),
         onTertiaryContainer: rgbTupleToHex(pickReadableText(dTertCont, seedRgb, 7.0)),
-        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.30), dSurf, WHITE, 3.0)),
-        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.52 : 0.58), dSurfCont, WHITE, 1.45)),
+        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.30 + 0.25 * c), dSurf, WHITE, minOutlineContrast)),
+        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.52 : 0.58), dSurfCont, WHITE, minBorderContrast)),
         inverseSurface: rgbTupleToHex(dInvSurf),
         inverseOnSurface: rgbTupleToHex(pickReadableText(dInvSurf, seedRgb, 7.0)),
         inversePrimary: rgbTupleToHex(ensureContrastOnBg(seedRgb, dInvSurf, BLACK, 4.5)),
@@ -293,18 +339,19 @@
     };
   }
 
-  function generateM3Palette(seedHex, scheme, era) {
+  function generateM3Palette(seedHex, scheme, era, options) {
     scheme = (scheme || "tonal_spot").toLowerCase();
     era = (era || (scheme === "monet_2026" ? "2026" : "2021")).toString().toLowerCase();
     const is2026 = era.includes("2026") || scheme === "monet_2026";
     const isMonochrome = scheme === "monochrome";
     const isDirect = scheme === "direct";
+    const contrastLevel = clampContrast(options && options.contrastLevel);
 
     const [r, g, b] = hexToRgb(seedHex || "#814F70");
     const tones = [0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
     if (isDirect) {
       const seedRgb = [r, g, b];
-      const directRes = buildDirectLinearTheme(seedRgb, is2026);
+      const directRes = buildDirectLinearTheme(seedRgb, is2026, contrastLevel);
       tones.forEach((t) => {
         const hexStep = rgbTupleToHex(
           t <= 500
@@ -493,33 +540,36 @@
 
     const mapTones = (t) => t === 50 ? 5 : t / 10;
 
-    const res = isMonochrome ? buildMonochromeTheme(is2026) : {
+    const toneShift = (L, isDark, role, aVal, bVal) =>
+      toneToHex(shiftContrastTone(L, isDark, role, contrastLevel), aVal, bVal);
+
+    const res = isMonochrome ? buildMonochromeTheme(is2026, contrastLevel) : {
       light: {
-        surface: toneToHex(98, n1_a, n1_b),
-        surfaceDim: toneToHex(87, n1_a, n1_b),
-        surfaceBright: toneToHex(98, n1_a, n1_b),
+        surface: toneShift(98, false, "surface", n1_a, n1_b),
+        surfaceDim: toneShift(87, false, "container", n1_a, n1_b),
+        surfaceBright: toneShift(98, false, "surface", n1_a, n1_b),
         surfaceContainerLowest: "#FFFFFF",
-        surfaceContainerLow: toneToHex(96, n1_a, n1_b),
-        surfaceContainer: toneToHex(94, n1_a, n1_b),
-        surfaceContainerHigh: toneToHex(92, n1_a, n1_b),
-        surfaceContainerHighest: toneToHex(90, n1_a, n1_b),
-        surfaceVariant: toneToHex(90, n2_a, n2_b),
-        onSurface: toneToHex(10, n1_a, n1_b),
-        onSurfaceVariant: toneToHex(30, n2_a, n2_b),
-        primary: toneToHex(40, a1_a, a1_b),
+        surfaceContainerLow: toneShift(96, false, "container", n1_a, n1_b),
+        surfaceContainer: toneShift(94, false, "container", n1_a, n1_b),
+        surfaceContainerHigh: toneShift(92, false, "container", n1_a, n1_b),
+        surfaceContainerHighest: toneShift(90, false, "container", n1_a, n1_b),
+        surfaceVariant: toneShift(90, false, "container", n2_a, n2_b),
+        onSurface: toneShift(10, false, "onSurface", n1_a, n1_b),
+        onSurfaceVariant: toneShift(30, false, "onSurfaceVariant", n2_a, n2_b),
+        primary: toneShift(40, false, "primary", a1_a, a1_b),
         onPrimary: "#FFFFFF",
-        primaryContainer: toneToHex(90, a1_a, a1_b),
-        onPrimaryContainer: toneToHex(10, a1_a, a1_b),
-        secondary: toneToHex(40, a2_a, a2_b),
+        primaryContainer: toneShift(90, false, "container", a1_a, a1_b),
+        onPrimaryContainer: toneShift(10, false, "onContainer", a1_a, a1_b),
+        secondary: toneShift(40, false, "primary", a2_a, a2_b),
         onSecondary: "#FFFFFF",
-        secondaryContainer: toneToHex(90, a2_a, a2_b),
-        onSecondaryContainer: toneToHex(10, a2_a, a2_b),
-        tertiary: toneToHex(40, a3_a, a3_b),
+        secondaryContainer: toneShift(90, false, "container", a2_a, a2_b),
+        onSecondaryContainer: toneShift(10, false, "onContainer", a2_a, a2_b),
+        tertiary: toneShift(40, false, "primary", a3_a, a3_b),
         onTertiary: "#FFFFFF",
-        tertiaryContainer: toneToHex(90, a3_a, a3_b),
-        onTertiaryContainer: toneToHex(10, a3_a, a3_b),
-        outline: toneToHex(50, n2_a, n2_b),
-        outlineVariant: toneToHex(80, n2_a, n2_b),
+        tertiaryContainer: toneShift(90, false, "container", a3_a, a3_b),
+        onTertiaryContainer: toneShift(10, false, "onContainer", a3_a, a3_b),
+        outline: toneShift(50, false, "outline", n2_a, n2_b),
+        outlineVariant: toneShift(80, false, "outlineVariant", n2_a, n2_b),
         inverseSurface: toneToHex(20, n1_a, n1_b),
         inverseOnSurface: toneToHex(95, n1_a, n1_b),
         inversePrimary: toneToHex(80, a1_a, a1_b),
@@ -529,31 +579,31 @@
         onErrorContainer: "#410002",
       },
       dark: {
-        surface: toneToHex(10, n1_a, n1_b),
-        surfaceDim: toneToHex(8, n1_a, n1_b),
-        surfaceBright: toneToHex(24, n1_a, n1_b),
-        surfaceContainerLowest: toneToHex(6, n1_a, n1_b),
-        surfaceContainerLow: toneToHex(10, n1_a, n1_b),
-        surfaceContainer: toneToHex(14, n1_a, n1_b),
-        surfaceContainerHigh: toneToHex(18, n1_a, n1_b),
-        surfaceContainerHighest: toneToHex(22, n1_a, n1_b),
-        surfaceVariant: toneToHex(30, n2_a, n2_b),
-        onSurface: toneToHex(90, n1_a, n1_b),
-        onSurfaceVariant: toneToHex(80, n2_a, n2_b),
-        primary: toneToHex(80, a1_a, a1_b),
-        onPrimary: toneToHex(20, a1_a, a1_b),
-        primaryContainer: toneToHex(30, a1_a, a1_b),
-        onPrimaryContainer: toneToHex(90, a1_a, a1_b),
-        secondary: toneToHex(80, a2_a, a2_b),
-        onSecondary: toneToHex(20, a2_a, a2_b),
-        secondaryContainer: toneToHex(30, a2_a, a2_b),
-        onSecondaryContainer: toneToHex(90, a2_a, a2_b),
-        tertiary: toneToHex(80, a3_a, a3_b),
-        onTertiary: toneToHex(20, a3_a, a3_b),
-        tertiaryContainer: toneToHex(30, a3_a, a3_b),
-        onTertiaryContainer: toneToHex(90, a3_a, a3_b),
-        outline: toneToHex(60, n2_a, n2_b),
-        outlineVariant: toneToHex(30, n2_a, n2_b),
+        surface: toneShift(10, true, "surface", n1_a, n1_b),
+        surfaceDim: toneShift(8, true, "surface", n1_a, n1_b),
+        surfaceBright: toneShift(24, true, "container", n1_a, n1_b),
+        surfaceContainerLowest: toneShift(6, true, "surface", n1_a, n1_b),
+        surfaceContainerLow: toneShift(10, true, "container", n1_a, n1_b),
+        surfaceContainer: toneShift(14, true, "container", n1_a, n1_b),
+        surfaceContainerHigh: toneShift(18, true, "container", n1_a, n1_b),
+        surfaceContainerHighest: toneShift(22, true, "container", n1_a, n1_b),
+        surfaceVariant: toneShift(30, true, "container", n2_a, n2_b),
+        onSurface: toneShift(90, true, "onSurface", n1_a, n1_b),
+        onSurfaceVariant: toneShift(80, true, "onSurfaceVariant", n2_a, n2_b),
+        primary: toneShift(80, true, "primary", a1_a, a1_b),
+        onPrimary: toneShift(20, true, "onPrimary", a1_a, a1_b),
+        primaryContainer: toneShift(30, true, "container", a1_a, a1_b),
+        onPrimaryContainer: toneShift(90, true, "onContainer", a1_a, a1_b),
+        secondary: toneShift(80, true, "primary", a2_a, a2_b),
+        onSecondary: toneShift(20, true, "onPrimary", a2_a, a2_b),
+        secondaryContainer: toneShift(30, true, "container", a2_a, a2_b),
+        onSecondaryContainer: toneShift(90, true, "onContainer", a2_a, a2_b),
+        tertiary: toneShift(80, true, "primary", a3_a, a3_b),
+        onTertiary: toneShift(20, true, "onPrimary", a3_a, a3_b),
+        tertiaryContainer: toneShift(30, true, "container", a3_a, a3_b),
+        onTertiaryContainer: toneShift(90, true, "onContainer", a3_a, a3_b),
+        outline: toneShift(60, true, "outline", n2_a, n2_b),
+        outlineVariant: toneShift(30, true, "outlineVariant", n2_a, n2_b),
         inverseSurface: toneToHex(90, n1_a, n1_b),
         inverseOnSurface: toneToHex(20, n1_a, n1_b),
         inversePrimary: toneToHex(40, a1_a, a1_b),
