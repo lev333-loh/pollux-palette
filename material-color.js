@@ -163,13 +163,171 @@
     };
   }
 
+  function mixRgb(c1, c2, t) {
+    const k = Math.max(0, Math.min(1, t));
+    return [
+      Math.round(c1[0] + (c2[0] - c1[0]) * k),
+      Math.round(c1[1] + (c2[1] - c1[1]) * k),
+      Math.round(c1[2] + (c2[2] - c1[2]) * k),
+    ];
+  }
+
+  function rgbTupleToHex(rgb) {
+    return "#" + rgb.map((v) => Math.max(0, Math.min(255, v)).toString(16).padStart(2, "0")).join("").toUpperCase();
+  }
+
+  function relLum(rgb) {
+    return 0.2126 * rgbToLinear(rgb[0]) + 0.7152 * rgbToLinear(rgb[1]) + 0.0722 * rgbToLinear(rgb[2]);
+  }
+
+  function contrastRatio(a, b) {
+    const l1 = relLum(a);
+    const l2 = relLum(b);
+    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  }
+
+  function ensureContrastOnBg(fgRgb, bgRgb, towardRgb, minRatio) {
+    if (contrastRatio(fgRgb, bgRgb) >= minRatio) return fgRgb;
+    for (let step = 1; step <= 24; step++) {
+      const candidate = mixRgb(fgRgb, towardRgb, step / 24);
+      if (contrastRatio(candidate, bgRgb) >= minRatio) return candidate;
+    }
+    return towardRgb;
+  }
+
+  function pickReadableText(bgRgb, seedRgb, minRatio) {
+    const lightOpt = ensureContrastOnBg(mixRgb(seedRgb, [255, 255, 255], 0.92), bgRgb, [255, 255, 255], minRatio);
+    const darkOpt = ensureContrastOnBg(mixRgb(seedRgb, [0, 0, 0], 0.92), bgRgb, [0, 0, 0], minRatio);
+    return contrastRatio(lightOpt, bgRgb) >= contrastRatio(darkOpt, bgRgb) ? lightOpt : darkOpt;
+  }
+
+  function buildDirectLinearTheme(seedRgb, is2026) {
+    const BLACK = [0, 0, 0];
+    const WHITE = [255, 255, 255];
+
+    const lSurf = mixRgb(seedRgb, WHITE, is2026 ? 0.90 : 0.93);
+    const lSurfCont = mixRgb(seedRgb, WHITE, is2026 ? 0.83 : 0.86);
+    const lSurfHigh = mixRgb(seedRgb, WHITE, is2026 ? 0.78 : 0.82);
+    const lOnSurf = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.84), lSurf, BLACK, 8.0);
+    const lPrim = ensureContrastOnBg(seedRgb, lSurf, BLACK, 4.8);
+    const lPrimCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.60 : 0.68), BLACK, WHITE, 7.2);
+    const lSec = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.25), lSurf, BLACK, 4.5);
+    const lSecCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.66 : 0.73), BLACK, WHITE, 7.2);
+    const lTert = ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35), lSurf, BLACK, 4.5);
+    const lTertCont = ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.72 : 0.78), BLACK, WHITE, 7.2);
+    const lInvSurf = mixRgb(seedRgb, BLACK, 0.84);
+
+    const dSurf = mixRgb(seedRgb, BLACK, is2026 ? 0.84 : 0.88);
+    const dSurfCont = mixRgb(seedRgb, BLACK, is2026 ? 0.77 : 0.81);
+    const dSurfHigh = mixRgb(seedRgb, BLACK, is2026 ? 0.72 : 0.76);
+    const dOnSurf = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.86), dSurf, WHITE, 8.0);
+    const dPrim = ensureContrastOnBg(seedRgb, dSurf, WHITE, 4.8);
+    const dPrimCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.45 : 0.55), WHITE, BLACK, 7.2);
+    const dSec = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.32), dSurf, WHITE, 4.5);
+    const dSecCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.48 : 0.56), WHITE, BLACK, 7.2);
+    const dTert = ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.48), dSurf, WHITE, 4.5);
+    const dTertCont = ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.52 : 0.60), WHITE, BLACK, 7.2);
+    const dInvSurf = mixRgb(seedRgb, WHITE, 0.88);
+
+    return {
+      light: {
+        surface: rgbTupleToHex(lSurf),
+        surfaceDim: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.78 : 0.82)),
+        surfaceBright: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.93 : 0.96)),
+        surfaceContainerLowest: "#FFFFFF",
+        surfaceContainerLow: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.87 : 0.90)),
+        surfaceContainer: rgbTupleToHex(lSurfCont),
+        surfaceContainerHigh: rgbTupleToHex(lSurfHigh),
+        surfaceContainerHighest: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.73 : 0.77)),
+        surfaceVariant: rgbTupleToHex(mixRgb(seedRgb, WHITE, is2026 ? 0.72 : 0.76)),
+        onSurface: rgbTupleToHex(lOnSurf),
+        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.58), lSurfHigh, BLACK, 4.8)),
+        primary: rgbTupleToHex(lPrim),
+        onPrimary: rgbTupleToHex(pickReadableText(lPrim, seedRgb, 7.0)),
+        primaryContainer: rgbTupleToHex(lPrimCont),
+        onPrimaryContainer: rgbTupleToHex(pickReadableText(lPrimCont, seedRgb, 7.0)),
+        secondary: rgbTupleToHex(lSec),
+        onSecondary: rgbTupleToHex(pickReadableText(lSec, seedRgb, 7.0)),
+        secondaryContainer: rgbTupleToHex(lSecCont),
+        onSecondaryContainer: rgbTupleToHex(pickReadableText(lSecCont, seedRgb, 7.0)),
+        tertiary: rgbTupleToHex(lTert),
+        onTertiary: rgbTupleToHex(pickReadableText(lTert, seedRgb, 7.0)),
+        tertiaryContainer: rgbTupleToHex(lTertCont),
+        onTertiaryContainer: rgbTupleToHex(pickReadableText(lTertCont, seedRgb, 7.0)),
+        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, 0.35), lSurf, BLACK, 3.0)),
+        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, is2026 ? 0.62 : 0.68), lSurfCont, BLACK, 1.45)),
+        inverseSurface: rgbTupleToHex(lInvSurf),
+        inverseOnSurface: rgbTupleToHex(pickReadableText(lInvSurf, seedRgb, 7.0)),
+        inversePrimary: rgbTupleToHex(ensureContrastOnBg(seedRgb, lInvSurf, WHITE, 4.5)),
+        error: "#BA1A1A",
+        onError: "#FFFFFF",
+        errorContainer: "#FFDAD6",
+        onErrorContainer: "#410002",
+      },
+      dark: {
+        surface: rgbTupleToHex(dSurf),
+        surfaceDim: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.88 : 0.91)),
+        surfaceBright: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.70 : 0.75)),
+        surfaceContainerLowest: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.90 : 0.93)),
+        surfaceContainerLow: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.82 : 0.86)),
+        surfaceContainer: rgbTupleToHex(dSurfCont),
+        surfaceContainerHigh: rgbTupleToHex(dSurfHigh),
+        surfaceContainerHighest: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.66 : 0.71)),
+        surfaceVariant: rgbTupleToHex(mixRgb(seedRgb, BLACK, is2026 ? 0.62 : 0.68)),
+        onSurface: rgbTupleToHex(dOnSurf),
+        onSurfaceVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.65), dSurfHigh, WHITE, 4.8)),
+        primary: rgbTupleToHex(dPrim),
+        onPrimary: rgbTupleToHex(pickReadableText(dPrim, seedRgb, 7.0)),
+        primaryContainer: rgbTupleToHex(dPrimCont),
+        onPrimaryContainer: rgbTupleToHex(pickReadableText(dPrimCont, seedRgb, 7.0)),
+        secondary: rgbTupleToHex(dSec),
+        onSecondary: rgbTupleToHex(pickReadableText(dSec, seedRgb, 7.0)),
+        secondaryContainer: rgbTupleToHex(dSecCont),
+        onSecondaryContainer: rgbTupleToHex(pickReadableText(dSecCont, seedRgb, 7.0)),
+        tertiary: rgbTupleToHex(dTert),
+        onTertiary: rgbTupleToHex(pickReadableText(dTert, seedRgb, 7.0)),
+        tertiaryContainer: rgbTupleToHex(dTertCont),
+        onTertiaryContainer: rgbTupleToHex(pickReadableText(dTertCont, seedRgb, 7.0)),
+        outline: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, WHITE, 0.30), dSurf, WHITE, 3.0)),
+        outlineVariant: rgbTupleToHex(ensureContrastOnBg(mixRgb(seedRgb, BLACK, is2026 ? 0.52 : 0.58), dSurfCont, WHITE, 1.45)),
+        inverseSurface: rgbTupleToHex(dInvSurf),
+        inverseOnSurface: rgbTupleToHex(pickReadableText(dInvSurf, seedRgb, 7.0)),
+        inversePrimary: rgbTupleToHex(ensureContrastOnBg(seedRgb, dInvSurf, BLACK, 4.5)),
+        error: "#FFB4AB",
+        onError: "#690005",
+        errorContainer: "#93000A",
+        onErrorContainer: "#FFDAD6",
+      },
+    };
+  }
+
   function generateM3Palette(seedHex, scheme, era) {
     scheme = (scheme || "tonal_spot").toLowerCase();
     era = (era || (scheme === "monet_2026" ? "2026" : "2021")).toString().toLowerCase();
     const is2026 = era.includes("2026") || scheme === "monet_2026";
     const isMonochrome = scheme === "monochrome";
+    const isDirect = scheme === "direct";
 
     const [r, g, b] = hexToRgb(seedHex || "#814F70");
+    const tones = [0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+    if (isDirect) {
+      const seedRgb = [r, g, b];
+      const directRes = buildDirectLinearTheme(seedRgb, is2026);
+      tones.forEach((t) => {
+        const hexStep = rgbTupleToHex(
+          t <= 500
+            ? mixRgb([0, 0, 0], seedRgb, t / 500)
+            : mixRgb(seedRgb, [255, 255, 255], (t - 500) / 500)
+        );
+        directRes[`a1_${t}`] = hexStep;
+        directRes[`a2_${t}`] = hexStep;
+        directRes[`a3_${t}`] = hexStep;
+        directRes[`n1_${t}`] = hexStep;
+        directRes[`n2_${t}`] = hexStep;
+      });
+      return directRes;
+    }
+
     const [x, y, z] = rgbToXyz(r, g, b);
     const [, a, bVal] = xyzToLab(x, y, z);
     const c = Math.sqrt(a * a + bVal * bVal);
@@ -341,7 +499,6 @@
       }
     }
 
-    const tones = [0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
     const mapTones = (t) => t === 50 ? 5 : t / 10;
 
     const res = isMonochrome ? buildMonochromeTheme(is2026) : {

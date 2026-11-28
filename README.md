@@ -7,10 +7,10 @@
 ## Features
 
 - **Zero-dependency Color Engine (`material-color.js`)**: Pure Vanilla JS sRGB / CIE XYZ / CIE L\*a\*b\* tonal palette generator.
-- **Monet Eras (`2021` & `2026` Approx.) & 7 M3 Schemes**:
+- **Monet Eras (`2021` & `2026` Approx.), 7 M3 Schemes & Direct Mode**:
   - `Monet 2021 (AOSP)`: Follows documented Android 12 `ColorScheme.kt` chroma ratios.
   - `Monet 2026 (Approx.)`: Cleanroom algorithmic approximation inspired by Material 3 Expressive higher vibrancy *(see Disclaimer below)*.
-  - Schemes: `Tonal Spot`, `Rainbow`, `Vibrant`, `Expressive`, `Neutral`, `Fidelity`, `Monochrome`.
+  - Schemes: `Tonal Spot`, `Rainbow`, `Vibrant`, `Expressive`, `Neutral`, `Fidelity`, `Monochrome`, plus `Direct` (linear Non-Monet RGB tint/shade scale directly from the seed color).
 - **Light & Dark Modes + Pywalfox Sync**: Toggle Light/Dark live or pull your active Firefox/Pywalfox theme seed color.
 - **Color Wheel, Presets & `+` Custom Presets**:
   - 9 built-in presets (`Sakura`, `Lavender`, `Emerald`, `Ocean`, `Amber`, `Berry`, `Nord`, `Slate`, plus standalone `Monochrome`).
